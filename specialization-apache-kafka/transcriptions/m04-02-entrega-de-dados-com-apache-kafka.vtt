@@ -1,0 +1,1515 @@
+perfeito, vamos lá gente vamos para a
+segunda parte da nossa aula de número 4
+quinta -feira vamos entender um pouco
+sobre Kafka Connect de novo quando eu
+comentei do source eu faço a ingestão o
+sync eu leio do Kafka e output, então
+vai estar nessa parte aqui agora, é o
+data sync que a gente fala então aqui
+não é surpresa, aqui é o que eu já
+mostrei na aula de source só que o nosso
+foco agora é trabalhar com esse pedaço
+aqui então se eu pegar aqui, nós vamos
+trabalhar com esse pedacinho aqui então
+a anatomia não muda, é importante frisar
+isso, quando a gente trabalha com o
+conector independente se é source ou
+sync, não muda, eu vou ter o conector,
+transformação e eu converto se eu tiver
+transformação se eu tiver e converto
+sendo que eu posso trabalhar com
+bitrate, string json, lavro, protobuf
+posso aplicar smt's aqui smt's aqui eu
+coloquei, mas tem smt's também
+específicos dos conectores de sync, eu
+sempre, de novo sempre olham, sempre
+para vocês olharem a documentação
+daquele conector não se esqueçam disso
+ah Matheus, mas não, olha a documentação
+porque a documentação ela vai te ditar o
+que ele consegue ou não consegue fazer
+vamos para os mais famosos eu tenho jdbc
+sync de novo, Mongo SQL Server jdbc
+driver e aqui tem as particularidades
+que ele faz olha que legal, eu posso
+fazer um pkmode que eu vou falar aqui
+para a minha tabela que eu vou de
+destino se eu vou colocar ele como chave
+que está dentro do record ou do value o
+valor do value é o valor que eu quero
+colocar ou do key, e eu vou especificar
+esse cara pode ser none também eu vou
+especificar se a chave for qual que é o
+meu qual que é a minha chave eu posso
+ter um monte de deleção por exemplo,
+estou no cdc posso dar posso ter aqui se
+eu tiver com pk habilitada se eu deletar
+e tiver um tombstone ele automaticamente
+vai lá no meu banco e delega o dado
+também, é importante lembrar que cdc que
+eu capturo o delete, eu posso reverberar
+isso para outro isso eu estou fazendo
+também as is detalhe que isso faz isso
+se o esquema for diferente, se o tópico
+for diferente é lógico que ele não vai
+fazer nada vai pegar o tombstone que vai
+ser estrutura diferente mas se não for
+um dado processado eu quero fazer
+migração, por exemplo eu quero
+simplesmente pegar do lado do banco A, o
+banco B a partir do momento que eu fiz
+isso se tiver um tombstone no meio do
+caminho ele vai reverberar isso se eu
+tiver com meu pk mode igual a 1 outra
+coisa que eu posso habilitar, o open set
+então eu posso chegar e falar assim se
+eu peguei o update aconteceu um update
+de novo, aquela mesma lógica eu posso
+fazer insert ou open set aconteceu o
+update, eu atualizo a minha tabela de
+destino posso fazer o auto create posso
+fazer o auto evolution detalhe aqui, são
+opções que eu habilito eu tenho que
+falar para ele que esse cara está
+habilitado porque se não eu vou ter que
+criar a tabela do outro lado e ali que
+eu vou sincronizar a tabela com o meu
+connect alguns motivos para isso
+acontecer por exemplo, eu quero na
+verdade não quero que o caso connect que
+tenha as propriedades de DDL eu não
+quero que ele tenha DDL data definition
+language, eu quero só ele como dml, isso
+vai fazer inserção e update, não quero
+dar mais acesso no banco além disso,
+então eu vou criar a tabela, vou dar
+acesso de leitura e gravação para ele de
+insert, e aí ele vai fazer o processo eu
+vou te dar isso aqui eu vou deixar como
+falso auto create, auto evolve adicionar
+uma coluna e não vou modificar mais a
+tabela não vou ter que adicionar
+primeiro depois eu modifico na ponta
+então depende muito do caso trabalho com
+a água e esquema res aqui já habilitado
+nesse cara aqui então esse aqui é o jdbc
+driver é o sync confluent importante
+dizer que ele é confluent ele é um
+conector open source que é a própria
+confluent que mantém beleza?
+eu te falo que hoje para banco
+praticamente é o que eu uso existem
+alguns aparecendo mais aí mas ainda
+assim se não for cdc eu vou trabalhar
+geralmente com esse cara aqui aws sync
+connector cara esse cara
+eu já usei ele muito tanto que eu estava
+em um projeto que tinha mais de 300
+conectores para esse cara aqui é
+importante, isso é muito legal eu estava
+em um projeto americano em que eles
+estavam subindo 1000 conectores no jdbc
+eu lembro que a gente rolava páginas e
+páginas para ver os conectores todos era
+muito legal eles estavam com um processo
+isso é uma empresa de farmacêutica eles
+estavam com um processo de trazer todo o
+dado que eles estavam dentro de sql
+server que era fivetran e estavam
+substituindo fivetran por kfc connect
+eles queriam trazer todas as tabelas e
+um para um tá?
+importante fazer um para um todas as
+tabelas aqui do jdbc server são 1 para 1
+tá?
+eles queriam trazer do sql server para
+dentro do agile sql database
+inicialmente eles queriam fazer esse
+processo eu até sugeri para o engenheiro
+responsável o arquiteto responsável para
+a gente colocar isso em um data lake e
+ele poder exportar isso para um outro
+data warehouse ele estava usando o sql
+database como data warehouse mas a gente
+discutiu por enquanto essa primeira fase
+eu vou seguir assim até bati um papo com
+ele recentemente de como é que está o
+ambiente está só crescendo está até
+contratando pessoas só que infelizmente
+por ser uma farmacêutica americana eles
+não podem contratar ninguém fora do país
+tem que ser residente nos estados unidos
+isso é uma exigência eu estava
+discutindo duas semanas atrás então um
+caso bem legal eles estão começando a
+usar bastante caso e fazer esse processo
+de sync usando o sync do adbc connect
+isso é bem legal aqui também é o mesmo
+esquema tá?
+que eu chamo de data lake dehydrate
+daylight ou seja eu pego os dados que
+estão aqui no meu kafka e vou hidratar o
+meu data lake sem precisar ir acessar o
+kafka então eu realmente vou mandando de
+tempo em tempo e eu processo tudo em
+nível do bucket e eu posso trazer isso
+em parquet, json, agro o que for o que o
+meu conector dar acesso por exemplo o
+aws sync connect já aceita parquet e
+json existe alguma forma de evitar small
+files no sync s3 o conector tem algum
+compress perfeito eu leio não
+necessariamente você pode tentar reduzir
+o impacto aumentando o tempo de
+recorrência que ele vai acessar e o
+tamanho dos registros porém isso é muito
+legal porque realmente é um problema não
+um problema sério mas é por causa do
+processo como um todo eventos
+historicamente eles acontecem não
+acontecem de uma vez então você evita
+tenta evitar mas aí pode ter um risco
+maior de você acabar perdendo um dado no
+meio do caminho por exemplo ela vai
+ficar no kafka por exemplo uma hora uma
+hora você vai ter lá talvez 10 mil
+registros talvez 100 mil então depende
+muito do seu workload para você
+controlar teria que
+aumentar o tempo que você vai fazer de
+interação aí você pode reduzir um pouco
+mas mesmo assim por questão de trabalhar
+com evento talvez seja interessante se
+você já põe small files duas formas você
+vai no kafka direto ou você faz um um
+sistema antes um processo antes para
+fazer o merge desses arquivos você faz
+uma land de kafka roda um spark dentro
+dele menor específico para esse processo
+apenas que roda quase que na mesma
+frequência que esse cara vai rodar aqui
+e você vai fazer merge com esses caras
+aqui aí você vai meio que jogar para
+essa aplicação única esse problema de
+small files você consegue processar o
+resto do processo é uma alternativa mas
+realmente não tem como fugir muito
+porque é evento de novo vamos lá
+configurações detalhe
+importante eu tenho um partitioner
+dentro do s3 da confluent é importante
+que eu vou mostrar dois s3 aqui vou
+mostrar o s3 da stream reactor e vou
+mostrar o da confluent cada um vai ter a
+sua ponto positivo e ponto negativo eu
+vou explicar um pouco de cada um deles
+então aqui eu tenho um partitioner eu
+posso usar avro, parquet e json eu posso
+fazer um partitioner também baseado em
+tempo aqui e eu posso usar também outros
+tipos de store compatíveis com protocolo
+s3 por exemplo minhaio vou mostrar para
+vocês hoje para quem não conhece vou
+falar um pouquinho do minhaio quando a
+gente começar a entrar nesse pedaço
+então eu posso fazer um padrão eu posso
+fazer por campo o padrão é o nome do
+tópico os dados lá dentro eu vou
+explicar aqui o padrão
+ano, dia, ano, mês, dia vou fazer de
+várias
+formas vamos lá, vamos ver o conector
+meu
+conector deixa eu compartilhar minha
+tela do conector porque eles estão
+chegando no pinô que eu sei que vocês
+tem várias perguntas do pinô então vamos
+chegar lá vamos fazer uma inserção aqui
+vou fazer
+uma inserção esquisita para mostrar para
+vocês tá, o que é o minhaio para vocês
+entenderem deixa eu até ver se tem uma
+apresentação minhaio específica porque
+eu acho que vai ficar legal porque não
+entrar muito nem eu mas acho
+interessante vou pegar aqui
+rapidinho depois eu mostro mas resumindo
+tá ele é um objeto de história de
+kubernetes que ele funciona como se
+fosse um s3 um data lake que você coloca
+em qualquer nuvem então ele responde o
+protocolo s3 e ele trabalha em qualquer
+nuvem e é desse jeito aqui deixa eu
+mostrar para vocês aqui que massa que
+ele é deixa eu compartilhar direitinho
+olha
+para vocês o minhaio turma toma o
+minhaio ele é o mesmo processo de um s3
+então ele funciona só que de novo em
+qualquer vantagem dele então eu venho
+aqui eu tenho os buckets eu posso criar
+buckets aqui dentro onde eu vou ter
+minha landing por exemplo que a gente
+vai colocar os dados aqui dentro eu vou
+mostrar o conector aqui então é como se
+eu estivesse usando um aws s3 só que eu
+estou na digital hoje então a gente vai
+mostrar para vocês aqui é o mesmo
+processo que vocês fariam aí com s3
+talvez removeu uma outra coisa ali mas o
+core das configurações é o mesmo então
+eu vou vir aqui em deployment eu vou ter
+esses três caras aqui eu vou mostrar
+primeiro o nosso da config deixa eu
+reduzir aqui não muda lembra?
+não muda a estrutura só que aqui olha a
+classe sync sempre que vocês forem olhar
+sempre olhem para a classe a classe é
+uma classe sync ela tem que ter o nome
+sync vai ter o nome source que vocês
+estão usando na correia
+aqui eu estou lendo um arquivo avro
+então estou passando aqui o schema
+registry olha a integração tópico o nome
+do meu bucket que chama landing aqui
+é o caminho do meu store url ou seja o
+caminho do meu s3 aqui aqui eu estou
+dentro do kubernetes então passei o nome
+de minha io que é o serviço e o
+namespace e ai a questão do small files
+é essas duas configurações aqui o flush
+size e o schedule interval que vão
+digitar eles que vão digitar como é que
+a gente consegue minimizar isso quanto
+maior for o intervalo em milissegundos o
+tempo que eu vou ter que esperar mais
+vai encher meu tópico da última vez que
+eu li e aqui é o flush size por arquivo
+então o que que ele vai
+fazer se você esperou mais você vai ter
+mais registro lá dentro você coloca a
+quantidade e registra e só desce de novo
+é garantido?
+não é porque se um dos dois atingir
+quando ele for lá na interação ele vai
+ligar automaticamente então se eu não
+bati por exemplo os 50 mil mas eu bati o
+tempo o que tiver lá ele vai baixar
+então não existe uma garantia 100 %
+sobre isso mas dá pra gente poder fazer
+algumas coisas então aqui é a chave que
+eu tenho de acesso ao meu data lake
+então aqui eu estou usando meu access
+key meu secret key aqui é o meu storage
+class que eu não mudo que é o s3 aqui eu
+vou manter essa configuração e aqui que
+eu posso mudar o format class aqui eu
+vou ter json parquet e no caso o árvore
+então eu estou usando aqui parquet ah
+mateus quanto que eu uso um ou outro?
+json quando você não consegue
+desterilizar ele o próprio dado é em
+json então você tem que trazer ele e vai
+em json parquet se ele estiver em árvore
+pra você fazer a parte de trabalhar com
+spark com os sistemas de processamento
+analítico e árvore é interessante você
+gravar em árvore quando você quiser
+fazer backup e restore de kafka por
+exemplo você quer baixar os dados em
+árvore e subir os dados em outro kafka
+por exemplo então é recomendado usar em
+árvore.
+Detalhe importante o sync conector da s3
+desse da confluent o source é pago o
+sync open source o source é pago então
+pra você fazer esse processo de backup e
+restore no caso da parte do restore você
+não iria conseguir ter licença dele em
+outro conector eu vou explicar um pouco
+disso daqui a
+pouco aqui o scheme generator também a
+gente não mexe o partitioner baseado em
+time eu quero um time based partitioner
+onde eu vou falar mês ano, mês, dia e
+hora beleza?
+aqui eu to usando time zone São Paulo
+mesmo isso aqui é o partition duration
+também a gente já deixou padrão e o time
+stamp eu vou extrair do record
+simples, fácil aqui eu não vou usar smt
+não porque eu vou mostrar smt top daqui
+a pouco então vamos subir esse cara aqui
+com outro nome eu vou criar outra eu vou
+criar outro nome hum eu vou apagar pra
+lá vou vir aqui vou apagar esse cara
+aqui pra gente poder fazer agora porque
+aqui nós estamos fazendo as coisas
+pontinho vou apagar pra vocês
+poderem ver então eu vou vir aqui nesse
+parque aqui
+users vai embora beleza deletei vou lá
+no meu min .io acho que eu to com stop
+to com stop aqui eu vou deletar esse
+cara é deletar porque nós estamos doidos
+bom, deletei vou criar com outro nome tá
+a gente tem uma dúvida a gestão dessa
+simulação é bem tranquila?
+sim, ele usa o mesmo processo parecido
+com o IAM da AWS tá mesma configuração,
+ele tem a partida de segurança perfeito
+esse caso da config tamizão com américa
+se ele criar o folder ele vai seguir o
+horário local certo?
+isso, exatamente exatamente exatamente
+então
+tá, vou trocar o nome aqui que é mais
+que a gente vai mudar bom, aqui
+perfeito, eu vou fazer um save eu já
+deletei lá a gente vai só executar vou
+abrir aqui um terminal abro um novo
+porque eu posso
+pegar a pasta errada não fiz nada de
+errado ele vai
+criar aqui eu vou não Matheus, como é
+que eu vejo o log?
+vamos ver aqui agora log tá dentro do
+panect, né eu vou
+lá, dou um tail na log ele tá gravando
+já na verdade não, tá gravando outro
+esse aqui não podemos ter um problema
+aqui porque eu tô gravando dois grandes
+aqui aqui ó subi ele agora ó aí ó esse
+cara aqui que é o nosso
+amigo sync olha que legal, olha consumer
+client id vamos ver um negócio
+interessante aqui se não me falha a
+memória ele vai aparecer aqui pra
+mim dentro do meu consumer group, amigos
+porque ele é um consumidor ele é um sync
+connector vamos ver se eu consigo pegar
+ele aqui ou se eles tiraram isso e
+colocou só dentro do sistema ah não,
+aqui ó olha que legal, aí gente, olha
+que massa vamos fazer aqui eu vou pegar
+o vou substituir olha que legal eu já
+peguei o consumer group dele, né, porque
+como eu comentei com vocês ó, lembra que
+o consumer ele é uma abstração o connect
+ele tá na abstração do dentro do
+consumer group olha ele aí ó aumentar
+aqui não,
+igualmente aí ó ele tá estanciando ainda
+deixar assim pra gente poder ver, aí ó
+ele vai ler ainda não tem nada a última
+vez que ele foi e o lagging quando ele
+começar vamos rodar de novo aqui alguma
+hora ele vai começar a
+trazer talvez demore um pouco mais aqui
+mas a gente consegue ver como eu
+comentei o consumer group, vou deixar
+aqui depois a gente vê esse cabo mas
+beleza vamos ver o dado chegando lá
+vamos ver se ele começou a carregar pode
+ser também que tem algum problema também
+porque eu coloquei o
+mesmo vamos ver se não deu nenhum erro
+chegou a chute em tempo real que é
+igual pelo menos que eu tenho um outro
+aqui que tá
+gigantesco e eu também coloquei ah não,
+esse aqui vai demorar um pouco eu
+aumentei o schedule interval dele, né
+justamente porque eu não quero ver ele
+batendo o tempo inteiro só que aí vamos
+voltar isso
+daqui a pouco, tem que esperar ele rodar
+lembra que eu falei da questão do rodar
+eu reduzi ele existe alguma forma de
+setar esse timezone no source connect
+para ter uma zona específica de
+timestamp de recebimento da mensagem eu
+lembro não nesse você vai ter o event
+você vai ter o que eu comentei você vai
+ter o timestamp do momento que o topic é
+criado porque você não consegue porque
+isso já vem no header ele só é marcado
+no momento que entra no card ali você
+consegue colocar pelo fato do topic já
+existir o dado já existir você vai só
+fazer um label dele e usar o conector
+para isso então quando você está
+inserindo ainda não tem como você
+colocar tá bom você poderia trazer isso
+por exemplo dentro do valor se a sua
+tabela tiver isso você pode eleger ele
+para alguma coisa você pode colocar eu
+tentei fazer isso uma vez você pode
+colocar dentro do valor não vai deixar
+não porque ele tem que entrar primeiro
+agora por isso que é importante você
+colocar o processing time porque no
+processing time você tem no header do
+card quando ele entrou e aqui você
+coloca pode colocar um output time por
+exemplo eu vou mostrar aqui um caso bem
+legal aqui vai demorar um pouco por
+causa do rotation eu vou deixar aqui
+para a gente poder ver se você conseguiu
+resolver o problema dos
+malfiles beleza vamos ver esse cara aqui
+peguei o
+stock esse aqui é o json peguei o stock
+e aqui é o outro
+tipo de conector olha que legal esse
+conector é o stream connector do stream
+reactor ele tem uma particularidade a
+configuração dele é isso aqui ou seja
+aqui é um json eles tem um processo de
+sql que é uma sql para o conector isso é
+deles mesmo eles tem que baixar dentro
+do conector deles eu tenho uma aplicação
+para entregar para vocês tem como vocês
+baixarem os jars e tem que manter os
+jars lá dentro então eles tem lá o
+insert into você passa o bucket isso
+aqui é o bucket você elega seria isso
+aqui no top olha que legal é bem legal
+como eles fizeram você pode selecionar
+quais tabelas que você quer e o
+partition by aqui eu vou parar aqui para
+explicar isso daqui a pouco ignore isso
+aqui por enquanto eu posso dar um
+stories json, avro, protobuf ele tem
+mais um txt tem mais uma quantidade
+maior de formatos propriedade o flush
+count quantos registros eu vou criar lá
+dentro qual é o tamanho do arquivo
+quantos registros ou o flush interval em
+milissegundos beleza top aqui eu
+configurei esses dois caras aqui para o
+miau então eu tenho que falar o custom
+endpoint e colocar o vhost bucket4 senão
+o miau não funciona esse aqui é
+habilitado que permite você usar o
+custom endpoint se você está usando s3
+fica mais fácil porque rodando dentro do
+s3 simplesmente vai tirar isso aqui ele
+vai autenticar vai configurar aqui o iam
+dentro da máquina para você poder
+executar esse carinha aqui credentials o
+meu o meu access key
+e meu secret key e aqui é a brincadeira
+começa a ficar legal esse transformer
+aqui gente eu fiz ele para um outro
+cliente fora do país gigantesco eles
+estavam fazendo a migração do confluent
+que é bem mais simples do confluent para
+esse e aí como esse cara não tem um
+partitioner não tem um partitioner by
+timebase nada disso eu tive que criar um
+usando smt então esse aqui gente é um
+timebase partitioner ou seja em suma é
+esse cara aqui é esse camaradinho aqui
+só que ele foi feito somente com smt
+então eu fiz um smt aqui usando toda a
+parte de timestamp e esse smt também é
+da própria smreactor eles que continuam
+evoluindo esse processo então eu peguei
+o que eles chamam de wallclock que é o
+system da execução e eu passionei ano,
+mês, dia e hora e aqui eu fui formatando
+ele então eu fui criando um padrão o
+primeiro pedaço aqui eu trago os headers
+até aqui eu trago o header e depois eu
+trago o timestamp do header depois disso
+o que eu faço que é o chamado wallclock
+eu vou e faço assim agora o wallclock
+year eu vou particionando, vou quebrando
+ele todo agora eu vou mostrar como é que
+vai ficar no final então esse cara aqui
+é aquele
+partitioner é uma coisa, mas porque é
+mais difícil é porque realmente nesse
+caso aqui eles fecharam uma coisa que
+como é que funciona o stream reactor ele
+é 100 % open source, ele é apache só que
+a empresa pode escolher por ter suporte
+a parte de conector então suporte é eu
+quero uma modificação eu quero uma
+atualização eu quero ter um conector
+específico então eles tem esse
+processo só que jogo, é tudo open source
+se você quiser baixar agora não tem
+licença no conector então o conector não
+tem licença então para a questão de
+flexibilidade para algumas coisas você
+pode fazer o que você quiser até eu
+discuti isso muito com um diretor de
+tecnologia responsável por esse projeto
+eu falei, cara podia colocar isso aqui
+ia facilitar muito só que ele falou,
+cara é tanta coisa que os clientes não
+conseguem se eu colocar isso aqui eu vou
+fazer igual ao Confluent e eles já estão
+tudo pronto, não faz sentido ali eu
+consigo ter mais flexibilidade se o cara
+conseguir criar formatos diferentes que
+a Confluent não tem, por exemplo eu
+consigo entregar, porque por falta da
+programação que foi feita em cima desse
+cara a forma do case que é do Excel, do
+Storage S de você criar o seu próprio
+partition by você fala como é que você
+vai partitionar aqui te dá uma
+flexibilidade considerável mas de novo
+não é tão simples para manter mas beleza
+gente eu não queria mostrar, não quero
+executar esse aqui não quero executar na
+verdade esse cara aqui lembra do nosso
+tópico lá que a gente criou no
+processamento agora faz sentido a gente
+fazer o upload dele em algum lugar então
+eu escolhi esse aqui para vocês terem
+uma visão e ter essa prática de rodar
+ele dentro do do Extreme Reactor,
+diferente de novo, vocês vão ter as duas
+opções testem, brinquem troquem SMT aqui
+eu vou passar os links, até os links no
+REACH ME de cada um dos SMTs como
+instalar e tudo mais tá tudo bonitinho
+para vocês mas eu recomendo esse cara
+aqui, bem legal, funciona muito bem não
+tem problema nenhum eu estou muito
+emocionado com esse cara aqui porque
+também eu tenho o SYNC e o SOURCE desse
+cara open source então se eu quiser
+fazer um projeto um processo de backup e
+restore eu posso fazer aqui totalmente
+open source tá então eu simplesmente eu
+posso fazer um STORE AS aqui no caso
+parquei, abro e eu posso fazer um
+processo de backup e restore quando eu
+quiser posso criar os conectores
+simplesmente ou para fazer um
+reprocessing, um backfilling por exemplo
+tipo cara, eu pego do conector eu pego
+do storage trago para um conector, para
+um tópico intermediário processo ou
+retrocesso e aí sigo minha vida
+partition by eu comentei tá vendo, eu
+coloco todos os meus o meu SMT, ele vai
+todo para o header da minha mensagem
+então é header .walklockyear que eu
+criei aqui walklockyear, walklockmonth e
+eu
+vou também ó header
+.insertwalklocktimepart então o que ele
+faz ele passa para mim o header e eu
+consigo acessar isso para particionar
+por ele vou mostrar como vai ficar
+porque está rodando esse tópico que é
+bem grande então se eu for aqui eu
+coloquei process nossa, ele tem
+isso para caramba eu coloquei ele em em
+em hivenaming ou seja, coluna igual a
+partição, é como ser modificado se você
+quiser aqui, depois eu vou colocar
+outras opções para vocês poderem ver mas
+aqui ó, mês, dia aqui 23, está errado
+pegou um dia errado aqui ah tá, ele
+pegou dentro da mensagem aqui eu peguei
+dentro da mensagem então aqui ó, tudo
+bonitinho parquei então você pode jogar
+sua aplicação Spark aqui carregando
+dados aqui aqui é o dado processado,
+olha que legal eu já processei esse dado
+então já estava com o dado pronto para
+ser consumido por um trino em caso de
+Starburst você pode usar aqui Python
+puro para conectar e acessar Spark you
+name it você vai ter acesso aqui pegaram
+os conectores alguma dúvida, perguntas
+o cara eu gosto bastante tá gente, desse
+desse cara aqui, e ele está lá esse cara
+que eu mostrei é porque esse cara aqui
+olha lá, ele está lá está vendo,
+enriched flint consumer premium, então
+ele está carregando aqui está bombando
+lá ele só vai parar quando, né a gente
+tem a aplicação rodando então a
+aplicação está ele está no cabelo então
+é uma forma de você poder fazer lá no
+nosso amigo só voltando aqui para
+mostrar para vocês lá no nosso amigo
+landing eu tinha colocado timestamp não
+carregou ainda porque de novo eu
+aumentei bastante o o 'clock quando
+voltar aqui eu mostro para vocês como
+vai ficar vai ficar ano e mês vocês já
+devem estar utilizando aí já o DS3 mas
+de novo, small files é complicado vou
+explicar os simples DS3 também salvam
+por causa do Hive ou é uma
+particularidade desse reator eu só tive
+experiência do tipo ano, mês, dia e hora
+se não me engano ele salva também deixa
+eu confirmar para você que é agora eu
+acredito que sim
+se não me engano sim ele faz o
+partitioning
+by Hive o partitioning dele também
+funciona para Hive naming é
+porque tem alguns processos que é
+interessante esse cliente por exemplo
+posso comentar com vocês posteriormente
+ele tinha que ser para ele tinha que ser
+Hive tinha caso de lá que tinha que ser
+o nome da coluna timestamp igual
+timestamp tinha que ter um esse processo
+deixa eu confirmar
+aqui partition class default field acho
+que é o field eu vou confirmar se você
+for fazer partitioning by field ele acho
+que tem como você fazer depois eu
+confiro direitinho tem, tem como tem
+como tá é o
+field mais o path format aí você fala
+você coloca o formato que você quer que
+a gente coloque beleza até aí todo
+mundo estamos entrando na reta final mas
+o legal nem chegou ainda eu estou
+ansioso para chegar na parte final quero
+mostrar um negócio bem legal para vocês
+acho que vocês vão gostar espero eu sou
+bem empolgado com essas
+coisas eu peguei a história do Luan acho
+que tem muito gente que fica oh caralho
+isso aqui e tal ainda mais que pra mim
+isso aqui é quase um
+trabalho todo dia eu continuo achando
+bem legal então vamos lá seguindo alguém
+aí me fala aí quem nunca ouviu falar do
+termo user facing analytics fala não
+para mim por favor não não legal coisas
+legais estou
+gostando de ver vocês estão pegando bem
+coisas bem legais fico feliz porque esse
+aqui é um termo bem interessante tá e a
+própria StarTree que trouxe isso há dois
+anos atrás uma forma como por exemplo
+esse processo usando o o Pinoo como
+centro mas a ideia é o que os dados
+chegam e são geridos em tempo real são
+processados em tempo real e são
+entregues numa camada somente essa
+camada de entrega de dados em que ela
+tem a latência de milissegundos de uma
+baixa latência a atualização dela também
+tem que ser rápida e você consegue
+plugar milhões de usuários ao mesmo
+tempo ou seja a concorrência dele é alta
+tá e foi feito para isso então se eu
+chegar lá e mandar 100 mil queries por
+segundo se eu mandar se eu tiver lá
+milhões de usuários conectados ele não
+vai falhar porque ele foi feito para
+isso tá e isso é um problema na verdade
+surgiu no LinkedIn lembra que lá no
+começo eu falei que o Kafka surgiu no
+LinkedIn o Kafka surgiu mas ao mesmo
+tempo ele trouxe um
+problema ele conectou as aplicações
+todas começou a ter aquele nularelo de
+dado fluindo por dentro do Kafka
+aplicações consumer todo mundo lendo só
+que eu não consegui ver analíticas do
+Kafka porque lembra o programa crônico
+da leitura eu leio partição do offset do
+começo e do final como é que eu vou
+filtrar como é que eu vou trabalhar eu
+jogava isso em banco de dados?
+eu não comparto então eu pegava do
+connect e jogava num banco se não me
+engano Elasticsearch eu acho que eles
+usavam ou eu estava usando Kafka os dois
+não me lembro ao certo da história mas
+usava um banco de dados que era
+performático até acho que era Kafka
+também só que eles viram que cara não dá
+chegou um ponto de novo são trilhões de
+mensagens por dia pouca coisa então
+assim a infraestrutura ficou muito
+grande cara se não tem nada no mercado
+eu vou criar então eu para quem não
+conhece Apache Pinot em 2014 devido a
+esse problema eles pararam e
+desenvolveram uma tecnologia de novo já
+que não tem eu não vou fazer eu vou
+criar um negócio totalmente novo eles
+criaram um Pinot que é um storage
+colunar que tem índices plugáveis se não
+me engano são 13 tipos de índices
+diferentes eu vou trazer isso para vocês
+na segunda ou na terça vou trazer um
+pouco mais para vocês poderem ver eu fiz
+aqui mais para a gente poder focar na
+prática do que focar em uma teoria mas
+eu vou trazer para vocês eu acho que são
+13 ele foi criado em 2014 2015 foi doado
+2018 entrou na incubator então foi doado
+e virou incubator top level 21 em 2019
+esse artigo foi criado será que ele
+consegue aguentar a pressão?
+eu sempre me pergunto isso eram 100 mil
+queries por segundo com latência de
+milissegundos ingerindo milhões de
+registros por segundo detalhe importante
+para quem não conhece o Pinot o Pinot
+não usa conector para acessar o cargo
+ele é um consumidor então ele consome,
+ingere o dado para ele e grava o dado
+dele vamos ver um pouquinho mais desse
+cara então ele foi criado em 2014 2015
+foi doado 2019 eles tiveram a fundação
+do Star Prix importante dizer que aqui a
+comunidade open source tinha por volta
+de 100 membros de um ano para o outro de
+100 passou para 800 150 contribuidores
+500 mil linhas modificadas teve um boom
+assim e realmente foi porque eu vi isso
+aqui eu lembro que em 2019 eu estava
+mexendo trabalhando com Druid em um
+outro projeto começo de 2020 começo de
+2020 eu estava trabalhando com Druid o
+Elon falou cara tem um negócio que está
+bombando e parece que estourou a gente
+tem que testar e era o Pinot então em
+2020 eles também abritaram o shared
+storage que é simplesmente utilizar o
+meu storage que eu vou mostrar aqui na
+camada de seguimento de sair dos
+servidores para ir para uma camada de
+armazenamento em nuvem s3 blog storage
+de custo também precisamos falar de
+custo no período de 2020 a 2021 ele foi
+graduado em top level com 2 mil membros
+na comunidade o pulo que deu a
+comunidade é bem legal recomendo muito
+vocês participarem muito muito legal a
+Yarden que atualmente aqui em 24 ela é a
+rede de comunidade eu entrei em Aracar
+em Uloc gente boníssima também gente
+muito
+legal eles são muito receptivos eles tem
+evento tem dinâmica eles tem uma loja de
+eu não tenho que ir agora perto eu não
+tenho que ir perto eu levo cara tem
+blusa eu tenho blusa eu tenho uma
+quantidade de coisa você contribuiu você
+ganha ponto é super legal eu gosto de
+evento para caramba eu uso camisa de
+evento desse ano que eles me deram eu
+adoro essas coisas então participantes
+de comunidade sempre falo isso 0 .11
+entrou a primeira parte apresentaram a
+engine v2 que permite join então
+antigamente Druid acho que nem permite
+ainda não mas o Pinon em 2022 eu lembro
+quando anunciaram estava dentro do
+roadmap e eles anunciaram o roadmap esse
+cara que eu fiquei doido nossa vamos
+colocar join ai que o trem eles
+praticamente eles recriaram a engine do
+Pinon para possibilitar join porque o
+LAP em tempo real normalmente não
+trabalha com join você pode ter uma
+engine de SQL antes Presto, Trino
+Apascal City, alguma coisa do tipo para
+você conectar nesses caras trazer o
+dataset e ele fazer o join para você mas
+ele nativamente não tem aqui na v2 já
+permite join distribuir então foi
+anunciado em 2022 3 .5 mil membros 270
+contribuintes 10 mil commits e 100
+deployments diferentes qual que é o
+legal disso é importante frisar aqui é o
+tamanho de Kafka eu vou até falar sobre
+isso o Kafka apesar que ele está
+consolidado no mercado já é uma
+ferramenta utilizada por empresas as 100
+maiores do mundo da 100 da Fortune 500 e
+Fortune 100 elas usam Kafka 50 % usam
+Kafka eles tem muito pouca atualização
+nos últimos tempos se a gente pegar a
+questão de mudança mesmo em bug fix
+bastante mais questão de mudança aqui
+praticamente o Pinon o Trino o Airflow
+são tecnologias que elas recebem
+atualização sempre isso pra gente é
+muito bom dá uma segurança que tem uma
+comunidade que está impulsionando o
+produto então se a gente for fazer uma
+POC para escolher um produto open source
+sempre olha isso também não é que ele é
+novo que ele vai cair no hype não é isso
+mas se ele é novo e continua está tendo
+bastante aceleração isso é um lado
+positivo isso quer dizer que na verdade
+se ele tiver um ano, três anos
+se esse cara continua recebendo
+atualização constante dificilmente eles
+vão parar então o Pinon é um caso desse
+e na versão 1 .0 você pode habilitar o
+Multi Stage Queer que na verdade é a
+Engine V2 em que você pode simplesmente
+chegar e habilitar eu vou mostrar isso
+atualmente na 1 .2 .0 bastante
+atualização com mais bug fix aqui tem
+muita coisa e aqui é
+interessante que eu coloquei o RTA Real
+Time Analytics Summit chegou na segunda
+edição eu queria muito ter ido mas ele
+teve conflito com outro evento eu não
+pude ir isso quer dizer que as empresas
+estão desesperadas atrás de conhecimento
+para Stream Analytics antigamente era
+bobeira não precisava, tempo real hoje
+isso aqui é realidade fato confirmado as
+empresas precisam disso tem problemas de
+negócio que precisam de latência em
+tempo real então eu coloco o Pinon aqui
+no centro disso porque realmente ele é o
+cara para isso vamos entender um
+pouquinho desse cara um desenho para
+deixar mais claro como é que esse cara
+funciona eu vou mostrar isso também na
+prática vamos passar na parte de
+ingestão depois eu falo da parte de
+query e a parte de REST API então,
+ingestão serve real -time ou serve
+offline que eu vou acessar eu vou trazer
+um job de ingestão se eu for, no caso,
+consumidor eu vou lá e vou acessar o
+Kafka e vou trazer os dados para esse
+nível aqui trouxe para esse nível
+automaticamente ele vai gravar um
+segmento então ele cria um segmento um
+segmento store lembra o Tiered Storage?
+em que eu posso criar um Tiered Storage
+para Blob Storage, S3, Go Cloud Hadoop,
+HDFS se eu quiser mas eu também posso
+trazer o dado frio eu posso criar um job
+de ingestão que lê arquivo e traça eu
+posso ler então o conceito de User -Face
+Analytics não é somente o dado em tempo
+real ele também aceita dados que chamam
+de Offline Tables eu posso subir uma
+Offline Table e eu posso trabalhar tanto
+com real -time como com offline então é
+tempo real ou histórico eu vou ter
+performance excelente em cima disso
+porque a forma como o Pinoo foi criado
+foi que eu trabalho em segmento eu tenho
+que obrigatoriamente vou mostrar para
+vocês o esquema dele eu tenho que passar
+uma coluna timestamp de métrica que ela
+vai quebrar o meu segmento quando eu for
+ler baseado na estratégia de índices que
+eles tem pior que eu estou usando um
+índice aqui só uma coluna nem estou
+usando um índice específico estou usando
+um default tem o Star Tree Index se você
+tiver uma quantidade de dados muito alta
+usando o Star Tree Index que é o nome da
+empresa por causa do índice você ganha
+um ganho de performance absurdo de novo,
+eu posso levar mais detalhes da
+apresentação de Pinoo para vocês na
+segunda ou na terça a gente conversa
+sobre isso depois tem o híbrido também,
+exato tem o híbrido também tem o Hybrid
+Table que é Able Time e Offline mas eu
+não testei ainda testei somente em tempo
+real geralmente, honestamente falando eu
+trabalho só com Pinoo em tempo real esse
+é o meu atualmente eu só vejo para mim
+nas minhas arquiteturas eu trabalhando
+em tempo real com esse cara aqui
+principalmente o cliente tem um head
+shift ele vai ter um Lake House ele vai
+ter um Databricks SQL então eu não vou
+tirar de BigQuery por exemplo para
+colocar aqui dentro está funcionando
+bem, não vou tirar agora está sendo do
+zero eu preciso montar, eu preciso fazer
+e eu quero ter isso, aí faz sentido eu
+vou falar disso muito também amanhã
+quando vocês forem desenvolver qualquer
+tipo de projeto pensem sempre do tipo se
+já existe só modifique se tiver problema
+isso aqui não está me atendendo mais
+isso aqui não funciona legal como é o
+caso de uso beleza você precisa estender
+não precisa
+modificar tudo não você pode estender e
+modificar sem um retrabalho tão grande
+então os servers vão trabalhar em tempo
+real e offline eu vou ter os brokers
+aqui lembra dos brokers do Kafka?
+aqui é diferente, aqui os brokers não
+lavam dados eles são na parte de
+stateless então eles tem aqui um disco
+só para movimentação para leitura rápida
+mas eles comunicam com o server para
+acessar o segment store então aqui na
+minha query quando eu vou executar a
+query eu acesso o broker ele vai se
+requisitar dados para os servers e se os
+servers não tiverem o dado eles vão
+pedir para o segment store disso tudo,
+quem vai ficar de olho é o Zookeeper
+Zookeeper e o Helix então na parte
+administrativa de notificação eu uso o
+Zookeeper e tem uma parte Helix que
+trabalha com a parte de metadados esse
+cara compõe o controller então quando
+tem um recurso chamado controller ele
+está embedado na parte da ação do Helix
+e do Zookeeper e tem a notificação o
+tempo em tempo que está acontecendo
+então esse cara é muito bom de trabalhar
+e eu uso o REST API tem um swagger aqui
+que eu posso trabalhar a parte
+administrativa se eu quiser, criar
+tabela, adicionar tabela fazer algumas
+coisas em cima de REST tá?
+beleza, falei né?
+expliquei então vamos até aqui detalhe
+importante hoje o valor de mercado da
+Star Trader é 2 milhões lembra aquela
+história de ganhar, ser bilionário no
+caso aqui estão no caminho de ser
+bilionários compensou -se?
+porque eles são mais novos do que as
+outras se você pegar a Databricks se não
+me engano deve ter sido 2013 2014
+Conflict 2014 2019 é uma empresa muito
+nova mas eles já estão já vou até tirar
+aqui eles tem a proposta onde você tem
+Star Trader Cloud ou você pode fazer o
+Bring Your Cloud você instala Star
+Trader na sua nuvem diferente do
+Conflict Cloud e você vai ter acesso ao
+Star Trader Cloud que na verdade é o
+serviço gerenciado do Pnum beleza?
+então vamos brincar com esse cara aqui
+espero que vocês gostem do que será
+demonstrado agora então meus amigos e
+amigas o nosso pai
+Charme vou fechar tudo para ficar bem
+claro fechei fechei e abri esse cara
+aqui então aqui está uma pasta chamada
+Pnum essa pasta Pnum ela tem aqui
+esquema, dois esquemas e a tabela, vamos
+trabalhar por enquanto com com isso aqui
+então vou pegar um esquema simples vou
+pegar esse esquema aqui é o tópico SRC
+App Stocks que é justamente o meu tópico
+para a gente poder ver data da entrada é
+muito recomendável que os dados de
+streaming sejam armazenados no Pnum em
+vez do Data Lake não sei se peguei bem a
+ideia e olha, perfeito normalmente se
+você quer ter um dado 100 % streaming
+embaixo ela tem esse retorno o ideal é
+você trabalhar com o Pnum em vez do Data
+Lake porque Data Lake é arquivo aqui
+você vai ter uma camada em que você pode
+separar diversas queries e vai ter o
+retorno para aquilo ali milhões de
+registros queries extremamente rápidas
+em baixa latência o Pnum foi feito para
+isso você não tem necessidade de você
+executar dados no Data Lake ele na
+verdade vai ser o uso de armazenamento e
+a engine de query aqui a gente tinha um
+probleminha de não fazer join mas agora
+acabou acho que a ideia é entender em
+quanto tempo o seu dado Pnum tem tabelas
+consumíveis em tempo real a tabela está
+chegando e ele tem uma atualização
+absurda tem casos tem casos que o
+segmento nem foi criado todo e você já
+consegue consumir o segmento ou seja,
+ele está ingerindo o dado ainda e você
+já está lendo então ele é muito rápido
+ele é muito rápido para você ter uma
+ideia, o cálculo não faz isso o cálculo
+ele carrega você produz lembra do
+processo todo aquele processo todo que
+ele faz seja de X, seja de como você vai
+executar você tem que criar o segmento o
+arquivo está disponível para você
+consumir o Pnum foi tão feito incrível
+nesse sentido que se você está ingerindo
+dependendo da ingestão ele nem cria o
+segmento e ainda você consegue consumir
+tem uma propriedade para isso como é a
+tabela de esquema perfeito, você pode
+criar esquemas diferentes para cada
+tabela, mas geralmente ele vai trabalhar
+com o esquema que tem no esquema dele e
+o esquema tópico que ele vai ler você
+vai ter que modificar o seu esquema você
+pode rodar com a alteração aqui algumas
+coisas, mas não muita coisa aqui nesse
+caso ele considera que o que você quer
+ler é o dado final o dado final você tem
+que alterar o esquema você altera o dado
+de entrada o dado de processamento ou
+você cria uma tabela nova quer processar
+o dado agora sem ser de mês ou quer
+processar do mês com o fornecedor do PTO
+tabela nova vamos lá atenção que são as
+minhas
+colunas que eu vou ter int vou ter o id,
+o user id symbol, transaction, shares,
+purchase e aqui eu vou ter meu date,
+timestamp e field que são meus arquivos
+timestamp então aqui eu vou ter create
+transaction, create at e update at só
+que lembra do que eu falei que você tem
+que ter um campo para ele se nortear
+para criar os segmentos e você não
+consegue fazer sem criar isso aqui não
+date, time, spec eu vou usar o update at
+toda vez que tiver um novo segmento você
+vai criar quando tiver novos registros
+nesse campo aqui como a minha aplicação
+já está desenvolvida para sempre ter
+novos esse cara aqui então sempre que
+tiver registro novo ele vai apodatar
+esse campo aqui automaticamente se for
+um update ele vai apodatar lá dentro
+criação de tabela nome da tabela tem o
+seu nome de esquema table type real time
+o meu
+segmento config lembra da tabela que eu
+falei com vocês do esquema time column
+em update at time type days para ele
+criar segmentos para vender em dia e
+aqui a retenção que vai ficar em nível
+broker não é retenção do pagar igual o
+carro fica em deleta não aqui a retenção
+que eu vou ter fora do segmento store é
+de 60 dias 60 dias eu vou estar fora do
+segmento store se eu não quiser aí eu
+vou utilizar ele para o segmento store
+que pode jogar isso para dentro do gcs
+no s3 se eu quiser ah o dado passou eu
+utilizei passou a retenção e o que
+acesse dado o que vai acontecer ele vai
+requisitar o segmento store vai carregar
+e vai trazer vai deixar 60 dias beleza
+então isso aqui é a execução que vai
+fazer aqui eu coloquei um inverte index
+column para edi só para ter um nada aqui
+que eu não quero nem usar índice aqui é
+índice invertido e aqui são as
+configurações do meu carro olha stream
+type aqui eu estou usando um consumo de
+tipo low level que é o padrão tem high
+level low level mas eu uso low level
+nesse caso aqui decoder jason eu estou
+trabalhando com jason aqui eu mantenho o
+consumo de classes eu mantenho se eu
+tiver o abro é diferente eu vou mostrar
+aqui acho que eu estou com um abro aqui
+não estou com um abro aqui mas eu mostro
+o abro o abro você coloca o schema
+registry aqui de novo você precisa ler o
+schema registry o evento está aqui junto
+com o evento está aqui com o schema que
+você recebeu merge vai fazer um merge
+nas informações aqui para ele fazer o
+flush do segment e eu vou ler do
+primeiro smallest e é importante cada
+sistema ter um tipo de nomenclatura para
+offset lembra lembra que o Kafka
+trabalha com world list aqui eu vou ser
+o smallest ou seja o menor beleza vamos
+ver esse cara aqui vamos fazer assim
+então meus amigos e amigas esse aqui
+estava mostrando o bom antes de mostrar
+o legal então vamos lá então esse aqui é
+o swag eu gosto de trabalhar com o swag
+para demonstração tem comandos também
+você pode subir o json no pod do Pinoo e
+simplesmente mandar executar a criação
+tem linha de comando para isso esse aqui
+é o mais fácil na minha opinião então eu
+vou vir aqui vou pegar o meu schema
+sempre o schema primeiro para depois
+criar o tabela o schema tem que existir
+primeiro então eu venho aqui então eu
+procuro aqui a minha parte
+de schema esse aqui é o table então eu
+vou só copiar o meu JSON
+aqui dentro só copiei e vou executar ele
+vai me dar o retorno aqui schema criado
+adicionado beleza criei o schema vou
+criar a
+tabela vou dar um ctrl c e ctrl v e eu
+vou criar a minha tabelite olha lá vamos
+lá para cima aqui é para cima aqui e vou
+dar um execute se eu não fiz nada
+de errado crio a tabelinha para mim com
+underline realtime ele faz o append aqui
+aí eu tenho agora duas tabelas lá que eu
+vou mostrar a primeira eu acabei de
+criar stock transactions e ele está
+carregando ela aqui olha a quantidade de
+documentos aqui já está com 922 mil
+documentos
+lidos ou seja 922 mil eventos que ele já
+carregou 1 milhão
+1 milhão 397 1 milhão 400 e olha que
+legal olha que interessante isso aqui se
+eu for na tabela ele está carregando ela
+ainda olha aqui olha o status olha o
+número de segmentos olha a estimativa de
+megabytes que ele está carregando 1
+milhão ele trabalha com compressão
+também então vamos aqui
+gente olhem para isso aqui é esse cara
+que eu queria mostrar
+na verdade é pode
+ser aqui são os segmentos opa aqui é
+onde está criando
+ele está criando todos os segmentos se
+eu for lá para o final eu já queria ter
+criado todos já subiu todos já olha só
+que legal
+aqui ele separou em duas instâncias
+porque eu tenho dois servers aqui server
+0 e server 1 onde server 0 tem 192
+segmentos gravados e esse
+169 pode achar legal não gostaram ok ok
+vocês não estão
+gostando vou mostrar uma coisa mais
+legal vamos pegar uma query
+aqui olha eu tenho lembra do nosso topic
+lembra do nosso flink o nosso flink eu
+fiz aqui uma ingestão vou pegar a tabela
+para a gente ir mais rápido eu peguei o
+nosso flink de ontem e falei assim cara
+esse dado eu tenho que colocar em algum
+lugar porque a gente foi ser soldado eu
+quero fazer coerência nesse dado então
+peguei esse topic ele está com 4 milhões
+de registros pouca coisa 4
+milhões isso é isso mesmo 4 milhões
+pouquinho trouxe ele para cá só que aí
+não está legal eu vou fazer duas coisas
+com vocês aqui eu criei uma nova
+aplicação aqui chamada workload para ele
+fazer uma ingestão mais rápida então eu
+vou colocar 500 milhões lá dentro fiz a
+mesma questão testei com 300 milhões vou
+botar 500 mil aqui para ele inserir
+dentro do meu kafka porque na verdade o
+que está acontecendo minha aplicação
+flink está rodando ela está aqui ela
+está executando os meus 500 aqui é
+porque eu
+tenho usuário eu tenho conta são dados
+geralmente que não tem muita mudança mas
+as minhas ações tem que mudam o tempo
+inteiro eu vendo, compro, vendo, compro,
+vendo, compro então eu estou processando
+todo mundo mas eu estou reagindo a esse
+cara aqui perfeito e aí eu deixei aqui
+para
+vocês algumas queries porque a gente
+quer fazer query
+então a gente vai fazer uma query que
+tem groupby e otherby e um dado está
+chegando pergunta aqui eu estou usando 4
+gigas de memória 8 total 2 brokers um
+broker de 4 gigas quanto tempo vocês
+acham que vai demorar para eu percorrer
+4 milhões de registros chutem um tempo
+aí por
+favor 95 milissegundos estou jogando
+para baixo mesmo estou ingerindo dados
+estou criando segmento vocês estão
+jogando lá para baixo porque eu estou
+criando segmento eu estou ingerindo eu
+estou processando de novo 500 mil
+chegando 500 mil sendo processado pelo
+flink sendo inserido no tópico novo e eu
+vou fazer um eu vou ter que ingerir esse
+dado de novo agora no
+pinô 20 milissegundos vocês estão
+jogando para baixo
+mesmo Nathan, Marcos Ana Richard, Lucas
+vocês já conhecem vamos
+ver lembrando que é uma query que tem
+groupby e otherby o famoso pesadelo de
+qualquer DBA deu na verdade dá menos mas
+deu 1132
+milissegundos usados para isso carregou
+ok lemos 5 milhões de registros
+esse ambiente também é um ambiente mais
+customizado eu vou pegar esse cara aqui
+também e vamos fazer um otherby aqui 68
+milissegundos então gente o
+seguinte mesmo se eu for bater com
+milhões de registros aqui ainda assim
+meu tempo de resposta é extremamente
+baixo porque um dado importante se a
+gente olhar minha injeção já está
+acabada já
+acabou vamos fazer mais uma aqui para
+vocês poderem ver quem faz, faz alguém
+então vou montar mais 500 aqui mas
+billing porque eu estou usando
+4 gigas de memória mais rápido que o
+billing
+subindo qual o tipo de memória gente?
+eu acho que estou usando só eu que estou
+executando se precisar de mais gente
+possivelmente eu vou ter que distribuir
+isso mais e olha a quantidade olha esse
+pedaço aqui que é importante está
+aumentando e eu estou fazendo query
+analítica em cima do dado que está sendo
+ingerido e está só reduzindo 28
+milissegundos 28 milissegundos então
+assim o pino agora eu estou fazendo uma
+query apesar disso gente eu estou
+contando eu estou agrupando eu estou
+ordenando então eu não estou somente ah
+mas você está fazendo com limite então
+pergunte ao limite
+pronto então assim o pino respondendo a
+pergunta do
+Euler que fez a questão da data lake se
+você tem um ambiente 100 % reativo de
+você quer trabalhar com tempo real em
+baixa latência aí realmente não faz
+sentido você trabalhar com data lake não
+você colocaria o pino na frente você
+fazer query no topo dele ou você
+colocaria uma vez que eu fiz para um
+cliente antes do pino ter join eu
+coloquei o trino para o cliente acessar
+mas ele lia do pino então o que
+acontecia o pino tinha os data sets os
+catálogos e ele lia as tabelas a partir
+dele então acabou desculpa o trino tinha
+o catálogo do pino com as tabelas dele
+então ele fazia join tudo pelo trino só
+que a leitura era absurdamente rápida
+porque quem estava fazendo a leitura era
+o pino então eu colocaria o pino na
+frente só para a gente finalizar eu
+quero que a gente feche hoje com deixa
+eu colocar aqui no
+meio só para a gente poder ter um
+panorama do que foi feito nos últimos
+quatro dias para a gente ter essa visão
+para a gente poder ver o que a gente
+está fazendo então só para vocês terem
+ideia vou
+começar vou fazer assim e vou fazer
+assim então vamos ver o que a gente fez
+pode perguntar pode perguntar Matheus
+porque fica mais fácil aqui eu não
+entendi muito bem a parte do segment
+store lá ele salva no S3 e aí o pino ele
+pega do S3?
+não, você pode fazer isso você pode
+criar um tiered store para salvar os
+dados do segment no S3 mas o que ele
+faz?
+ele tem broker e server dentro do server
+ele tem um companheiro chamado segment
+store lá que ele grava todos os dados só
+que ele deixa alguns dos dados alguns
+dos segments estão em nível de memória e
+em nível de arquivo temporário você pode
+vou voltar aqui aqui se você acessar o
+arquivo e ele não estiver aqui e nem na
+memória do server ele vai solicitar para
+o segment store e aí você vai trazer o
+dado na memória e vai executar entendi
+você pode aqui eu não coloquei por
+exemplo mas você pode falar assim
+segment store de tempos em tempos eu
+quero que você coloque os dados aqui
+dentro em uma camada mais fria
+ainda fica mais lento ao se você ficar
+requisitando se você ficar requisitando
+dados que vai estar aqui nessa camada
+fica lento, mas você pode colocar por
+exemplo para não colocar ou você pode
+utilizar ele para colocar com mais tempo
+ficar mais tempo aqui no nível de cima
+só descer aqui no ano por exemplo o
+alocamento de memória aí é dinâmico ou
+ele escala com o tanto que chegar ou
+você tem que setar na escala você seta
+um limite um que você começa e um que
+você termina mas você pode ele vai
+alocando dinamicamente aí isso você sobe
+no kubernetes ou você sobe no s2
+kubernetes entendi o Pinoo já nasceu no
+kubernetes ele tem uma leve vantagem
+sobre essas tecnologias porque ele é
+quando vocês verem uma tecnologia
+chamada cloud native já entende que ela
+já nasceu no kubernetes quando vocês
+verem esse tipo de nomenclatura essa
+tecnologia já nasceu de kubernetes a
+internet já está preparada para serviços
+gerenciados na cloud mas é por causa
+disso show obrigado
+nada alguém mais alguma dúvida deixa eu
+ver
+o channel storage não está no startree
+não você consegue configurar o que é da
+startree é o data manager eles tem um
+data manager lá que essa parte que eu
+mostrei de criar esquema mas você cria
+como como o interface e o third eye eu
+nem mencionei aqui porque realmente ele
+virou startree você tinha um anomaly
+detection antigamente third eye que ele
+era open source que depois ficou somente
+na data manager com o third eye ele
+ficou somente startree ele era open
+source no começo nos primeiros um ano
+talvez em 2019 com certeza era 20, 21,
+22 eles colocaram ele como um produto
+enterprise então se você for aqui no
+third eye third eye ele era não sei se
+eles voltaram porque eles não voltaram
+não isso aqui é a versão antiga ele não
+está aqui ele é um produto específico da
+startree o third eye o third eye era
+muito legal era um algoritmo de um
+algoritmo de anomaly detection no topo
+do do pinot entregue para você pronto
+era muito legal era um negócio que era
+tão usado que eles queriam colocar como
+interface e esse aqui é um detalhe
+importante startree como empresa
+geralmente eles são community force
+então é raro que esses casos acontecerem
+por exemplo esse foi o único recurso nos
+últimos anos que eles realmente
+colocaram como enterprise porque estava
+tendo até uma demanda para suporte muito
+grande se não me engano foi isso que eu
+conversei com o pessoal lá é por causa
+disso vamos ver o que a gente fez aqui
+só para vocês verem a dimensão dos
+últimos 4 dias então a gente fez o
+source das duas tabelas account e
+account transactions a gente fez o
+source do users address employment e a
+gente fez o source do credit card e a
+gente fez o source do credit card e a
+gente fez o source do credit card e a
+gente fez o source do credit card não só
+isso a gente criou o json stocks e o
+avro users que vocês viram aqui usamos
+esquema registry para o kappa connect e
+também aqui para o nosso amigo avro
+users aos tópicos criamos o cc account
+account transactions mongodb users
+employment e address eles também estão
+aqui os dois stocks e criamos também o
+byte2x process stocks que é aquela
+aplicação simples que eu mostrei para
+vocês não só isso a gente criou uma
+aplicação de processos com kappa streams
+e uma aplicação de join de flink em avro
+e uma aplicação de join de flink em avro
+replicados aqui nos 3 brokers não
+coloquei qual que está aqui porque fica
+mudando depois disso a gente criou hoje
+um sync connector e um s3 tanto do
+stream reactor como quer fazer até assim
+vou colocar bonitinho tanto do
+tanto da confluent como do stream
+reactor inserindo dados em parquet
+dentro da lane de zone e a gente viu os
+consumidores de avro e consumer aqui
+lendo esquema registry e lendo também em
+json nossos tópicos não satisfeitos com
+isso a gente também viu aqui o pino, o
+broker recebe
+query os produtos analíticos e nós
+também colocamos aqui do stock vamos
+colocar aqui para a gente colocar tudo o
+que a gente fez a gente fez muita coisa
+não sei vocês, mas eu achei que foi
+bastante coisa e tem mais amanhã e aqui
+a gente colocou a table a gente colocou
+de stock json realtime
+então a gente praticamente resolveu o
+nosso pipeline que a gente tinha que
+entregar em tempo real dos analíticos é
+de entregar dados analíticos vindos das
+tecnologias de fonte e de aplicação onde
+a gente trabalhou com python com java e
+com flink com pyflink junto com um pouco
+de sql trabalhando com kafka aqui dentro
+de kubernetes com conectores de sync
+source sync aplicações de consumo e
+agora ele fechou com o pino então gente,
+foi isso tudo bem legal vocês pegarem
+isso já dá para dar uma ideia de coisas
+que vocês podem fazer e mais importante
+kafka no centro olha que legal o kafka
+no centro de tudo ele passa por tudo o
+tempo inteiro a ideia é essa mesmo só
+que ele passa o dado chega, fica
+transforma, volta para ele depois ele
+vai para o lugar que ele tem que ser
+lido a leitura direto nele é só quando é
+uma leitura específica a aplicação
+talvez api e a leitura que você vai ler
+ali acabou quando eu quero fazer query
+analítica recomendo fortemente trabalhar
+com o pino alguém tem alguma dúvida do
+que foi mostrado gostaram de montar esse
+pipeline me manda aí então
+vou fazer o seguinte amanhã qual é o
+foco de amanhã amanhã a gente vai olhar
+recursos mais avançados a gente vai
+olhar a dimensão de cluster a gente vai
+falar de alguns problemas comuns eu vou
+dar algumas dicas de continuar estudo
+porque aqui o treinamento por mais que
+seja um treinamento bem denso ainda tem
+ainda um caminho para percorrer não tem
+como correr disso a gente tenta quebrar
+em série mas tem muita coisa ainda eu
+vou um pouco além a gente fala de
+streaming aqui a gente está falando de
+streaming estou falando de KFA como
+centro mas a órbita o que está orbitando
+ele também é muito importante então vou
+passar algumas dicas dicas de
+certificação e a gente fala dos próximos
+passos nas próximas aulas então perfeito
+alguém tem alguma dúvida alguém quer
+perguntar alguma coisa se não eu vou
+parar a gravação a
+gente encerra vou tentar não segurar
+muito vocês amanhã vou tentar ao máximo
+parar a gravação o que a que eu já o que

@@ -1,0 +1,2459 @@
+Perfeito, pessoal.
+Então, último dia de treinamento.
+Hoje a gente vai falar de melhores
+práticas, a gente vai falar de tudo que
+a gente pegou, tudo que vocês estavam
+bem confusos no começo, que é normal, o
+entendimento do cápita no começo.
+A gente vai agora fazer um apanhado, um
+drill down, em áreas específicas.
+Eu vou trazer também umas colinhas que
+vocês poderiam ter como referência.
+De novo, é muito referência baseado em
+literatura versus experiência.
+Vocês vão ver aqui.
+Porém, eu já adianto, já que esse dia é
+um dia mais cansativo de leitura, de
+apresentação, a gente vai ter bem menos
+demonstrações do que os outros,
+justamente para a gente focar agora nas
+melhores práticas.
+Como é melhor fazer essa fórmula?
+Como é que eu faço o sizing?
+Como é que eu me preocupo com isso?
+Tipos de operação.
+Então, eu vou mostrar muita coisa que
+acontece e depois a gente vai fazer
+algumas soluções aqui.
+E a gente encerra falando de
+arquitetura.
+Eu fiz uma substituição que eu vou mudar
+no outro dia.
+No roadmap, eu troquei Event Driven por
+Data Mesh.
+Então, eu vou falar um pouquinho de Data
+Mesh nesse treinamento.
+Eu vou elucidar, porque geralmente a
+gente vê muito do Core Solution, seu
+Kafka, e até a própria Conf, a gente
+vende dessa forma.
+O Core Solution e o Data Mesh, o Kafka,
+o porquê.
+Eu vou falar um pouquinho de cada um.
+De novo, como é um treinamento
+específico de arquitetura, eu vou falar
+um pouco de cada um e depois a gente vai
+ver como é que esses caras montam, como
+é que a gente pode pensar.
+E a gente fecha com a mais atual, que é
+a StreamHouse.
+A StreamHouse é extremamente nova.
+Pode dizer que, se não me engano, os
+primeiros papers dela foram no final do
+ano passado, ou começo desse ano, para
+que eu comecei a ver.
+Mas vamos lá.
+Vamos começar com a parte avançada.
+De novo, vocês já entenderam a parte de
+programação, já pegaram, já producer,
+consumer.
+Então, vamos falar de coisas avançadas,
+que fazem muito sentido aqui.
+Então, primeiro, vamos dar uma olhada.
+Vamos dar uma relembrada aqui e pensar
+algumas coisas sobre Message Ordering.
+Quando a gente fala de conceitos
+avançados, é interessante a gente pensar
+sempre assim.
+Beleza, eu sei produzir e eu sei
+consumir.
+Só que a questão de produzir da forma
+certa e consumir da forma certa é o
+ideal.
+Eu vou ter que pensar na minha aplicação
+de consumo.
+Ela resolver problemas que são problemas
+que deveriam ser resolvidos, na verdade,
+na estrutura.
+Como é que eu consigo mitigar algumas
+coisas?
+Então, começa com aquela ideia.
+O que a gente já estava falando antes,
+que é eu produzo dados, agora começa a
+ficar mais claro.
+Eu só poderia chegar nesse momento aqui
+de explicar essa parte mais em detalhe
+depois que a gente tivesse passado de
+todo aquele processo.
+Tem uma semântica, Max Inflat Request,
+entender como é que é consumir.
+Está errando.
+Vou mudar a coisa aqui.
+Vocês entenderam o que é Max Inflat
+Disconnectors e por aí vai.
+X igual a 0, X igual a 1.
+Então, vamos lá.
+Vamos pegar um cenário aqui.
+Estou inserindo de 1 a 8.
+Está o meu produtor em Python.
+Eu estou com a semântica enable, Max
+Inflat Request Connection também.
+Menor ou igual a 5.
+E o X igual a 1.
+Se o produtor não tiver com o IOS, ou,
+por exemplo, o IOS semântico
+estabilitado, não tem garantia, é
+garantia zero de ordenação na partição.
+Porém, detalhe importante.
+Estou particionado em 3.
+Beleza?
+Vocês acreditam que o retorno vai ser
+esse?
+Me falam aí.
+Estou com mais de uma partição.
+Estou usando a XATL1 semântica.
+Está na ponta.
+Estou com 5 Max Inflat Request.
+X igual a 1.
+XATL1 semântica, ou seja, ID Pontent
+equals to true.
+Estou inserindo de 1 a 8.
+Vocês acreditam que o meu consumo vai
+conseguir ler dessa forma?
+Me falem no chat aí.
+Sim, não, talvez.
+Vou começar a testar aqui as 4 aulas que
+vocês passaram aqui.
+Não vai ler de 1 a 8, sequencial,
+ordenado?
+Por que, Julio?
+Por que, João?
+Aí começam os porquês.
+Por bem que eu acho que já dei a
+resposta, acho que já está na tela.
+Vamos ver se eu consigo fazer isso
+escapar.
+Não.
+Acho que assim vai.
+Acho que eu entreguei.
+Entreguei.
+Meio que entreguei.
+Não é porque vocês acham que não
+respondam.
+Como assim o 2 não está no offset?
+Ah, tá.
+Esse aqui foi a editação meu.
+Espera aí.
+Aqui tem 5 duas vezes.
+Desculpa.
+Aqui foi o meu.
+Eu atrapalhei sua análise.
+Esquece.
+Está errado.
+Estava errado porque eu tinha copiado 5
+duas
+vezes.
+Mas todos estão aqui.
+Todos estão dentro da tela.
+Vamos estudar essa partição.
+Que é a partição 0, 1 e 2.
+E aí a gente começa a entender.
+Eu começo já a tirar a nome partição.
+Porque quando vocês veem dessa forma
+aqui, 0, 1 e 2 e está desordenado, quer
+dizer que é partição e valor.
+Aqui são só valores.
+De 1 a 5.
+De 1 a 8.
+Os 6 também?
+Pô, já errei 2.
+Ah, tem 2, 3 aqui.
+Então vou botar os 6 aqui em cima.
+Está vendo?
+Testando vocês.
+Vocês estão pegando mesmo.
+Vamos ver se todo mundo está acordado
+essa sexta
+-feira.
+Por causa da separação.
+Não.
+A separação de mensagens na hora da
+ingestão.
+E a leitura feita sequencial dentro da
+partição.
+Ele não vai gerar porque ele não está
+ativado.
+Está ativado?
+Exato.
+One semantics enable.
+X igual all.
+X igual all.
+Id.
+It equals to true.
+Estou com ele habilitado.
+Então aqui a gente está com o cenário
+que ele está com ele
+habilitado.
+João, é isso mesmo.
+Eu vou só complementar a sua resposta.
+O que acontece?
+A única forma de você garantir 100 % uma
+ordenação.
+É se sua partição for igual a 1.
+Então você tem que ter esse cenário
+aqui.
+Por que eu falo esse cenário?
+Porque se você mesmo tiver partição
+igual a 5.
+Exato igual semantics habilitado.
+Gravando de fórmula.
+Por chave.
+Por form stick partitioning.
+Por aí vai.
+O que vai acontecer?
+O algoritmo do Kafka.
+Ele vai começar.
+Quem responder primeiro vai gravar.
+Então ele vai ficar esperando você na
+partição gravou sequência inteira.
+Ele vai começar a particionar aquilo
+ali.
+Vai começar a mandar dados para outras
+partições.
+Por isso que eu sempre quando eu vou em
+um cliente.
+Eu converso com ele assim.
+Olha eu estou vendo que você tem a
+partição igual a 1.
+Qual o motivo?
+Eles vão começar sempre a se perguntar.
+E perguntar internamente.
+Olha a partição igual a 1 tem um motivo
+específico?
+Deixa a pessoa falar.
+Eu sempre gosto de assim.
+Deixa a pessoa falar.
+Ah não.
+Nós temos igual a 1 aqui.
+É porque a gente escolheu esse padrão.
+Não queríamos particionar mais.
+Beleza.
+Mas você sabe que você perde
+escalabilidade.
+Não.
+Não sabia.
+Ou então.
+Não.
+Eu fiz porque.
+Eu preciso garantir a ordenação aqui.
+Então eu estou com maxinfly request
+connections menor ou igual a 5.
+Que aqui internamente.
+O que ele vai fazer?
+Com a partição igual a 1.
+Quando eu mandar.
+Eu estou com a exata igual semantics
+habilitada.
+Ele vai falar assim.
+Opa.
+Espera aí.
+Enquanto não tiver 1 mês.
+Você não vai gravar em partição nenhuma
+amigo.
+Enquanto não tiver.
+Enquanto meu.
+Se eu dei erro.
+Dei retry.
+Espera.
+Então a ordenação é muito importante
+gente.
+Por que?
+Da forma como você configurou o tópico.
+E o produtor.
+E isso que é um grande problema.
+Que a gente viu durante os 4 dias.
+A configuração do produtor.
+Ela é mandatória aqui.
+O que ela quer dizer com mandatória?
+Como a forma como você vai enviar
+mensagem.
+A forma como o cálculo vai se comportar.
+Em muitas vezes.
+Por exemplo.
+Vai gravar em mais de uma partição.
+MaximifyRequest maior do que 5.
+Eu vou fazer x igual a 0.
+x igual a 1.
+x igual a low.
+Então tudo isso.
+Poderia recapitular a função do
+MaximifyRequest?
+Perfeito.
+Posso sim.
+Como é que funciona?
+O MaximifyConnectors é o seguinte.
+Quando eu mando a mensagem.
+Eu posso abrir até 5 threads.
+Para mandar para aquela partição.
+Se eu tiver.
+Qualquer semantics desabilitado.
+Com MaximifyRequest maior de 5.
+Porque menos que 5.
+Ele ainda consegue trabalhar os retries.
+E não tem risco de ele mandar.
+Uma das threads que ele abrir.
+Gravar em uma partição fora de ordem.
+Então se você faz.
+Eu sempre igualizo a 1.
+Para garantir.
+A mesma é 1.
+Eu coloco MaximifyRequest igual a 1.
+Até 5 funciona bem.
+Estou falando que não funciona não.
+Porque a literatura.
+Até a parte de documentação.
+Fala que até 5.
+Você não vai ter nenhum tipo de
+problema.
+Eu gosto de imprimir e prevenir.
+Eu gosto de fazer isso aqui.
+MaximifyRequest igual a 1.
+Isso que eu gosto de fazer.
+Eu falo MaximifyRequest.
+É porque tem esses dois nomes.
+Maximify.
+Que é o que?
+Quantas threads eu posso abrir.
+Naquela conexão que eu estou mandando.
+Posso mandar naquela conexão.
+1, 2, 3, 4, 5.
+Até 5 de novo.
+Ele gerencia bem.
+Com o exato de uma semantics.
+Passou de 5.
+O risco é grande.
+Você começar a gravar.
+Opa.
+A fila anterior.
+Como ela está abrindo uma conexão a
+mais.
+Ela vai pegar essa cesta.
+E começa a carregar o dado.
+Então.
+O ideal aqui.
+É você trabalhar.
+Se for.
+Garantia total é.
+MaximifyRequest igual a 1.
+Você vai mandar uma thread.
+Naquela conexão.
+Ela vai gravar.
+Dentro de uma partição.
+E vai ser lida aqui.
+Como é 1.
+Tem como aumentar a quantidade de
+threads aqui.
+Ele vai abrir uma instância da
+aplicação.
+E vai ter 1.
+Mas é para isso.
+Em vez de eu criar.
+Internamente.
+No meu producer.
+Eu via.
+Eu paralisar.
+Dentro da conexão.
+Com já de threads.
+Que eu botei na minha fila.
+Eu simplesmente.
+Falo assim.
+Ó.
+Menos que 5.
+Ele consegue gerenciar.
+Mais do que 5.
+Não.
+A gente vai ver.
+Quais casos.
+Eu preciso.
+Aumentar.
+Essa configuração.
+Porque é ideal.
+Para aquele tipo.
+De função.
+Que eu estou.
+Passando.
+Eu vou mostrar aqui.
+Alguns cenários.
+Então.
+Eu quero maior disponibilidade.
+Eu quero maior.
+Eu quero maior.
+Basta.
+Latência.
+Então.
+Mostrar a configuração.
+Dos três.
+Produtor.
+Consumer.
+E broker.
+Né.
+E são.
+Os 3.
+Componentes.
+Principais.
+Ali.
+Se a gente ganhar.
+Esse tipo.
+De propriedade.
+Beleza.
+Pegou eu.
+Sacou.
+Beleza.
+Então.
+Ótimo.
+Ordenação.
+de novo, se eu quiser esse capítulo é
+assim, gente se eu quiser ordenação
+obrigatoriamente eu tenho que ter
+partição uma partição e aqui no meu
+maxinfly request, para a gente não ter
+risco, põe um x igual a o, de novo, e
+exato o ansemente que sempre está
+habilitado porque se esses caras não
+estiverem todos habilitados o risco de o
+metadata ele mandar não gravou e mandar
+de novo, ou perder dados de novo é
+grande, duplicado ou perda de dados,
+então para a gente não ter que duplicar,
+perder dados ordenação ter essa garantia
+toda, é exato e o ansemente que você tem
+valeu?
+outro ponto aqui do desenvolvimento que
+eu acho que tem que estar gravado na
+cabeça de vocês stream table stream
+table stream table stream table stream
+table stream table o que que significa?
+como a imagem aqui que eu peguei para
+vocês mostra um streaming, ele pode
+virar uma tabela, um table e um table
+pode virar um streaming o que isso quer
+dizer?
+eu crio um table um table normalmente,
+ele é o que?
+ele é uma estrutura mutável aí muda um
+pouco, né?
+por que que ele é mutável?
+porque você só pega o último snapshot, o
+último record daquela chave então Então,
+o dado meio que muda, né?
+Você não vai ter a última informação.
+Mas, internamente, é como se fosse um
+log -compaction.
+De novo, você faz a analogia parecida.
+Um table solve, assert, update e delete.
+É um table.
+Isso aqui é um tipo table.
+Eu gosto só de comparar ele com um log
+-compaction para vocês pegarem um log
+-compaction.
+E o caso de stream, não.
+O stream é uma coisa imutável.
+Ele só vai fazendo append.
+Append até o final.
+E é interessante que eu gosto muito de
+trabalhar com o que é de stream.
+Eu gosto de colocar chave no meu stream,
+apesar que não é obrigatório.
+Beleza?
+Eu não tenho nenhum tipo de obrigação.
+Não é mandatório eu configurar meu
+stream com chave.
+Mas eu gosto de chavear porque, de novo,
+é dado, né, gente?
+Eu gosto de ter aquela chave específica
+para eu fazer joins no meu streaming.
+Então, eu faço uma série de coisas.
+Então, eu gosto de eleger chaves para o
+meu streaming, por mais que seja
+opcional.
+Beleza?
+E aqui é só append.
+Aqui é só append.
+Aqui eu tenho insert, update, delete.
+Pode acontecer.
+Só que, se eu tenho um stream aqui, por
+exemplo, e eu quero fazer um count, um
+sum daquele meu stream, eu vou
+transformar esse stream num table.
+Porque é uma agregação.
+E, para mim, é só importante a soma.
+Não precisa fazer o changelog da soma.
+Até porque, se você tentar refazer isso,
+a cada cálculo que ele fizer, ele vai só
+dar o rasgo.
+Um mais um.
+Dois mais um.
+Ele vai começar a fazer o cálculo todo.
+Aí fica inviável, tá?
+Especialmente não funciona.
+Então, a ideia com a agregação, você faz
+o table.
+Só que, se você quiser, tudo que
+aconteceu...
+Qual que foram as mudanças dessa tabela,
+ao decorrer do tempo?
+Quem está adaptando ela?
+Aí muda a história, né?
+Eu quero saber uma informação naquela
+tabela.
+A mudança dela.
+Ela vira um changelog e,
+automaticamente, ela vira um stream.
+Então, esses caras, eles podem um
+transformar no outro e interagir com o
+outro.
+Mas são objetos diferentes.
+De novo, eles têm funções diferentes
+dentro do nosso pipeline.
+Beleza?
+Pegaram aí?
+Então, vamos fazer só um exercíciozinho
+aqui, rapidinho, para vocês poderem ver.
+Um stream chegou.
+O Luan foi para o Data Summit.
+Isso aqui é uma entrada no meu stream,
+tá?
+Então, eu fiz um count na tabela aqui.
+Virou uma tabela que é igual a 1.
+O Matheus foi no Airflow Summit.
+Então, quer dizer que o Luan foi em um
+evento e o Matheus foi também em um
+evento, né?
+Aqui só tem a última informação.
+Chegou aqui.
+Ó, o Matheus foi no Kafka Summit.
+Então, está doido, né?
+2 a 1.
+No final, o Luan foi na Kubicom.
+2 a 2.
+Então, aqui não muda, né?
+Não altera.
+Aqui eu só vou apendando.
+Beleza?
+Circunstância de eventos.
+Último estado.
+Sempre pensem nisso.
+Tá?
+De novo, é importante vocês saberem
+isso, porque toda parte da literatura de
+processamento, entendimento de
+processamento em streaming, vocês vão
+trabalhar muito com isso.
+Table Stream.
+Não importa tecnologia.
+Ah, vou para o Kafka Streams.
+Ah, eu vou para o Flink.
+Eu vou para o KC Codb.
+Eu vou para o, sei lá, Sansa.
+Qualquer tipo de framework de engenharia
+Spark, você vai falar se é Stream ou se
+é Table.
+Beleza?
+Vai trabalhar com um ou com o outro.
+Beleza.
+Vamos entrar agora...
+Isso aqui é bem legal.
+Eu gosto bastante, tá?
+Na estratégia de janela.
+Como é que janelas funcionam?
+Vamos pegar aqui e depois eu vou mostrar
+código, tá?
+Eu vou deixar o código mais para o
+final, porque eu quero mostrar coisas
+mais...
+Uma coisa...
+Eu mostro uma parte da demonstração que
+vai interligar com o outro.
+Então, a gente vai fazer uma coisa mais
+dinâmica hoje, tá?
+Então, vamos deixar mais para o final.
+Eu vou ir andando, depois eu volto e
+mostro isso na prática, tá?
+Para a gente não perder muito tempo na
+sexta -feira.
+Então, beleza.
+Session.
+Tá?
+Como é que a Session funciona?
+Eu abro uma janela baseada no tempo.
+Então, a janela número 1 abriu.
+Está vendo aqui o tempo aqui embaixo?
+Eu tenho o que eu falo que é um gap, que
+é um intervalo entre a janela 1 e a
+janela 2, em que os eventos que
+acontecessem na janela 1 e na janela 2,
+os eventos que aconteceram aqui, eu
+pego.
+Aqui eu não pego, porque não tem janela
+aberta.
+E aqui eu trabalho.
+Então, sempre pense o seguinte, tá?
+A bolinha é um evento.
+Então, aconteceu o evento, igual eu
+comentei aqui, ó.
+Aconteceu o evento dentro do Stream,
+pelo One Data Summit, tá?
+Gerou o evento aqui, por exemplo.
+Vamos botar as 19 horas de agora.
+E aqui, é 19 e 5.
+Vamos colocar que essa janela aqui tem 5
+minutos, tá?
+Com o intervalo, é 19 horas de agora.
+Então, eu vou colocar 19 horas de agora.
+de 10 minutos.
+Vou mostrar um exemplo prático, podem
+ficar tranquilos.
+Eu vou até aqui já, eu vou mostrar aqui,
+depois eu vou mostrar o código, e depois
+eu vou mostrar o código rodando, para
+vocês poderem ver.
+Então, 10 e 15, 9 e 15, 7 e 15, 19 e 15.
+Abriu outra, e aqui, 19 e 20, ela fecha.
+Então, é assim, os eventos que
+acontecerem nesse intervalo, eu vou
+prestar atenção na minha janela.
+Então, qualquer bolinha daqui, entre 19
+e 19 e 5, opa, eu vou fazer minha
+agregação, ou meu join, seja qual for.
+Vou esperar 10 minutos, e depois vou
+assim, opa, esse evento agora está
+rodando.
+O que é que o evento que é?
+Ó, a janela abriu.
+Um evento aqui, um evento aqui, um
+evento aqui.
+Como é que é isso no código aqui usando
+o Flink, tá?
+Vou dar o exemplo de Flink.
+Pensa, ó, o select aqui, ó.
+Está rodando.
+Part session, onde ela começa, onde ela
+termina.
+Ó, então, eu começo com um minuto de
+janela.
+Opa, é session mesmo?
+Aqui, ó.
+Eu tenho um intervalo de um minuto.
+Então, ela começa, espera um minuto,
+começa, começa um minuto.
+Desculpa, eu falei aqui, mas é isso
+mesmo.
+É o gap, que é o intervalo que é
+importante.
+Então, eu passo assim, ó.
+A janela abre, executa, começa um
+minuto, executa de novo, começa um
+minuto, começa de novo, começa um
+minuto, então, vai fazer um intervalo de
+um minuto, tá?
+Nesse caso aqui.
+Beleza.
+Esse é o caso que eu tenho um
+espaçamento entre o meu processamento,
+entre a janela 1 e janela 2.
+Janela, gente, sempre a janela que ela é
+a parte do algoritmo que eu vou
+processar o dado, né?
+É a fração de tempo que eu vou processar
+aquele dado.
+Só que tem casos, por exemplo, que eu
+tenho que fazer o que eu chamo de
+overlapping.
+Ou seja, eu preciso pegar uma janela
+interlaçando na outra.
+Não é nem uma questão de uma.
+Uma depois da outra, não.
+Eu tenho que, realmente, eu tenho que
+processar o dado.
+Pode acontecer na mesma janela.
+Aviso o dado de janela A, da janela 1.
+Eu preciso na janela 2 também.
+Tá?
+Então, vou até mudar a corzinha dela
+aqui.
+Eu acho que vai ficar mais claro.
+Aqui é azul e aqui é verde e aqui é
+laranja.
+Ainda são duas janelas aqui, né?
+São três, né?
+Aqui é 2, aqui é 3.
+Hopping ou sliding, tá?
+Depende do...
+Da tecnologia.
+Sliding.
+Depende da tecnologia.
+Só que ela tem a mesma função.
+Ela tem uma duração.
+Tá?
+Ou seja, o primeiro intervalo é quanto
+que ela vai durar e quanto que vai ser
+que ela vai avançar.
+Então, por exemplo, eu vou durar 30
+segundos.
+Quando der 15 segundos, eu avanço e abro
+a próxima janela.
+Aí eu vou ter o que?
+Eu chamo de overlapping.
+Eu vou ter um evento sendo processado
+duas vezes.
+De novo.
+Se for interessante, se for pertinente
+para a nossa regra de negócio, essa
+janela é muito utilizada.
+Porque, olha, eu preciso pegar os
+eventos de uma janela com a outra porque
+elas podem acontecer no mesmo e eu não
+posso perder o evento.
+Eu tenho que processar junto.
+Beleza.
+Faz parte.
+Tá aí o hopping ou o sliding para a
+gente poder usar para isso.
+Depende do processo que a gente for
+trabalhar, tá?
+Depois disso...
+Gente, depende da tecnologia, tem
+várias.
+Eu vou colocar as três principais.
+Já vi, por exemplo, sete tipos de
+window.
+Então, essa aqui são as principais.
+Depois tem as derivações dela.
+Mas tem a tumbling.
+A tumbling é não ter nenhum tipo de
+overlapping em cima da outra.
+Ela abre e logo em sequência ela abre a
+próxima.
+Então, ela vai abrindo sem um
+overlapping, sem ser uma em cima da
+outra.
+E também não ter nenhum tipo de overlap.
+Não tem espaço.
+Não tem intervalo.
+O session...
+Lembra que no session eu tenho um gap.
+Aqui eu não vou ter gap.
+Aqui eu vou simplesmente abrir uma
+janela e processar.
+Essa aqui terminou, abrir a próxima.
+É igual aqui, olha.
+O intervalo dela é de um minuto.
+Um minuto ela executa.
+Acabou.
+Um minuto ela executa.
+Acabou.
+Um minuto ela executa.
+E vai abrindo janelas logo na sequência.
+Tá?
+Para que esse tipo de janela?
+Não quero processar dados um junto no
+outro.
+Mas eu também não posso.
+Não posso ter intervalo.
+Então, eu quero processar aquele frame
+ali, aquele pedaço do dado.
+Processei ele.
+Próximo.
+Próximo.
+Processei ele.
+Próximo.
+Esse aqui é bem utilizado, tá?
+Eu trabalhando geralmente com dados que
+devem ser processados exclusivamente
+dentro daquela janela.
+E, de novo, eu não tenho intervalo.
+Eu pego todos, né?
+Porque eu falo a duração da janela,
+executo aquele processo e faço.
+Qual que usa no PNOR?
+Como assim, Eduarda?
+O PNOR não usa...
+O PNOR não usa...
+O PNOR não usa...
+O PNOR não tem questão de janela, não.
+Quer dizer, tem que dar uma olhada que
+eu acho que tem a função de janela, mas
+você escolhe igual você pode escolher
+aqui.
+Ele, na verdade, era um consumidor.
+Traço todo o tempo inteiro, né?
+Se você falar a interação dele com o
+Kafka, ele só injete dados do Kafka e
+você trabalha dentro dele.
+Então, você pode colocar tipos de
+janelas.
+Se não me engano, o PNOR tem.
+Então, tem que injetar essa pergunta
+boa.
+Eu acho que o PNOR...
+Window...
+Eu acho que tem...
+Window...
+Aqui, ó.
+Window function.
+É uma função.
+Ou seja, você que escolhe qual você vai
+trabalhar.
+Mas eu acho que ele tem.
+Ele tem, mas não é esse nível de janela
+aqui,
+não.
+Pergunta?
+Pergunta diferente, tá?
+É isso mesmo?
+É a dúvida?
+Se não for, pergunta de novo.
+A gente para aqui e explica.
+Perfeito.
+Então, assim, no caso do PNOR, ele
+ingere e traz para ele e você trabalha
+com funções em cima disso.
+Aqui é nível de processamento.
+Ou seja, eu peguei o streaming que está
+acontecendo, eu vou pegar aquele frame e
+vou trabalhar aquele streaming e voltar
+de novo para o carro.
+Então, aqui são janelas de
+processamento.
+O PNOR, ele é armazenamento.
+Apesar que ele é uma quantidade que está
+no mesmo nível, processamento e
+armazenamento, mas ele armazena nele
+primeiro.
+Para mim, faria sentido ser overlap para
+a tabela ter agrupamento histórico.
+Perfeito.
+Sim.
+É um exemplo.
+Mas você está pensando numa tabela que
+já está pronta.
+Pensa num antes.
+Esse processo é para preparar sua tabela
+de histórico.
+Então, pensa o seguinte.
+Antes da tabela surgir, você vai gerar
+um tópico ou um join de vários tópicos
+como resultado.
+O PNOR, na verdade, ele vai carregar o
+resultado final daquele para você poder
+fazer query analítica em cima disso.
+Mas os dados que estão vindo, vão vir
+antes.
+Aí, tudo tem que estar configurado da
+mesma forma.
+Perfeito.
+Isso.
+Sim.
+Você pode criar processos diferentes.
+Não te impede nada.
+Eu vou fazer para esse processo do tipo
+Session, para essa tabela.
+Para essa tabela, eu vou fazer Hopping.
+E para outra tabela, eu vou fazer
+Tumbling.
+São processamentos diferentes.
+Aí, faz todo sentido quando a gente
+começar a criar os sistemas nossos de
+processamento.
+Perfeito.
+Então, tá.
+Dúvidas de janela, gente?
+Nas três?
+Session?
+Session?
+Hopping?
+E Tumbling?
+Quando que usar Gap faz sentido?
+Boa pergunta.
+Eu leio.
+Faz sentido quando eu não tenho que
+ficar processando dados continuamente.
+Então, quando eu sei, mais ou menos, eu
+tenho controle de quando que vai
+acontecer aquele processo.
+Então, geralmente, ou quando eu não
+quero processar o dado como um todo.
+Eu quero pegar samples.
+Eu não quero só pegar samples.
+Eu quero pegar só exemplo.
+Pego.
+Sim.
+Nesse caso, vai ter perda de
+processamento de dados.
+Só que pensa o seguinte.
+Eu não quero pegar tudo.
+Eu quero pegar, tipo, só sample mesmo.
+Só um pedaço do dado.
+Para fazer algum tipo de análise em cima
+disso.
+Então, faz sentido eu trabalhar com Gap.
+Eu espero um tempo.
+Executo aquela janela.
+Eu espero um tempo.
+Executo aquela janela.
+Tá?
+Se você quiser só em dados, horário
+comercial, por exemplo.
+Poderia ser um exemplo de algo do tipo.
+Mas se você quer horário comercial,
+seria mais a questão, Thiago, de você
+preparar a sua aplicação para ela rodar
+somente naquele horário específico.
+Aí está um pouco uma camada mais de
+deployment, talvez.
+Talvez eu não criaria uma...
+Usaria Gap se eu criasse a amostra, por
+exemplo.
+Igual eu falei.
+Eu quero uma amostra desse dado.
+Uma amostra desse dado.
+Não quero o dado como um todo.
+No centro de pesquisa, por exemplo, o
+dado vem o tempo inteiro.
+Em vez de eu pegar a corrente toda, o
+flow, o stream todo, eu pego só
+amostras.
+Então, faz sentido a questão de amostra.
+Mas, normalmente, eu vejo o Hopping e o
+Tumbling como sendo os
+principais.
+Vai depender também da volumetria.
+De novo, lembra que eu comentei?
+O ideal é você não fazer também
+processamentos muito com workload
+gigante.
+Eu comentei a questão de trilhões de
+registros, por exemplo, que o Flink faz
+com o Gap.
+Mas é um caso de estudo para a questão
+de Battle Test.
+Ele é bem testado.
+Mas, na prática mesmo, quando a gente
+está trabalhando com Streaming, é muito
+caro se você pensar numa estrutura como
+essa.
+Você vai ficar rodando praticamente o
+tempo inteiro sem parar.
+Então, a ideia é você processar dados
+menores.
+Ter flows, ter datasets menores.
+Beleza.
+Vamos para uma parte bem interessante.
+A parte de transação.
+Eu não vou mostrar transação aqui, não.
+Eventualmente, eu vou compartilhar com
+vocês.
+Eu tenho código aqui de transação.
+Mas ele é um pouco complexo.
+Eu prefiro a gente entender um pouco.
+E depois eu posso adicionar um vídeo ou
+fazer alguma coisa nesse sentido mais
+para transação.
+Porque ele é bem chatinho de explicar.
+E não é tão utilizado.
+Se fosse mais utilizado, fazia sentido.
+Eu quero só que vocês entendam que esse
+cara existe.
+Como que ele existe.
+E eu vou explicar porque ele não é tão
+utilizado também.
+Tá bom?
+Vamos pensar nesse cenário aqui.
+Eu tenho duas aplicações.
+Minha aplicação de gravação está
+gravando meus tópicos aqui.
+Minhas partições.
+E eu estou na leitura.
+Aconteceu uma falha na gravação.
+Eu posso mandar dados duplicados.
+Essa é a situação.
+Não estou usando matemática como
+semântica.
+Vou mandar dados duplicados.
+E aqui, eu li duplicado.
+Porque eu já tinha lido.
+Minha aplicação falhou.
+Eu li de novo.
+Minha aplicação também falhou.
+Eu li duas vezes.
+Então, a falha de um pode corresponder a
+um processo de outro.
+A um erro do outro.
+Pensando nesse tipo de cenário.
+Em que você pode ter.
+Que você quer, na verdade, blindar mais.
+Além da configuração de gravação
+semântica e tudo mais.
+Você quer criar realmente uma blindagem
+em volta do seu processo.
+Tem a opção de você rodar transação
+dentro do Kafka.
+Onde você vai fazer operações de
+múltiplos commits.
+Só que tem um porém.
+Um porém que é interessante.
+Você pode ter degradação da sua
+performance.
+Até 3 % de degradação de throughput.
+Ou seja.
+Você vai ali do 10 para talvez 150
+milissegundos.
+E de novo.
+Depende do seu use case.
+Pode ser considerado.
+Vai escalando para a complexidade.
+E outra coisa.
+Isso é para aplicação de leitura,
+processo e grava.
+Como eu comentei.
+Leitura, processo e grava.
+É a parte de processamento em streaming.
+Para vocês entenderem.
+Por exemplo.
+O Flink pega isso.
+Ele lê, processa e grava.
+Kafka Streams.
+Leia, processa e grava.
+Mesma coisa em Spark.
+Então.
+Já que você tem uma tecnologia de
+processamento.
+Que faz essa parte da leitura,
+processamento e gravação.
+Eu não vejo muito sentido.
+E as empresas começaram a entender
+pessoalmente isso.
+Em utilizar transação dentro do topo de
+Kafka.
+Porque é complexo.
+Mas dá para fazer.
+De novo.
+Dá para fazer?
+Tem.
+Vamos entender um pouquinho aqui.
+Eu vou explicar como é que funciona.
+Primeiramente.
+Leitura, processo e grava.
+Então a primeira coisa.
+Você começa com a leitura.
+Você instancia o consumer.
+Você faz um Niche Transaction.
+Eu vou mostrar a parte do código.
+Para vocês poderem ver.
+Niche Transaction.
+Depois você faz um Begin Transaction.
+Aqui.
+Nesse momento.
+Ele anda na parte do produtor.
+Ele usa um componente.
+Posteriormente.
+Chamado Transaction Coordinate.
+Ele usa um componente.
+Ele vai fazer a coordenação.
+Depois disso.
+Você tem que marcar.
+O seu último Offset.
+Dentro do processo.
+Você tem que saber qual que é.
+E ali.
+Você vai seguir a próxima posição.
+E vai cometer a transação como um todo.
+Se acontecer qualquer coisa mesmo.
+Que você leu.
+Automaticamente.
+Ele desfaça todo o processo.
+Está tudo amarrado.
+É uma aplicação única.
+Que vai ter.
+Produtor e consumidor.
+Dentro da transação.
+Consumidor e produtor.
+Porque.
+Consumidor e produtor.
+É o primeiro.
+Depois do produto.
+De novo.
+Na minha.
+Experiência.
+Percepção.
+Eu não vejo.
+Pesando.
+Muito.
+Esse módulo.
+Quando você tem.
+Um Spark.
+Quando você tem.
+Um Flink.
+Isso.
+Geralmente.
+Acontecia.
+Quando.
+Você precisava.
+Processar.
+Dados.
+Streaming.
+Você não tinha.
+Um time.
+De data.
+De engenharia.
+E tinha.
+Que fazer.
+Com desenvolvimento.
+Tá.
+Um volume.
+Só que.
+Aqui.
+É.
+É.
+Complexo.
+Demais.
+Tá.
+Amarrado.
+Demais.
+E.
+E.
+Tem.
+A questão.
+Que você.
+Seja.
+História.
+Aqui.
+Ó.
+Você.
+Vai.
+Usar.
+História.
+Para.
+Isso.
+Lembra.
+De.
+História.
+Porque.
+É.
+Estar.
+Claro.
+Vai.
+Usar.
+Um.
+Nível.
+De.
+Performa.
+Se.
+Você.
+Ter.
+Fim.
+No.
+Café.
+Stream.
+Não.
+Vai.
+Sabe.
+Cara.
+Existe.
+caminho, porque esse caminho é muito
+programático, é muito você vai ter que
+continuar evoluindo a sua aplicação
+tomar conta dela o mais fácil é você ter
+um cluster de Spark ou de Flink ou até
+mesmo Kafka Streams que vai ser muito
+mais fácil de você resolver então, de
+novo, transação é possível
+fazer consome, processa e produz até aí,
+tudo bem?
+desenvolvimento, gente a parte que você
+tem que tomar mais atenção na aula de
+hoje é a parte de window que vocês vão
+mais usar tudo isso aqui é a parte de
+window porque a parte de window é a
+parte de processamento dentro do caso
+nós somos todo mundo de engenharia de
+dados então acaba que esse pedaço aqui é
+o mais importante para a gente, porque
+esse aqui que a gente vai pegar o Spark,
+vai pegar o Flink seja de qual for,
+tecnologia de engine por trás e vai
+trabalhar a window em cima daquele dado
+que está chegando naquele momento para
+preparar o dado para ser entregue com o
+Pinoo e tal então, beleza, entendemos a
+parte de processamento avançado vamos
+falar um pouco de log vamos entrar um
+pouquinho na parte de infraestrutura,
+acho que é importante vocês entenderem
+até mesmo, de novo, antes de fazer um
+troubleshooting nem que seja local, um
+ambiente de teste vocês já conseguem
+fazer muita coisa aqui com as
+informações que eu vou passar
+primeiramente, o log é o coração
+de qualquer tecnologia de engenharia de
+dados hoje antigamente, tá ah, eu vou
+dar só erro só o critical erro, eu vou
+dizer para vocês de experiência, Info e
+Warning do Kafka te entrega muita
+informação valiosa muita gente ignora ou
+não habilita ou simplesmente ignora
+mesmo e não consegue achar o problema no
+cluster justamente porque ele está
+falando qualquer comportamento de novo,
+não é problema, mas ele te fala o
+comportamento e você pode identificar
+por isso aqui por exemplo, eu estava
+fazendo uma análise em um cluster de um
+cliente tem até umas duas semanas isso
+duas semanas isso e não tinha usamos os
+dois para identificar o OpenSearch bom,
+perfeito, OpenSearch, Elasticsearch
+OpenSearch é um fork de Elasticsearch eu
+coloquei aqui só porque geralmente eu
+trabalho com esse tech aqui mas é um
+fork, mas perfeito Marcos, ótimo então
+assim, um Info é tão importante por quê?
+esse cliente, ele estava com um problema
+ele estava reiniciando os brokers dele
+ele foi um dos brokers na verdade e
+nunca sabia qual era o problema ele
+tirava um, colocava outro não leu o
+disco, não leu não sei o que e estava
+várias informações de Info lá na parte
+de conectividade eu tipo assim, não
+conectei, não conectei mas não erro
+porque tipo assim, é como se eu
+estivesse dando timeout não automático
+conectei e desconectei conectei e
+desconectei só que sequencial tinha um
+erro lá por exemplo de criação de
+metadados do Zookeeper que também, isso
+acontece com classes novos classes que
+tem lá de 5, 6 anos aí eu falei, olha,
+os seus Infos aqui todos apontam, todos
+os seus Infos apontam para Networking é
+alguma resposta ele não está conseguindo
+comunicar um com o outro não está
+conseguindo chegar no serviço ele tem
+que chegar é alguma coisa nesse sentido
+eu estou vendo muito aqui aí tinha uns
+erros, realmente tinha alguns erros mas
+grande parte é nos Infos então, muita
+atenção nos Infos aqui Info no Kafka tem
+muita informação o Org também, mesma
+coisa o erro aqui é quando está
+estourando o Critical Error, aqui é o
+Critical Error mesmo e eu gosto de fazer
+esse processo aqui exporto todos os logs
+para o Filebit depois o Filebit insere
+os dados dentro do Elasticsearch e a
+gente usa o Kibana para realmente
+explorar os logs ali criar dashboard e
+tal criar os índices bonitinho então tem
+muita coisa legal que a gente consegue
+aprender com os logs aqui Resizing, isso
+aqui é legal, gente isso aqui é o
+pesadelo de qualquer administrador de
+Kafka o tal do Resizing vamos começar
+aqui chegou Disco de Kafka cheio gente,
+não
+preocupa com memória não preocupa com
+CPU preocupa, mas não é o Critical Disco
+o problema do Kafka é Disco porque
+Disco?
+porque é onde ele usa ele é uma
+aplicação Disk -Based ele é baseado em
+Disco porque ele vai gravar os dados o
+tempo
+inteiro Recomendação sempre que vocês
+forem setar com essa arquitetura de
+vocês setar desse jeito no máximo, mas
+se for muito grande setenta, setenta por
+cento já nos alerta se chegou nesse já
+tem que tomar ação ou adicionar Disco ou
+adicionar Broker porque rápido que você
+adiciona Broker você adiciona Disco se a
+pressão dos servidores estiver alta ou
+seja, CPU de Broker a memória de Broker
+está alta e com pouco Disco aí aumenta a
+Broker CPU e memória baixa aumenta só
+Disco só questão de retenção mesmo a
+retenção dele não está legal olha o
+processo eu vou mostrar para vocês de
+duas formas processo 1 chegou a ligação,
+o Mateus vamos trocar Disco aqui, vamos
+adicionar Disco no Kafka vou lá e
+adiciono se você somente adicionar Disco
+por padrão o Kafka não vai fazer nada
+você tem que rodar um processo de
+Partition Reassign esse Partition
+Reassign, o que ele vai fazer?
+ele vai gerar um plano que eu vou
+explicar daqui a pouco como é que
+funciona os passos manuais depois eu vou
+mostrar uma coisa muito mais fácil você
+tem uns planos manuais que você vai ter
+que gerar passo a passo e ali você vai
+redimensionar o seu modalização de
+partição vai pro Apple Brokerar, Pro QP
+e tudo mais aí para chegar nisso aqui
+lembra do rebalance de consumo que eu
+estava explicando?
+esse cara aqui é bem parecido no sentido
+que quando esse cara acontece todos,
+todos todos os Consumer Groups que estão
+lendo todos os tópicos vão ser todos
+nesse caso, porque são Discos não é
+Disco, é tudo vão sofrer rebalances
+ninguém comunica enquanto não acabar o
+Reassign dessas partições para os novos
+Brokers mesma coisa, ninguém conecta
+então é uma indisponibilidade Matheus,
+eu pego muito tempo?
+não, normalmente é rápido depende de
+volumetria depende de quantidade de
+partição depende de como é que está
+configurada internamente a Networking
+mas normalmente é rápido é rápido depois
+disso eu estou com meus 6 Discos lá
+levando que uma vez que eu inseri Disco
+eu não tiro, eu só insiro entendeu?
+essa é a parte 1 do Reassign vamos para
+a parte de como é que é feito isso olha
+o trampo primeiro você vai ter que criar
+um JSON, um arquivo JSON nesse padrão
+aqui um Array de JSON ou seja, tem
+tópicos, dois pontos dentro do cocheio,
+você coloca o nome do tópico nome do
+tópico, tópico, nome do tópico não
+precisa automatizar, lógico você cria
+esse cara aqui tópicos .json esse aqui é
+o exemplo de Kubernetes mas ali é o
+mesmo processo, não muda aqui seria na
+VM você copiaria para dentro da VM copia
+para dentro da VM roda o que a gente
+chama partition -reassign -partition
+-generate que é a flag ele vai ler o seu
+tópico .json e vai gerar o plano de
+execução aqui a gente já gerou o plano
+de execução desse reassign depois de
+fazer uma execução você vai executar o
+plano executou o plano que é a parte
+demora que vai pegar o JSON vai validar
+vai executar, mudar essa coisa ali aí
+você vem e roda o Verify eu tive que
+fazer isso uma vez até hoje aí aqui tem
+uma continha de um que eu até tirei de
+um dos blogs de um Hal se você tem 10
+tópicos cada um 8 partições com dados de
+um milhão a mil, você vai levar
+aproximadamente 30 segundos para ter o
+rebalance dele todo aqui e lógico, isso
+depende muito do nível de balanceamento
+que vai estar das coisas e se você está
+usando SSD ou não aí o SSD que alguém me
+perguntou vale muito aqui lembrando que
+a recomendação é sempre que você for
+processar administrativos no CAF como
+qualquer tipo de tecnologia de acesso a
+dados fora do horário comercial vamos
+fazer isso fora ou de uma forma que vai
+ter um mínimo de impacto possível se não
+tiver como, é onde não vai ter muito
+impacto beleza?
+só que tem uma forma, isso aqui é trampo
+demais tem uma forma de fazer isso aqui
+mais fácil para grande parte dos
+processos administrativos existe um
+projeto do LinkedIn também chamado
+Cruise Control mesmo esquema eu tenho
+aqui o meu o meu Kafka adicionei novos
+discos só que o Cruise Control ele é uma
+aplicação na verdade ele é um no caso do
+Kubernetes aqui você trabalha com ele
+até um nível de Custom Resource ele nem
+sobe e pode ele é uma como se fosse uma
+uma aplicaçãozinha que fica rodando em
+nível broker para poder ver se está se
+precisa rodar na idade do Operator no
+caso do Operator aqui para ele poder ver
+ó gerar um plano o tempo inteiro aí você
+pode pedir para aprovar o plano manual
+ou não você pode deixar de automático
+também olha, chegou aqui ele vai gerar o
+plano para ser automático aquele
+processo inteiro ele vai fazer só falar
+assim, approve e ele vai acertar para
+você tem alguns casos tem alguns casos
+que você vai ter que fazer isso aqui o
+Cruise Control não vai fazer por
+exemplo, quero rebalancear os meus
+líderes de partição porque pode
+acontecer, lembra daquela história que
+eu mostrei para vocês quando vocês vão
+matando você vai você vai elegendo um
+novo líder pode ter casos que tem que
+tomar muito cuidado com isso também tá
+gente?
+que todos os líderes são um broker só
+isso é ruim porque que é ruim?
+porque esse cara vai saber todas as
+requisições que tiver todo mundo que
+quiser ler e gravar vai ler só dele e
+ele pode ficar com uma pressão muito
+grande então é uma computação
+distribuída não foi feito para rodar em
+um só então você tem que fazer também um
+reassign de líder só que tem gente que
+tem que fazer reassign específico montar
+coisas customizadas aí você vai ter que
+fazer o projeto aqui em cima vai ter que
+entender como é que esse processo
+funciona abrir o reassign o plano de
+reassign e ali você vai modificar o que
+você quer isso aqui tem que ter um nível
+alto de conhecimento de Kafka tá?
+eu fiz isso em produção uma vez, de novo
+e não é legal mas de novo outras formas
+de resolver ah, pode ser realmente com
+broker também já resolve você vai ter
+que acessar 100 % chegou 100 % eu vou
+deixar até aqui chegou 100 % de disco no
+disco de Kafka vai ter que acessar o
+disco e deletar o arquivo na mão e no
+Kubernetes isso aqui não é legal você
+tem que subir um pod de template acessar
+lá puxar o PVC é um trampo absurdo então
+não chegue eu vou até baixar aqui 60 %
+eu acho que e ali vocês vão vendo se vai
+precisar aumentar ou não porque citar 60
+% quer dizer que o risco de destourar de
+uma vez é muito grande tomem muito
+cuidado com isso, quem for de operação
+tá?
+beleza, Cruise Control faz isso vamos
+falar um pouquinho de segurança agora o
+Kafka, ele tem dois tipos de
+autenticação SSL ou SLAS S A S L você
+pode autenticar o cliente dessas duas
+formas onde você pode usar SCRUM
+PRINTEST, AUTOBREAKER e o NAME tem
+muitas formas de executar geralmente o
+que eu faço lógico que o MSK e o
+Confluent Cloud tem toda a parte de
+segurança que a gente não precisa se
+preocupar com essa parte aqui não se eu
+não tiver tem um detalhe muito
+importante se você habilita SSL e TLS no
+cluster de Kafka você perde uma
+propriedade chamada ZeroComp o ZeroCop é
+uma forma otimizada como é que ele grava
+internamente dentro do broker isso é
+nível disco não é entre réplicas e líder
+não chegou eu vou para aquela máquina
+broker e começa a processar a mensagem
+para criar o arquivo naquele momento ali
+tem uns hops de memória que ele pula com
+o ZeroCop se você habilitar você perde
+essa propriedade aí você vai ter que
+passar por todos os hops que ele tem que
+fazer internamente para poder gravar e
+gerar o arquivo mas de novo é uma troca
+você ganha de um lado e perde do outro
+geralmente o que eu faço eu deixo o
+Kafka inacessível externamente ele é
+acessível somente pelas regras de rede
+que a gente propôs por aplicação de novo
+o dado lá é fêmur aí você pode aplicar
+regras de mascaramento e tudo mais eu
+prefiro seguir para esse local por causa
+de performance e discutir de novo é uma
+discussão não tem errado aqui não ou vai
+para um para autenticação mas já sabe
+que vai ter que aumentar a questão de
+recurso e tudo mais eu tenho que pagar
+um pouco mais nisso aí então tem esses
+dois tipos de autenticação de novo que é
+assim, autenticação SSL você tem um hash
+comunicação entre cliente e servidor eu
+vou ter o hash no servidor e o hash aqui
+que ele vai transformar o usuário em
+acesso lembrando que a autorização para
+quem não está usando o craft é dentro do
+zookeeper então vou colocar aqui
+zookeeper então os acls do Kafka ficam
+no zookeeper para quem não está usando o
+craft para quem está usando o craft ele
+fica no controller que é um próprio
+broker então segurança de novo é bem
+simples também é só para vocês poderem
+dar uma olhada que existe eu vou criar
+mais um material de segurança de Kafka
+que nos próximos meses tudo der certo eu
+consigo fazer isso e aí vocês vão ter
+acesso a esse material mas por enquanto
+eu estou discutindo algumas coisas com o
+pessoal de fora para ver se tem algumas
+alternativas por exemplo tem o kclock
+que eu quero testar ver como é que
+funciona ele funciona
+legalzinho mas beleza, serviços tá Kafka
+Vanilla que a gente chama Kafka Open
+Source eu vou ter broker, connect,
+schema hash open source, Kafka ecqdb
+open source aqui eu vou até tirar o
+ecqdb vou deixar o ecqdb aqui esse é o
+tipo de ambiente de Kafka open source eu
+sempre recomendo para quem para aquela
+empresa que ela quer ambientes mais
+customizados ela não quer ficar presa a
+um ambiente único ela tem uma forma de
+trabalhar única geralmente tem que ter
+um especialista para olhar aquilo ali um
+team para olhar o Kafka porque você vai
+ter toda a gestão por conta própria open
+source é maravilhoso, eu adoro open
+source mas você tem que ter uma gestão
+em cima disso tem que ter gente em cima
+disso não tem como fugir outra opção a
+Confluent né quem não quer depender ou
+não quer trabalhar com um time muito
+grande é difícil e tudo mais tem a opção
+de você ter um sugerencial aqui gente eu
+vou ser bem sincero você não precisa ser
+especialista em Kafka não muita coisa
+que eu comentei aqui praticamente a
+Confluent já te entrega ela te entrega
+quase a aplicação pronta mastigada para
+você poder utilizar então todo aquele
+processo interno de gestão,
+monitoramento é a Confluent tanto que o
+cluster que você utiliza ele não é
+baseado em host power qual o poder de
+processamento que você vai ter na
+verdade ele é baseado no qual plano você
+vai usar se quer um plano standard,
+basic, standard ou dedicated então cada
+um deles ele vai gerar um core engine
+dentro do ambiente da Confluent e vai te
+entregar todo o ambiente acho que eu
+tenho acesso aqui ainda deixa eu ver se
+eu consigo mostrar para vocês isso aqui
+é legal deixa eu ver se eu tenho aqui
+se eu tenho cluster ligado lá se não
+tiver também acho que dá para a
+gente poder só vou mostrar, não vou
+criar
+nada altura para autenticação chave de
+autenticação tudo está aqui não estou
+com autenticação com o Google não está
+aqui então aqui simplesmente você vem
+cria um ambiente aí já tem o ambiente
+pronto cria um ambiente e aqui você cria
+o cluster eu quero um cluster de Flink
+bem legal isso aqui aí tem a parte de
+esquema registry com todos os meus
+esquemas que eu já criei networking,
+você pode fazer comunicação por exemplo
+de um ambiente com outro totalmente
+privado seguro e por aí vai então de
+novo gerenciado você está pagando para
+tirar esse peso do time para você focar
+na parte de negócio só que você está
+pagando um preço por isso, lembrando que
+é um ambiente da Confluent é um produto
+da Confluent se você quiser fazer um
+tipo de customização você não vai ter ou
+bem só se você já consegue fazer algumas
+coisas bem legais vamos falar de sizing
+máquina virtual S2 aqui estou com
+um S2 aqui para poder criar um ambiente
+de dev ou um grupo de S2 eu vou ter um
+grupo de S2 3 brokers 3 com todo no
+craft aqui para a gente começar no pé
+direito um conector e um esquema
+registry se eu for usar open source
+baixar, executar eu vou ter que precisar
+de 32 GB de memória para broker 16 GB
+ali para o meu craft para trabalhar
+legal recursos para trabalhar
+desenvolvimento de time aqui eu estou
+pensando em time, small clusters mas é
+time um esquema registry e um connect
+então eu vou ter aqui 6 máquinas 8
+máquinas talvez ali 256 GB de memória
+ali de parque para poder estar
+utilizando small, só que aí produção
+produção eu vou para 9 brokers 3
+controles, continuo na média de 3 até
+porque o craft a gente tem que estar
+muito novo muito recente em produção
+então o ideal é ir testando e ir
+escalando quando precisar então eu vou
+começar com ele gigantão eu vou ter 2
+workers de connect vocês vão ver a
+quantidade de memória para cada um deles
+pela quantidade de brokers baseado que
+eu vou usar, abro o protobuf até JSON
+dentro dele e eu vou usar um leader e um
+follower só para eu ter mais dinamismo
+em questão do esquema hash para não ter
+nenhum risco nele no momento que eu
+requisitar muitos esquemas e aqui eu vou
+abrir o proxy, o hash proxy para a
+galera acessar para quem não tem acesso
+a producer, então eu vou deixar aqui um
+cluster de hash proxy então eu vou ter
+aqui para a produção 64 GB 32 GB para o
+meu controller 18 GB para cada nó aqui é
+cada nó 18 GB para cada nó eu coloquei
+18 GB aqui o craft é connect ele requer
+muita memória na verdade todos os
+recursos aqui em questão de memória ele
+vai ser o que vai me expedir então eu só
+queria fazer só para isso eu vou pegar o
+dado que está na fonte ou vou inserir no
+destino como eu comentei, aqui é um
+ambiente de produção large então a gente
+está supondo aqui estou à disposição que
+eu vou ter eles 100, 200 conectores
+rodando ao mesmo tempo fora isso,
+requisição de aplicação posso ter SMTs
+no meio do caminho então isso aqui é uma
+uma ideia e estou tendo que fazer tudo
+na mão aqui estou tendo que criar isso
+aqui na mão baixei lá o binário e estou
+instalando na minha máquina agora vamos
+para a depressão estou no Kubernetes um
+operator, 3 brokers para small 3 craft e
+3 brokers normal eu vou usar 1 GB de
+memória para cada broker, isso aqui é 3
+GB e eu vou ter 0 ,5 GB para o meu craft
+connect, 2 GB para eu testar os connects
+aqui é nível de teste e eu vou ter mi
+homemaker, bridge control e log exporter
+para trabalhar ali separadamente aqui
+não são recursos aqui é um conector aqui
+é um CRD de Kubernetes para eu poder
+ficar monitorando dentro do operator os
+meus atividades administrativas, meus
+planos e aqui eu vou exportar todas as
+métricas automáticas já para onde eu
+quiser Prometheus aí a gente escolhe um
+schema registro aqui eu vou ter gastado
+aqui 3 GB, 8 GB talvez com tudo e dá
+para brincar bastante tanto nosso
+ambiente é isso aqui eu vou fazer um
+benchmark bem legal daqui a pouco
+produção aí eu começo vamos gastar um
+pouquinho porque eu acho que a gente tem
+que aumentar um pouquinho para ter essa
+disponibilidade eu vou ter duas zonas
+aqui em produção no meu cluster de
+Kubernetes usando o
+Kafka com 9 e com essas zonas são
+namespaces diferentes e clusters
+diferentes aqui é um cluster aqui é um
+cluster zona 2 e o mais legal eu posso
+criar regras para esses caras nunca
+ficarem no mesmo cluster no mesmo nó de
+computação então eu posso ter um cluster
+de Kubernetes vamos colocar 10 nós e eu
+falo a minha zona 2 e a zona 1 está no
+mesmo computador no mesmo servidor vou
+usar aqui dois connect dois workers aqui
+mesmo esquema vou colocar aqui um bridge
+um bridge aqui dentro vou trocar aqui um
+bridge e eu vou ter isso aqui eu vou ter
+de craft 6 são 3 para cada zona aqui com
+um disco de 100 gigas cada broker que eu
+vou explicar daqui a pouco jbot não é
+just a bunch of disks que eu posso
+adicionar no disco em nível de
+deployment e ele considera como se fosse
+um disco único mas são discos de id
+diferente ele lê como se fosse um height
+limite 2 gigas aqui ou seja eu vou ter
+aqui 32 gigas 32 gigas de ram para os
+meus brokers para o meu connect eu vou
+ter 16 gigas iniciais lembrando que eu
+vou ter 100 gigas aqui e porque gente
+que a diferença é tão monstruosa em
+questão de recursos se você pegar
+máquina virtual e você pegar kubernetes
+como a gente viu o acionismo do
+kubernetes no mundo a questão de
+gerenciamento de recurso de máquina e
+sistema operacional eu não tenho sistema
+operacional aqui então eu tenho um
+cluster que ele vai rodar todas as
+minhas aplicações e eu praticamente vou
+poder rodar ele e escalar da forma que
+eu quiser então cada o que seria máquina
+aqui eu vou realmente usar somente para
+o nível de aplicação o que reduz
+bastante o meu consumo é por isso que eu
+sempre recomendo meus clientes se eles
+quiserem ir para open source eu sempre
+recomendo usar kubernetes por conta
+disso o consumo é gigantesco e até a
+configuração do kubernetes eu tenho 4
+meses conversando com o pessoal da
+farmacêutica eu falei olha a gente
+precisa habilitar a métrica dentro do
+seu cluster só que a gente tinha que
+habilitar a métrica um por um porque ele
+não foi feito de qualquer forma foi
+feito realmente na mão vou criar um
+cluster e vou fazendo na mão manual a
+gente teve que entrar sh por sh e
+modificar para habilitar a métrica aí eu
+mostrei para ele como é que habilitava a
+métrica era um arquivo uma linha duas
+palavras gmx option nem duas palavras é
+um campo ou chave valor gmx option
+chaves chaves dois pontos chaves chaves
+ele automaticamente abre tira a regra
+cria para ser a porta 999 padrão e você
+vai exportando métrica por lá que é a
+porta é só configurar agora para ser
+essa porta difícil demais então eu
+mostrei que tem muitas vantagens de você
+estar utilizando o kubernetes para o
+deployment de cara pessoal pegamos toda
+a parte aqui
+dúvidas agora a gente vai começar um
+design partners para throughput
+otimização de cluster de producer se eu
+quero latência se eu quero throughput se
+eu quero durabilidade vou mostrar isso
+aqui agora tá bom vamos lá estou fazendo
+aqui um heartbeat vamos ver se todo
+mundo está aí joão maisa elei eduarda
+gabriel fala seu nome agora beleza vocês
+estão na isso aí baixo latência preciso
+do meu ambiente aqui tá eu preciso de
+pensar como eu consigo aumentar otimizar
+o throughput para o produtor com meu cá
+fica com o meu consumo tá a gente vai
+sempre pensar nesses caras ou dependendo
+de como é que a configuração que eu
+quero são configurações diferentes
+primeiro eu quero otimizar o meu
+produtor no meu consumo para acessar o
+nosso topo de maneira mais rápida um que
+é um throughput eu quero ter uma
+velocidade de movimentação de dados e um
+e a quantidade de dados também tem que
+ser alto então vamos lá aumenta o bet
+size agora a gente começa a ver as
+configurações casando aumenta o bet size
+aumenta o linger então eu vou fazer 100
+mil aqui vai ser mensagens o bet size
+ponto bytes que vai ser bytes então aqui
+eu faço assim ó vai ser 100 mil
+mensagens 200 mil mensagens aqui eu vou
+colocar de 10 a 100 mil de 10 a 100 mil
+de segundos ou seja para fazer porque eu
+quero movimentar dados rápido mas eu
+quero aumentar quantidades maiores tem
+uma quantidade de volumetria que eu tô
+movimentando alta então tô chegando
+muito dado eu quero movimentar para isso
+eu vou habilitar a compressão eu vou
+colocar o x igual a 1 porque porque se
+eu colocar igual a all eu vou ter tempo
+vou ter que gravar em todo mundo então
+eu quero ter uma garantia de 1 tá porque
+eu quero quantidades maiores aqui eu tô
+esperando muita quantidade e como a
+quantidade é alta eu não posso ter x
+igual a all porque porque se a
+quantidade é muito alta eu vou ter que
+esperar todo mundo gravar para eu mandar
+eu vou praticamente eu vou ficar até
+amanhã para fazer uma coisa e eu não
+quero perder a carteira do kafka tá e eu
+vou aumentar o buffer de memória também
+aqui dentro mesmo com linger até 100 mil
+de segundos ele é considerado real time
+perfeito sim sim eu considero essa é uma
+pergunta bem legal o real time new real
+time eles são muito de concepção muito
+de regra da empresa tá que eu falo do
+meio que você tá geralmente a gente
+considera tempo real até em segundos se
+você está processando em segundos você
+ainda está em tempo real a diferença é
+se ela é contínua né aqui a nossa forma
+de processamento contínua por isso que é
+streaming por isso que é baixo é baixa
+latência tudo mais por exemplo o Spark
+trabalha a 100 milissegundos a 100
+milissegundos ele é tempo real o
+structure stream é real time tá só que
+se o processamento que você levar levar
+mais tempo aí você pede para ele deixar
+tempo real depende de quanto tempo você
+vai carregar por isso que o x aqui tá 1
+porque se o x fosse all aí não seria
+real time porque eu vou ter que esperar
+todo mundo eu vou ter que esperar 100
+milissegundos de link ou seja o meu
+tempo de um batch por 100 milissegundos
+estou mandando batchs de 100
+milissegundos de 100 a 200 mil tenho sei
+lá 10 brokers com replicação igual a 3
+vou esperar todo mundo replicar os 3
+para poder pegar então eu vou ter lá 300
+mil mensagens replicadas entre eles se
+for de 100 mil por exemplo então você
+perde a carteira de tempo real pelo
+tempo de processamento que você vai
+fazer a atividade então somente o buffer
+de memória sua aplicação e você modifica
+o seu consumer para o fat min bytes ou
+seja o mínimo que ele vai fazer para
+requisitar aquele dado que é 0 não tem
+um valor até 100 mil bytes para ele
+poder carregar ali então ele vai ler vai
+esperar carregar aqueles 100 mil bytes
+para você então eu vou colocar aqui o
+producer e o consumer beleza esse aqui é
+throughput eu quero que esse cara grave
+rápido e eu quero que grave uma
+quantidade maior desculpa isso aqui é
+volumetria e esse aqui leia também uma
+quantidade alta de dados aqui eu não
+preciso me preocupar porque o próprio
+Kafka vai fazer a parte dele porque o
+mandatório aqui são essas configurações
+tem que saber muito Kafka quando é disso
+para a gente é o cliente que manda é o
+cliente que manda não o servidor então
+você não consegue blindar se alguém
+fizer uma configuração errada e pode
+passar processo como um todo latência eu
+quero na verdade aqui gravar o mais
+rápido possível agora não é volumetrial
+para gravar rápido eu quero ler rápido
+então primeiro no broker eu vou aumentar
+a quantidade num replicas fat ou seja a
+quantidade de replicas internas que ele
+vai replicar o dado entre ele então eu
+vou falar assim eu tenho 3 followers o
+padrão é 1 o cara muda esse num replicas
+fat dentro da configuração do broker
+para 3 ele vai abrir 3 threads no leader
+para gravar mais rápido os followers ah
+mas por que você não faz isso porque tem
+um custo se eu ficar fazendo modificação
+em configuração de broker de consumidor
+sem ter certeza do que eu vou estar
+trabalhando ou do que eu vou estar o
+risco de você modificar e ter um
+comportamento inesperado é muito grande
+quando eu falo que o comportamento
+inesperado é você vai ter que aumentar a
+quantidade de máquina quantidade de
+recurso foi uma coisa que nem precisava
+então também cuidado em modificar aqui
+mas aqui eu quero baixa latência linger
+0 porque é baixa latência não tem
+compressão aqui tá que é none sem
+compressão aqui o x é 1 olha só que
+legal tanto o throughput em questão de
+volumetria como em questão de latência é
+baixa a vez que o x é igual a 1 porque
+de novo se eu coloco o x igual a all
+nessa situação de baixa latência eu
+tenho que ter lá os 10 milissegundos
+cravados eu quero 10 milissegundos aqui
+se eu faço isso no momento que o dado
+chegou ele começa a copiar eu vou
+começar a perder tempo porque eu tenho
+latência de rede eu tenho recurso
+computacional e por aí vai então de novo
+manda para o líder e o líder se vira
+para lá então o ideal é que eu tenha um
+producer ele vai fazer o Maximum Play
+Request e vai também gravar nesses caras
+aqui mais rápido e aqui eu tenho um cara
+com duas threads abertas para carregar
+também o dado mais rápido via thread
+esse é o de baixa latência então
+durabilidade lembra a durabilidade?
+eu quero que o meu dado eu quero ter uma
+confiança que o dado entrando no meu
+líder ele vai ser replicado e não tem
+nenhum tipo de problema se um líder cair
+ou se ter algum problema na máquina meu
+dado ainda vai persistir em algum lugar
+qual são as configurações?
+x igual a all enable the pontes equals
+to true Maximum Play Request igual a 1
+eu comentei na questão da ordem o que
+ele vai fazer?
+ele vai executar o Maximum Play Request
+Pro Connection que é aquele Maximum Play
+Request Connector ele vai abrir uma
+thread única e vai trabalhar nessa
+thread então eu tenho certeza que se der
+alguma coisa de retry eu tenho certeza
+que esse cara vai simplesmente fazer o
+retry e vai executar de novo se eu
+estiver trabalhando com processamento em
+stream, eu tenho que confirmar eu tenho
+que configurar o Replication Factor dos
+meus tópicos em 3 e eu tenho que
+habilitar o x -acto ou semantics na
+minha aplicação de stream isso aqui
+depende de Kafka Streams de Flink que
+você vai trabalhar normalmente elas
+estão nativas x -acto ou semantics mas
+tem aplicações tem processos que você
+consegue colocar x igual a...
+costuma ter outro nome mas é Message
+Delivery Guarantee que você consegue
+modificar para at least, at most, x
+-acto aqui vai ser o x -acto consumer eu
+vou tirar o commit autocommit que a
+gente viu ontem de TRUE para FALSE e vou
+habilitar o Isolation Level igual a
+Rated Committed ou seja, eu li e já
+comitei qual que é a questão aqui?
+esse aqui eu coloquei como não mas na
+verdade eu vou até modificar
+aqui o default é esse aí mesmo vou fazer
+assim dá para tirar esse cara ali tem
+confusão gente, estão pegando aí?
+eu pago vocês aí esse aqui já é Rated
+Committed na versão 3 .8 se não me
+engano já está assim na documentação
+hoje
+broker o default replication factor ou
+seja, nível de replication 1, passo para
+3 autocommit autocreate topic enable
+ponho para FALSE porque ele é TRUE, ou
+seja se a aplicação producer for lá e
+tentar gravar um topic inexistente vai
+botar um erro no topic não existe com
+essa aplicação com essa configuração
+igual a FALSE se for padrão ele vai
+mandar ele vai criar o topic e vai
+inserir então aqui é para você garantir
+que as configurações de topic estão
+corretas min sync replicas ou seja o
+mínimo de replicas leaders followers
+sincronizadas 2 se acontecer dos meus
+brokers começarem a cair por exemplo
+aqui eu tenho 2 se eu fico com um broker
+fora eu ainda consigo gravar se eu perco
+um broker aqui já dá erro, fala que não
+tem uma quantidade mínima para executar
+então tem 2 eu posso ter até 2 brokers
+ativos é sempre assim unclean leader
+election enable essa configuração aqui
+perigosíssima por padrão ela é FALSE e
+aqui a gente vai manter ela FALSE o que
+isso significa?
+unclean leader election é se um broker
+caiu qualquer motivo que for ele vai
+continuar no cluster só que ninguém vai
+passar por ele porque o hard bit dele
+está falando que ele está fora se ele
+retartar novamente o Kafka não vai
+esperar ele ficar ele vai falar assim
+estou 100 % de novo ele vai falar assim
+já pode mandar então unclean leader
+election é uma configuração de alta
+disponibilidade quando eu não posso
+ficar fora por motivo algum eu vou
+aceitar o risco de mesmo estar fora eu
+subi dados com problema aqui porque eu
+tenho um líder que está com problema que
+está 100 % é subido como TRUE para alta
+disponibilidade ou seja, eu quero subir
+rápido no broker e lock flush interval a
+gente coloca o valor mais baixo possível
+aqui então esse é o valor para a gente
+ter alta durabilidade esse flush
+interval é o tempo que ele vai pegar as
+mensagens do lock e vai gravar dentro do
+segmento então esse aí é o tempo mais
+baixo mas ele vai criar arquivos lá
+dentro e vai garantir que ele vai estar
+salvo beleza?
+durabilidade olha que legal nesse caso
+tem replication ainda seria problema se
+um líder cair não é problema o problema
+é você colocar na sua eleição de líder
+um broker que não está 100 % ainda
+porque se um broker tiver com problema
+ele voltou para a eleição e você mandou
+gravar nele você pode ter perdido dados
+com 100 % que ele está com alta
+durabilidade por isso que aqui a gente
+deixa como falso porque eu quero
+durabilidade eu não posso ter o risco de
+ele receber mensagem e não gravar mas
+pode acontecer que que é o caso por
+exemplo eu quero ter alta
+disponibilidade aqui eu quero ter
+disponibilidade o tempo inteiro então
+aqui ó eu tenho mais réplicas aumenta a
+configuração do meu statement a minha
+seção de consumo eu aumento ou diminuo o
+timeout dela que eu tenho que o tempo
+inteiro garantir que vai se der um
+timeout tem que saber tem que ser rápido
+unclean leader election true porque se o
+3 caiu o 3 voltou ele está voltando eu
+já coloco na eleição se ele me mandou um
+hotbit já mandou que está com
+conectividade começa só que o cara tem
+um processo interno se você coloca isso
+como falso ele vai mandar um hotbit vai
+validar essa conexão pode mandar porque
+agora todos
+os meus serviços subiram agora eu faço
+parte da eleição se esse aqui tiver
+falso isso aqui no true é subiu recebe
+então isso aqui é para alta
+disponibilidade eu preciso subir o kafka
+porque isso aqui é tempo quando o broker
+cai principalmente em questão de
+servidores físicos servidores virtuais
+ele demora um tempo para subir tem que
+estartar o sistema operacional tem que
+estartar os serviços e por aí vai tem
+que estartar os riscos então tem uma
+demora para isso se eu preciso de alta
+disponibilidade eu não posso ter demora
+eu tenho que fazer um stop eu tenho que
+responder você vai gravar geralmente
+isso aqui é para IOT você vai perder
+dados no programa tem que estar
+disponível você não pode deixar de
+receber você vai perder lá eu resolvo
+depois então é um tipo de configuração
+beleza deixa eu entrar nisso aqui depois
+a gente vai entrar em uma demo eu vou
+mostrar uma demo aqui eu vou mostrar a
+demo que eu comentei e a gente fala de
+arquitetura depois a gente arrapa as
+minutos vocês querem vamos diretão vamos
+diretão para hoje fechar mais cedo ou
+vocês querem ter a pausa estou à
+disposição de vocês o que vocês querem
+vamos fazer uma eleição aqui
+e aí gente diretão quer fazer pausa
+diretão
+então vamos diretão eu tiro o tempo para
+perguntas e a gente vai vendo então tá
+gente o Lensys é uma experiência de
+desenvolvimento no topo de Kafka ele é
+um produto pago nesse caso em que você
+consegue trabalhar com API log você
+consegue trabalhar com exploração de
+streaming você tem policies você tem
+topic manager você tem data
+observability você tem topology você tem
+connect observability então ele é uma
+plataforma ele é uma aplicação separada
+ao Kafka ele conecta no seu Kafka e pega
+todas as informações vou mostrar aqui
+para vocês verem é muito legal é pago,
+lógico é um produto enterprise é
+interessante eu trazer eu sempre coloco
+no último
+dia eu quero ter algumas coisas que eu
+vou mostrar para vocês como é que a
+gente consegue ver consumer group mais
+fácil criar alerta então tem coisas que
+a gente consegue fazer que facilitam a
+nossa vida e que até a gente reduz o
+tempo muito grande não só Helm's check
+pensa nele como uma experiência para
+desenvolvimento também ele tem uma parte
+de observabilidade que eu vou mostrar
+aqui vai ter a parte de desenvolvimento
+dentro de
+Kafka quando você tem isso tem que pegar
+o tópico como assim no Flink você pega o
+tópico traz ele para a sua engine ou
+então você no caso do Kafka no caso do
+Q5DB você cria um objeto chamado
+streamer table e ali você faz as suas
+queries nele não ele cria um consumidor
+e faz o snapshot daquele tópico e
+conecta nele vou mostrar, vocês vão
+entender então vamos começar
+primeiro vamos ver aqui eu vou mostrar
+salva
+vidas deixa eu só ver um negócio aqui
+tem uns 3 mil coisas abertas aqui
+legal vamos no dia 5 windowing então a
+gente tem a session que já está lá para
+a gente está rodando na verdade estou
+com todas rodando vou mostrar uma por
+uma deixa eu dar um zoom aqui não sei
+porque no PyCharm ele onde
+as coisas vou achar aqui está rodando
+então jars
+está vendo aqui olha que legal eu estou
+conectando aqui no meu Kafka o Flink de
+novo eu trago ele para o Flink aqui eu
+fiz a minha
+session intervalo de 1 minuto ou seja o
+gap dele é de 1 minuto ou seja executa 1
+minuto e aqui eu estou inserindo o topic
+chamado Flink Session Windows Data eu
+vou mostrar os topicos criados daqui a
+pouco
+Sliding olha a query dele aqui Hopping
+Start ou seja quando ele começa desculpa
+é Hop aqui que é o processo ele é só
+para eu pegar criar para mim essas duas
+colunas aqui Hopping eu pego esse
+transaction data com intervalo de 10
+segundos ou seja tem a duração de 10
+segundos com intervalo de 1 minuto então
+ele vai 30 segundos ele vai processar e
+vai andar desculpa ele vai abrir as
+janelas em 1 minuto e vai avançar 30
+segundos ou seja metade da janela vai
+fazer overlap um em cima do outro então
+aqui ele pega
+overlap Tumbling Tumbling eu vim para
+isso com a session Tumble o nome do
+campo que eu quero usar de referência eu
+tenho que ter um campo é importante eu
+tenho que usar um campo porque isso é
+uma função qual é o intervalo de 1 em 1
+minuto então tem janelas abertas de 1 em
+1 minuto ele processa 1 minuto e começa
+a primeira 1 minuto a próxima enquanto a
+outra duração é o tempo de um a outro
+minuto essa é o minuto de duração deixa
+eu só ver aqui
+peraí gente deixa eu fechar tem uma
+pergunta acho que não tem vocês estão
+sabendo tudo então tá vamos ver como é
+que é esse cara que eu vou mostrar tanto
+o tópico como o lenço vocês poderiam ver
+esse aqui é o lenço é a página inicial
+dele está tudo configurado aqui só não
+conferi a parte de
+connect porque eu estou usando aqui
+estou tendo algum problema de acesso ao
+meu kubernetes isso aqui é coisa de
+kubernetes eu vou mexer contínuo sobre
+isso então aqui conectei três brokers eu
+tenho aqui o meu esquema REST e aqui tem
+a quantidade de mensagens que estão
+acontecendo essa página é bem
+interessante já te traz algumas coisas
+bem legais eu tenho um total de 10 GB em
+tópicos em todos eu estou recebendo em
+torno de 50 mensagens por segundo em
+bytes por segundo é 36 em bytes é
+entrada e saída beleza eu tenho aqui 56
+tópicos 76 partições 32 esquemas
+perfeito até aí tudo bem eu tenho aqui
+12 consumidores aqui como ele está
+conectado no meu connect eu também não
+mostro aqui eu vou explicar daqui a
+pouco e aqui eu tenho um log de alertas
+por exemplo aqui eu deletei esse tópico
+aqui dentro dele por exemplo eu acho
+legal dele eu venho aqui em explore eu
+tenho a minha lista de tópicos e aí
+começa a ficar interessante eu tenho o
+nome do meu tópico, o tamanho dele e os
+records eu tenho algumas informações de
+métrica também eu tenho também o tipo da
+chave do valor, replication, partition
+consumir se tiver algum consumidor
+conectado a gente vai ligar um tem um
+consumidor ligado nesse cara aqui nesse
+aqui também e justamente as minhas
+aplicações de windowing elas estão lendo
+esses tópicos e aqui estão meus tópicos
+olha esse tópico aqui tem 1 milhão e 26
+mil registros esse tópico aqui tem 76k
+nós temos 791 mil esse aqui tem 614 são
+janelas diferentes vamos abrir esse cara
+aqui e aqui tem informação de métrica a
+gente traz já um sample isso aqui é
+sample um sample do dado você consegue
+ver você consegue fazer o replay lembra
+que o evento dá um replay nele aqui
+volta aquela mensagem pro início do log
+isso aqui é bem
+legal posso percorrer o meu de novo
+gente, tem como fazer isso via código?
+tem tem como fazer isso via shell?
+tem mas se vai ser código gigante você
+vai fazer um shell gigantesco poder
+fazer essas coisas então tem a
+facilidade é obrigatório?
+lógico que não mas é uma facilidade
+então tem aqui as métricas desse tópico,
+ele vai gerar pra mim uma informação de
+métrica esse tópico tem 1 milhão de
+registros qual que é a média que ele tem
+por dia como eu instalei ele tem pouco
+tempo não vai ter uma métrica muito boa
+aqui não tem pouco tempo que ele está
+rodando aqui eu tenho informações de GMX
+que está habilitado GMX, record in,
+record out quanto que eu tenho por
+servidor eu tenho aqui ó, nesse tópico
+ele está dividido os 3 servidores, eu
+tenho 193 aqui 198 aqui e 198 aqui na
+verdade eu quero fazer replicação então
+vai ser o mesmo valor replicado um vai
+ser o líder o outro vai ser o follower
+beleza como é que eu sei quem é o líder
+e quem é o follower?
+olha só que legal líder broker da
+partição 01 eu tenho a informação aqui
+como é que está separado o volumetria
+por partição quanto que eu tenho?
+eu tenho 86 dados aqui 5 então eu tenho
+a informação olha as replicas, vocês
+estão em sync e aqui a gente vai fazer
+uma brincadeira eu vou matar uma replica
+a gente está assim agora, a gente está
+matando vamos no lá no meu kubernetes eu
+vou dar um kill na replica vejam é assim
+que vocês poderiam
+ver pegar a 0 a 0 vou dar 1 na verdade a
+1 está parecendo que tem mais
+líderes então vamos lá vou deletar esse
+cara f5
+aqui aqui olha que legal já marcou para
+mim que está all sync e já mudou aqui
+para mim então eu consigo ver muito mais
+rápido e também tem a função de alerta
+mas isso aqui ainda não é o legal não eu
+vou mostrar o legal daqui a pouco então
+aqui tem a informação aqui não tem
+nenhum consumidor ligado nesse tópico
+consumidor está sendo gerado então ele
+não está sendo consumido só que o legal
+dele para mim é esse aqui eu posso vir
+aqui eu estou com pouco recurso nessa
+máquina também é porque essa aqui eu
+estou
+usando bem fraquinho eu vou mostrar um
+negócio ele
+vai cair beleza eu vou mostrar em outro
+vou pegar um tópico pequeno pode ser
+esse aqui posso vir aqui SQL
+Studio esse aqui seria um upgrade do
+Kafka Drop ou são ferramentas diferentes
+ferramentas diferentes esse é bem antigo
+de mercado já tem
+mercado tem muito tempo você pode
+comparar ele talvez com Conductor agora
+Enterprise Kafka White talvez dá bem bem
+menos do que esse aqui mas poderia vamos
+lá eu tenho o SQL Studio olha que legal
+posso vir aqui
+e posso fazer queries no meu tópico aí
+eu venho aqui e falo eu quero ver
+tabular aí eu quero fazer o seguinte eu
+quero fazer um
+WHERE WHERE account type ou igual a
+investimento eu posso fazer filtro eu
+posso fazer uma exploração no meu tópico
+lógico que é limitado por vários motivos
+porque não foi feito somente para isso
+mas aqui é para análise de bug não é
+para analítico a gente está conversando
+algumas coisas com eles para ver se eles
+conseguem habilitar essa parte daqui
+você consegue ver quantas partições que
+ele percorreu quanto que ele escaneou
+ele escaneou 2611 registros tem coisas
+bem legais nele aqui outra coisa que ele
+tem a parte compatibilidade backwards aí
+ele vem aqui você pode pegar o schema
+você tem a parte de acesso você
+pode fazer com que o acesso seja feito o
+que as empresas fazem com duas
+ferramentas o Relic mais open source
+poderiam usar somente o
+Lensys eu vou te dizer na verdade é para
+você usar os três porque o Lensys está
+muito mais para a parte de
+desenvolvimento dentro de casa você
+achar troubleshooting de mensagem
+analisar mensagem subir conector
+é acesso ao Kafka ninguém acessa o Kafka
+no seu Lensys você dá acesso para o
+pessoal acessar e você tem vários roles
+aqui dentro eu vejo muito mais como uma
+ferramenta de desenvolvimento do que uma
+ferramenta de observabilidade tem umas
+coisas de health check de alerta, de
+monitoria mas ele é mais focado nessa
+parte de por exemplo aqui não vai ter
+aplicado eu acho que não tem acesso
+deixa eu ver se eu tenho acesso a um
+cara aqui se eu
+tiver não vou ter não acabou já aqui
+você pode cadastrar suas aplicações para
+você ver dentro do mapa dentro de um
+mapa aí você vê que aplicação conecta em
+cada top conecta naquele que vira aquele
+conector é que o meu ambiente aqui está
+bem zerado mas eu posso tentar ver se eu
+consigo um ambiente com mais informação
+e aí você tem toda essa visão de ponto a
+ponto você pode ver aonde você registra
+a aplicação aqui eu vou fazer um aqui
+vai aparecer como
+é você registra a aplicação externa via
+REST aí você sabe se a aplicação está
+vindo até o topico de saída você pode
+fazer então a parada aqui por exemplo,
+se você está com os conectores meu caixa
+não está conectado aqui mas você poderia
+ver todos os conectores de onde que eles
+leem mostra só o conector dali que ele é
+source dali vai criar esse topico
+processou ali vai fazer umas coisas bem
+legais, tá?
+ele tem um negócio que eu gosto vou
+mostrar rapidinho pra vocês que é isso
+aqui olha não, calma lembra que eu falei
+que Kafka
+Streams ele é Java, né?
+os caras lá essa ferramenta é bem antiga
+devia
+ser 17, 18 possivelmente vamos fazer o
+seguinte vamos criar uma interface de
+SQL de SQL de SQL que você empacota e
+vira uma aplicação em Kafka Streams eu
+vou fazer um negócio aqui pra gente
+poder ver se isso é verdade eu vou pegar
+eu vou pegar uma aplicação um topico que
+está em JSON eu vou transformar ele em
+um topico em Java tá?
+só pra gente poder ver rapidinho um
+topico pequeno
+eu vou criar um pequeno porque eu não
+configurei um negócio aqui vamos ver se
+isso aqui vai dar
+src stopjson para estoqueado nome da
+aplicação
+abro2json beleza eu estou rodando aqui
+eu ainda posso escalar isso dentro do
+Kubernetes só que a configuração que eu
+fiz aqui é a mínima
+possível isso que eu vou mostrar é como
+você criar dentro do Kubernetes ele vai
+espinar várias você pode escolher
+quantos runners ou quantos pods você vai
+usar vai dar pau é muito grande esse
+aqui deixa eu mostrar aqui
+mais ou menos isso aqui é porque o topo
+é gigantesco eu poderia pegar os dados
+ele vai mostrar a aplicação que está e
+depois ele vai mostrar ou ver se eu
+consigo resolver o ambiente para mostrar
+para vocês lá no presencial eu faço uma
+demonstração separada mas esse cara é
+bem legal eu gosto muito dele e eu
+sempre recomendo para empresas que estão
+trabalhando com open source não sair do
+open source mas seguir para esse modelo
+criar esses usar esse cara geralmente
+para isso consumidores olha que legal
+olha que legal a página de consumidor
+lembra que a gente estava vendo lá dos
+offsets e tudo mais esse aí ele tem um
+lances doc para você rodar em doc mas
+ele tem um lances box para você rodar
+test só test eu comentei na primeira
+aula se você quiser usar um ambiente
+local tem o ambiente deles eles liberam
+um docker lá olha só que legal pode até
+estar isso é legal para vocês poderem
+ver se vocês conseguem acessar a
+aplicação a instância é 0 a instância é
+2 estou com 3 instâncias aqui 1 ,2 ,3 ,4
+4 instâncias desse conector olha que
+legal 4 instâncias
+desse conector vamos ver nosso conector
+é esse mesmo vou dar um vamos ver o
+código kget data connectors eu estou com
+s3 sim
+conector está com 4 aqui esse aqui
+será 3 separo 1 ,2 ,3 não está certo é 3
+estou contando 4 aqui 3 instâncias ou
+seja 3 tasks do conector e aqui para
+vocês conseguem ver se tem algum que
+está com lagging lembra do lagging que
+mostrei ontem de novo mostrei o difícil
+vocês pegaram o simples isso aqui te
+entrega isso pronto se você contar você
+consegue ver informações de broker aqui
+tem uma soma de cpu de utilização de
+disk memória esse aqui o líder que é o o
+controller e os followers então aqui
+você tem as informações bem legais esse
+aqui está com um follower aqui porque
+não está habilitado o gemex esse aqui é
+bem legal eu gosto muito da ferramenta
+beleza gente vamos passar para a parte
+de arquitetura gostaram do lenses?
+gostei bem legal gostei bem legal pode
+perguntar
+marcos o mateus não sei se você passou
+no
+lenses mas ele a gente tem uma
+visibilidade nele do como que está o
+help check do cluster que os meus
+recursos estão configurados por exemplo
+eu subi um conector e um tópico só que
+eu quero ver a saúde do cluster e não só
+do meu do meu recurso do meu conector e
+do tópico não sei se eu consegui ser
+claro não entendi tem esse cara aqui tem
+esse aqui services você tem o recurso do
+cluster system load se não me falha a
+memória é a soma do tanto do da memória
+como do cpu memória e disco desculpa e
+aqui você consegue ver CPU dá para você
+ver mas de novo ele não focaria nesse
+recurso dele focaria nesse recurso de
+desenvolvimento que é aí que eu acho que
+dá muito mais valor tipo você consegue
+fazer um tópico você consegue avaliar
+criar aplicação muito simples e
+pequena para você poder fazer um
+experimento eu quero pegar um pedaço do
+tópico eu quero gerar um segundo fazer
+algum tipo de trabalho coisa
+simples você tem que criar subir uma
+máquina de Flink fazer aquele negócio ou
+de Spark não, você faz ali, executa e
+acabou só que de novo ele não tem a
+surface de desenvolvimento que o Spark
+tem que o Flink tem então para coisa
+simples você faz ele pelo Lenses mesmo
+então funciona muito bem não tem nenhum
+problema não abriu tudo de uma
+vez então vamos lá gente vamos fazer um
+negócio aqui
+primeiro gente vou socar não tem nenhum

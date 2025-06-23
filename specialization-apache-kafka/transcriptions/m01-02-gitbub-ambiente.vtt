@@ -1,0 +1,242 @@
+Então, beleza, gente, vamos lá para o
+repositório que vocês vão ter acesso,
+tá?
+Deixa eu só abrir aqui para ver se
+ninguém tem uma
+pergunta.
+Acho que beleza, consigo vir.
+Então, tá, esse é o repositório de
+código, tá, que eu vou liberar acesso
+para vocês.
+Aqui tem o roadmap e aqui tem as
+explicações de cada pasta.
+Então, cada pasta lá dentro do
+repositório, a gente assiste a aula e
+vai ter explicação aqui de como é que
+funciona, tá?
+E eu vou fazer por partes.
+Então, eu vou parar aqui, a gente volta
+para a demo, para ali, volta para a demo
+e por aí vai, beleza?
+Então, a gente está na aula 1.
+Na aula 1, eu vou explicar agora a parte
+de deployment, tá?
+Para a gente ter noções básicas de
+cárrega.
+Então, se eu for na aula 1, eu tenho
+esse cara
+aqui.
+Importante, tá?
+Eu coloquei tudo isso.
+Tudo em inglês.
+Até para vocês praticarem, eu acho que é
+importante, tá?
+Eu vejo cada vez mais a gente tentar
+reduzir essa flexão da linguagem.
+E eu vi isso muito em peças de fora, tá?
+Vamos sempre tentar em inglês, beleza?
+Deixa eu fazer isso aqui.
+Então, aqui, ó.
+Vocês vão ter duas pastas na parte de
+deployment.
+O Docker, que é relativamente simples,
+para vocês subirem um cárrega.
+Hoje, depois da versão 3 .0.
+3 .7, 3 .6, na verdade, eles liberaram
+uma imagem Docker para você poder subir
+o Standalone Cast.
+Isso aqui é para quê?
+Para você testar o desenvolvimento.
+Quer desenvolver uma aplicação rápido?
+Quer testar algum evento?
+Quer testar algum comportamento?
+Eu faço um pull over, testar a última
+versão, que é a versão 3 .8.
+Eu testo aqui, crio o meu Docker, que é
+super simples, ó.
+Simples.
+Como diria um grande DBA que eu
+conversei, que é o meu...
+Que me instruiu, tudo que eu sei de
+banco de dados que eu aprendi com ele, o
+mais fácil que isso é mastigar em latim.
+Então, rodou, ele já está no ar, tá?
+E aqui a gente pode executar.
+Outra forma que eu gosto de desenvolver,
+tá?
+Isso não é jabá, não, porque eu não
+tenho nenhum tipo de parceria.
+A gente trabalha aqui, na verdade, com
+todo mundo, justamente para ter um
+ambiente agnóstico.
+Eu recomendo vocês...
+Baixarem o Lensys Kafka Box, tá?
+Aqui no site do Lensys tem um learning e
+tem aqui um free Docker Box, que tem
+Kafka, Connect, aplicações, DataGene.
+Tem uma aplicação minha, ou eles vão
+subir uma aplicação minha, que eu
+contribuí.
+Então, e você não tem custo nenhum.
+É simplesmente você registrar aqui o e
+-mail, tá?
+Eles vão te mandar a chave.
+É aquele negócio, né?
+Eles vão entrar em contato, perguntar o
+que vocês precisam, tentar vender, mas
+aqui você não tem obrigatoriedade
+nenhuma.
+De comprar.
+Você pode simplesmente usar, testar, e
+aí se divertir à vontade, beleza?
+De novo, muito simples, é te mandar o
+código, com a licença, você roda esse
+código aqui, você vai ter Connect e vai
+ter o Kafka, para você poder brincar à
+vontade, beleza?
+Ambiente de desenvolvimento.
+Agora, a gente vai...
+Eu vou explicar primeiro esse cara aqui,
+tá?
+Depois a gente entra e eu vou
+explicar...
+Eu vou na parte do Kafka, tá?
+Ignora o resto, gente.
+Não quero que vocês se preocupem com
+isso agora, não.
+Eu quero mostrar...
+Eu vou parar aqui o meu doc, para não
+ficar na minha máquina.
+Isso aqui que é importante, tá?
+De tudo.
+De tudo que vocês têm no YAML de
+strings, é isso aqui.
+Eu vou ter a quantidade de replicação
+que eu vou ter, padrão.
+Eu vou explicar isso daqui a pouco,
+quando entrar na parte de replicação.
+Número de partições.
+Aqui a mesma coisa, tá?
+E MinSyncRéplicas, que eu vou explicar
+também amanhã.
+Amanhã ou no dia 4, se não me engano.
+Isso aqui são as configurações em nível
+Kafka.
+Aqui, por exemplo, eu tenho uma retenção
+em horas, tá?
+E eu vou explicar sobre retenção também,
+daqui a
+pouco.
+Então, aqui eu subo o meu ambiente.
+O meu ambiente já está no ar, para a
+gente não perder tempo.
+Então, se eu for aqui...
+Vocês estão vendo bem, tá bom, o tamanho
+da
+tela?
+Se eu for aqui e der um kubectl get
+pods, para quem não sabe, trabalhando
+com o Kubernetes, tá, gente?
+O pod é a unidade onde a minha aplicação
+está.
+Pensa nele como se fosse um servidor,
+né?
+Onde eu tenho só a minha aplicação.
+Estou executando dentro de um servidor
+maior.
+Bem chulo seria isso, tá?
+Eu tenho uma namespace, que é uma
+organização lógica, em que eu gosto de
+separar as coisas, chamada ingestion.
+Lá eu tenho um Kafka.
+Aqui, ó, aqui são meus brokers, tá?
+Rodando.
+E aqui é o meu Zookeeper.
+Por enquanto, é isso que importa para a
+gente nesse momento.
+Tá?
+Então, eu tenho o meu Kafka aqui e tenho
+o meu Zookeeper já em cima.
+E aqui é importante, para quem trabalha
+no...
+Quem quer aprender Kafka, quem quer
+aprender Kubernetes, é...
+Aqui me fala se está disponível ou não.
+Ou seja, eu espero um container
+disponível.
+Eu estou em um de um, ou seja, estou no
+ar, tá?
+O primeiro é o que eu espero.
+O segundo é a minha realidade, tá?
+É o desejado e a realidade.
+Desejado 2, 2.
+1, 1.
+Está lá tudo no ar, tudo running.
+Aqui teve uma queda e é normal os pods
+reiniciarem, tá?
+Lá, no último dia, eu falo um pouquinho
+sobre o recycle de pod.
+É normal isso acontecer.
+Mas pensa que aquela estrutura que eu
+mostrei para vocês, onde tem um cluster
+de Kafka, um cluster de Zookeeper, aqui
+é a mesma coisa.
+Eu tenho um cluster de Kafka e eu tenho
+um cluster de Zookeeper.
+Olha, você falou assim, não é bom que
+tudo na mesma máquina.
+Aqui, gente, eles estão isolados.
+Completamente isolados um do outro.
+Onde eles têm todos os objetos, todos os
+artifícios, tá?
+Para ter a comunicação entre eles.
+São totalmente distintas.
+Então, aqui não tem o risco que tinha,
+como eu comentei.
+Aqui eles podem estar na mesma máquina,
+servidor, tá?
+Mesmo nó.
+Se eu for aqui, ó.
+Eu tenho os nós de máquina virtual.
+Eu tenho os nós de computação.
+Eles podem estar todos no mesmo nó.
+Não tem problema.
+Porque eles estão isolados em nível de
+aplicação e nível de networking também.
+Completamente isolados.
+Então, a gente não tem esse risco aqui.
+Beleza?
+De novo.
+Aqui é mais fácil.
+Mostrado aqui.
+Abre máquina virtual.
+Logar.
+Ah, esse aqui é o Kafka.
+Esse aqui é o Zookeeper.
+Então, aqui fica muito mais simples de
+você poder ver.
+E aqui o nome é DH, né?
+Porque aqui, ó.
+Eu dei o nome do meu cluster e tinha DH.
+Por isso que ele...
+É DH Kafka.
+É DH Kafka.
+É Zookeeper.
+Por aí vai.
+Beleza?
+Eu não vou adentrar.
+Aqui a gente vai mexer com o código
+daqui a pouco.
+Eu vou mostrar.
+Tó.
+Ficou esse negócio todo.
+Deixa eu pausar aqui.
+E voltar a parte da explicação.
+Alguém está com alguma dúvida até o
+momento?
+Está todo mundo sacando e tudo?
+Fechou.
+Fazer aqui...
+E...
+Aqui.
+Aqui.

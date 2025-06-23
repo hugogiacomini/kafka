@@ -1,0 +1,1288 @@
+É só para a gente poder ver as
+diferenças.
+João, pode perguntar.
+Por favor, pergunte.
+Deixa eu ver a pergunta que eu fui fazer
+aqui.
+Perdi a pergunta.
+Sim, posteriormente, João.
+Hoje, a gente terminando aqui, eu vou
+pedir o time amanhã cedo para eles
+tirarem os cortes e tudo mais e já subir
+na plataforma.
+No final da aula, eu mostro a
+plataforma.
+Na plataforma, os e -mails que o
+Alexandre mandou, eu vou já conceder o
+acesso.
+Eu só vou ver direitinho como é que
+vocês vão enxergar lá.
+E tem que ter um cuidado, porque existe
+um treinamento antigo.
+Acho que eu vou tirar o treinamento
+antigo do ar e vou colocar esse novo
+para vocês.
+Vocês vão ter acesso à plataforma, ao
+treinamento de Kafka e ao Kafka Service.
+Beleza?
+Pode ficar tranquilo.
+Então, vamos lá.
+E eu vou explicar isso no final da aula.
+O uso do Kafka Service.
+Então, vamos lá.
+Estrutura de log.
+Quando a gente fala de estrutura de log,
+eu tenho log de banco e log de sistema
+distribuído, onde eu trabalho aqui com
+índice, onde tem persistência, eu tenho
+um asset e quando eu trabalho com
+sincronismo de arquivos de log, eu tenho
+um master slater.
+Quando eu faço sistemas distribuídos, eu
+tenho o princípio do estado da máquina.
+Input, order, output, result, eu vou ter
+esse timestamp tudo ligado com o
+timestamp.
+E eu vou ter ativo, ativo.
+Onde eu posso ter leaders e réplicas.
+Só que o ideal é como que eu vou fazer
+um merge desses dois cargos, né?
+Como é que eu vou ter uma estrutura de
+dados, índice não é importante pra
+gente, mas eu preciso de algo
+distribuído.
+E aqui eu tenho estrutura de evento.
+Lembra que eu falei que tudo é mensagem?
+Tudo é a mesma coisa, né?
+A gente tem mensagem, a gente tem a
+mesma coisa.
+Quando eu falo que é um evento, quando
+eu mando isso para o Kafka, mando a
+mensagem, o evento para o Kafka, eu
+mando um cabeçalho, onde eu vou ter o
+nome do topic, deixa eu reduzir isso
+aqui, vamos
+lá.
+Eu tenho o topic, qual que é o topic que
+eu vou mandar, qual partição que vai
+receber esse dado, e qual o timestamp.
+E aqui eu trabalho com o sentido de
+passado, presente e futuro.
+Ou seja, o evento, ele vai começar a
+cair dentro da minha partição, dentro do
+meu streaming, que eu vou explicar mais
+amanhã, mas, de novo, uma aula
+complementa a outra, tá gente?
+O evento, ele vai cair no meu streaming,
+então o evento 1, 2, 3, 4, 3 e 4 são
+passado, o meu atual, o meu presente é o
+5, e na sequência eu vou ter 6, 7 e por
+aí em diante, tá?
+Em que a forma como é gravado e como é
+lido hoje dentro do Kafka é baseado em
+JVM, eu tenho uma aula que eu vou
+explicar para vocês lá no Kafka Series
+que tem, como é que funciona o zero
+copy, e ele é leitura sequencial, e isso
+é importante para a gente, leitura
+sequencial.
+Vou chegar lá e vou explicar isso agora.
+Então, vamos pensar nisso aqui.
+Vamos pensar nisso aqui por enquanto.
+Um tópico, ele...
+Lembra que eu falei um negócio de
+partição?
+Então, um tópico, ele vai ter...
+Eu vou subir isso aqui, porque isso aqui
+tem que estar mais aqui.
+Opa!
+O legal é isso aqui que eu posso mexer
+na hora.
+Eu tenho três unidades principais, vocês
+têm que entender isso, gente.
+Se não entender, eu repito, viu?
+Tópico, partição e offset.
+O tópico, como eu falei, é onde estão
+armazenados os meus dados, né?
+Onde meus eventos estão acontecendo.
+Lembra que eu falei que ele é uma
+representação de tabela?
+Eu tenho meu tópico.
+Partição é onde meus dados são alocados,
+um append onde.
+Então, eu tenho três partições aqui,
+zero, um e dois.
+Eu tenho um evento na posição um, dois e
+três.
+Posição por quê?
+Dentro da minha partição, eu tenho o
+conceito de offset.
+Offset é um número inteiro de onde está
+o meu evento.
+De novo, esquece índice.
+Aqui não existe índice.
+Aqui existe offset.
+Então, para a minha aplicação, ela
+sabe...
+Meu consumidor, por exemplo, saber em
+que posição que ele está, que ele leu,
+para não ficar lendo repetidamente
+milhões e milhões de registros, ele se
+coordena pelo offset.
+Eu falo assim, olha, o meu produtor
+aqui, ele gravou agora no offset dois,
+no offset quatro, no offset três.
+Então, partição zero, um e dois.
+Os meus consumidores, eles estão lendo
+na partição um, offset dois.
+Então, essa aplicação Python, está na
+partição um, está aqui.
+Então, vamos pegar esse cara aqui, só
+para vocês entenderem.
+Vamos fazer ele miudinho.
+Então, ele está aqui.
+Ele está aqui.
+Vou botar menorzinho ainda.
+Esse cara está aqui.
+Na partição um, ele está aqui.
+Na partição dois, ele está...
+Vou botar zero aqui para ele ficar...
+Na partição dois, ele está no offset
+três.
+Então, aqui está no mesmo ponto em que
+meu produtor acabou de gravar.
+Na partição zero, também.
+Ele está na dois.
+Esse é o momento da minha leitura.
+Então, eu vou lá no offset e falo assim,
+gente, onde que eu estou?
+Você leu o dois, você leu o dois aqui, o
+dois aqui e o três aqui.
+Como o Kafka distingue Python e recorda
+o byte offset de cada um deles?
+Gabriel, excelente pergunta.
+Muito bom.
+Muito bom mesmo.
+Meu amigo, primeiramente, o Kafka em
+Python Go é indiferente.
+Tudo que entra nele é binário.
+Eu vou explicar de uma vez.
+Ele é binário.
+E outra, cada aplicação tem que ter um
+client ID e um grupo ID.
+Então, pelo grupo ID daquela aplicação
+que ele vai saber.
+Isso é uma das práticas de
+desenvolvimento que eu vou explicar
+tanto no dia dois como no dia quatro.
+O dia de produtos ele consome.
+Tem que ter uma nomenclatura, tem que
+ter nome, senão ele vai gerar um
+próprio.
+Ele vai pegar pela request qual foi
+aquela aplicação ali, mas o risco de
+você ficar lendo o tempo inteiro dele
+gerar outro, qualquer tipo de rebalance
+que eu vou explicar na frente, é muito
+grande.
+Então, o ideal é a gente criar um client
+ID, mas não tem nenhum risco de fazer.
+Eu faço pela aplicação.
+Para a minha visão, o problema é muito
+grande, que é o quê?
+As aplicações, os clientes, tanto o
+producer como o consumer, eles são os
+principais pontos de configuração que a
+gente tem hoje para produzir e colher
+dados.
+Eu não fico no nível servidor.
+Então, se você falar comigo que essa
+aplicação aqui é a Python
+00, ele vai saber que esse cara aqui
+está aqui dentro.
+Se você trocar o nome da aplicação e ler
+de novo, começar a ler, parou a
+aplicação e mudou, ele vai começar a ler
+daqui de novo.
+Então, tem que tomar muito cuidado com
+isso, mas ele vê baseado no client ID e
+do PID.
+Esses que são as configurações para ele
+saber onde é que está.
+E grava isso internamente.
+Ele tem um tópico chamado Consumer
+Offset que eu vou explicar no dia 4, que
+é o dia de consumer, que ele tem essa
+informação.
+Mas vamos lá.
+Você entendeu?
+Ótimo.
+Então, aqui ó.
+Aplicação Go.
+Partição 1, 2 e 0.
+Ele está na 0.
+Então, começou a ler agora.
+Então, eu posso ter aplicações lendo em
+momentos diferentes.
+Totalmente possível e não só possível
+como recomendado.
+Então, vamos de novo aqui.
+Só para vocês pegarem.
+Tópico.
+Representação ou estabela.
+Partição.
+É onde o dado vai estar dividido dentro
+do ambiente do carro.
+Offset.
+É a posição em que o evento está dentro
+da partição.
+Então, é dentro da partição.
+Então, eu posso ter offset 0, 0 e 0 em
+partições diferentes.
+Ele não vai ser repetido na mesma
+partição, mas a partição vai ter lá
+offset 0, 1 e é inteiro sequencial.
+Daqui a pouco a gente chega lá.
+Outro ponto importante.
+Lembra que eu falei que a mensagem vem
+em uma chave, valor?
+A chave é opcional.
+Se você envia sem chave, a mensagem foi.
+Eu não passei chave, não desteminei que
+vai ter uma chave.
+Ele vai fazer load log nas partições.
+Vai fazer assim.
+Uma porção de dado aqui, põe aqui, põe
+aqui.
+Se eu ponho chave, todo o evento daquela
+chave vai para a mesma partição.
+Existe algum cálculo para saber o número
+de porções ideais para cada workload?
+Eu tenho.
+Depois eu vou ver se eu consigo um
+artigo do Jun Hao, em que ele fala uma
+métrica para poder fazer isso, mas eu
+sempre começo com...
+Aí é uma prática que eu faço, beleza?
+Experiência.
+Geralmente, eu não crio muitas
+partições.
+Eu vou explicar porquê.
+Quando eu tenho muitas partições, eu vou
+ter que rebalancear essas partições em
+algum momento.
+Precisa rebalancear, ou seja, quem está
+acessando o quê?
+Aconteceu qualquer tipo de problema, por
+exemplo.
+Eu vou ter que falar quem acessa quem.
+Mudou se eu tiver muito, eu posso
+separar o ambiente, porque eu já vi isso
+acontecer.
+Então, eu prefiro ter um numerozinho aí,
+começar com 9.
+E isso se eu não tenho necessidade de
+ordenação.
+Se eu tiver que ordenar, é 1.
+Já vou adiantar aqui uma coisa do último
+dia, tá?
+Quero ordenar meu dado.
+Quero garantir 100 % que o dado que o
+meu produz sem enviar, o consumidor vai
+pegar na ordem exata.
+Partição 1.
+Se for maior do que isso, não vai ter
+isso de garantia nenhuma.
+Você pode fazer o que for, que não vai
+conseguir.
+Que é uma coisa do Kafka.
+Alguém pode responder mais rápido, ele
+vai gravar.
+Então, você mata a partição disso.
+Beleza?
+Então tá.
+Como eu comentei, o evento com chave, eu
+posso mandar o evento soldado, eu posso
+fazer a chave, e eu tenho o que eu chamo
+de log compaction, que é uma
+configuração.
+Se eu pegar como é que é normalmente
+olha como é que acontece.
+Isso é normal pra gente.
+Eu tenho o offset, 1, 2, 3, e aí eu vou
+ter a chave.
+Se a chave 1, chave 1, chave 1, chave 1,
+ele vai aparecer pra mim, Matheus, Luan
+e Leonardo.
+A mesma chave, se eu não tiver com log
+compaction habilitado, vai aparecer o
+change log.
+Ele vai começar a carregar aquilo ali
+sem parar.
+Só que pra alguns casos, só me interessa
+eu saber o último registro.
+Eu não preciso ter tudo.
+E aí vem o log compaction, que é uma
+configuração que obrigatoriamente tem
+que ter chave.
+Aqui eu tenho que mandar chave.
+É uma configuração que eu faço que eu
+falo, olha, K1, que é a minha chave 1, o
+último registro que entrou pelo
+timestamp é o Leonardo.
+Então é só Leonardo.
+K2, o último offset foi o 12, que foi o
+Wesley.
+Então Wesley.
+Eu não vejo nada antes disso.
+Porque literalmente ele loca aquilo ali
+e ele deleta os dados lá dentro.
+Então eu vou ter aqui limpo, porque aqui
+eu já deletei e aqui eu vou começar a
+deleção.
+Eu já fleguei esses caras como sujo
+porque eu vou deletar esse cara em algum
+momento.
+Não existe update dentro de Kafka.
+Eu vou explicar mais detalhes amanhã,
+porque amanhã faz mais sentido, porque a
+gente vai ver streaming, processamento e
+tal.
+Eu vou explicar algumas coisas de
+update.
+Não tem update.
+O evento é imutável.
+Tá?
+Então, beleza.
+Vamos pra mais uma demo.
+E aí eu vou explicar essa parte aqui.
+Aqui eu vou direto fechar.
+Deixa eu só mudar a tela pra vocês
+poderem ver.
+Agora a gente vai ver código.
+Simples.
+Código simples, tá gente?
+Vamos começar devagar de novo.
+Eu quero que vocês comecem devagarinho,
+pra vocês poderem testar posteriormente.
+E não tem nenhum tipo de problema.
+Beleza.
+Então, aqui eu vou fechar esse par aqui.
+E aqui eu vou pro internos.
+Tá?
+Tópico, partição e offset.
+Também na tela é bem bom, né?
+Deixa eu colocar de novo aqui no meu
+chave, porque eu fico doidinho,
+doidinho.
+Não sei se vocês...
+Passou uma pergunta ali.
+O dado ele fica replicado entre
+partições?
+Líria, eu vou explicar daqui a pouco.
+Sim.
+Mas eu vou explicar, tá?
+A parte de replicação eu vou explicar
+daqui a pouco.
+Pode ficar tranquilo.
+Eu vou explicar porque eu vou mostrar
+aqui uma criação de tópico e tem a parte
+de falta de replicação.
+Aí vocês vão ver na prática como é que
+isso funciona.
+É muito legal.
+Eu particularmente novo, mas eu sou
+espetacular porque eu gosto de Kafka pra
+caramba.
+Então, vamos lá.
+Como é que funciona a criação de um
+tópico no Kafka via comando, tá?
+Aqui, ó.
+Daqui pra frente é qualquer Kafka.
+Eu até tô rodando dentro do Kubernetes.
+Olha, executa pra mim, dentro desse pod
+aqui, esse comando.
+Qual é o comando?
+kafkatopics create bootstrap é local
+host, que eu tô logado já dentro, eu vou
+estar logado dentro daquele pod.
+Fator de replicação 3.
+Partições 6, tá?
+Eu vou chamar ele de kafkatopics 2.
+Eu já tenho um lá.
+Então, aqui eu vou rodar.
+Aqui, ó.
+Dei tudo pra garantir pra mensagem 100%.
+Ele vai dar mensagem de tópico.
+Criado.
+Assim que ele quiser.
+Create topic.
+Kafka training 2.
+E aqui é um comando.
+Vocês vão ter acesso a esses comandos
+todos.
+Tá, gente?
+Ele tá no repositório já.
+Então, aqui eu vou listar todos os meus
+tópicos.
+Listei meus tópicos.
+E aqui tá o meu Kafka 42.
+A gente tem vários aqui.
+Depois eu vou entrar e vou explicar cada
+um deles.
+Podem ficar tranquilos.
+Fazer parte das nossas transformações
+aqui.
+Então, aqui eu vou no 2, que é o nome do
+tópico.
+E eu vou fazer um describe.
+Ou seja, será que o Matheus falou a
+verdade quando ele criou o fator de
+replicação 3 e partições 6?
+Então, aqui eu dou um describe no meu
+tópico.
+Se eu não coloquei o nome errado, que eu
+acho que eu não coloquei.
+Perfeito.
+Aqui, ó, gente.
+Isso aqui é bem legal.
+O nome do tópico.
+Ele tem...
+Isso vai na versão também nas outras
+versões, tá?
+Se não me engano, na versão 3...
+2 .9 ou 3 .0.
+Ele veio esse id único aqui, porque não
+tinha antes.
+Quantidade de partições.
+Fator de replicação, eu vou explicar
+daqui a pouco.
+Vai entrar em detalhes aqui, mas aqui,
+ó.
+Minhas partições.
+0, 1, 2, 3, 4, 5.
+Eu vou explicar daqui a pouco o que é
+líder, tá?
+E que são esses 5 réplicas e réplicas.
+Ou a gente vai ver aqui, ó.
+Partição e liderança.
+Vai ver isso.
+O mais importante que a gente quer ver
+aqui, eu tenho as informações do meu
+tópico aqui.
+Se eu tiver alguma configuração extra, a
+gente vai ver isso também, vai aparecer
+aqui, tá?
+Aqui é o tópico cruzão da forma que eu
+pedi pra ele criar.
+E se eu não determinar o fator de
+replicação ou partição, ele vai usar o
+default do servidor.
+Beleza?
+Por exemplo, eu posso habilitar o auto
+create topic, geralmente é nível igual a
+false, ou seja, eu não consigo criar
+topic automaticamente, mas se eu tiver
+isso habilitado, isso não é uma prática
+pra gente colocar habilitado, somente de
+teste.
+Se eu tentar produzir ou tentar
+consumir, automaticamente ele vai criar
+um topic, mesmo se eu consumir, tá?
+Não tem nada, o topic não existe.
+Tentar consumir, ele vai criar.
+Beleza?
+Se eu tiver o auto create 4 vazio, mas
+vai
+criar.
+Então tá, gente.
+Deixa eu confirmar aqui...
+Log replication retention.
+Vou pegar aqui esse cara aqui, ó.
+Fator de replicação...
+Log compaction.
+Eu tava explicando o log compaction, vou
+mostrar o log compaction pra vocês.
+Então vamos lá, vem sim.
+Vou criar meu topic novo.
+Vou chamar ele de 2.
+Na verdade, é.
+Eu queria criar ele vazio.
+Cadê?
+Aqui tá criando um monte de coisa.
+Cadê?
+Deixa eu criar ele como esse cara aqui.
+Testa, testa, testa.
+Ele não salvou, não sei porque.
+Vou pegar aqui, ó.
+Log compaction.
+Vou criar um aqui, ó.
+Log completion project novo.
+Vou criar o novo.
+Se tiver alguma dúvida, me fala.
+Eu tô aqui, olhando vocês.
+E aqui eu vou alterar, vou lá embaixo
+que eu vou alterar as minhas
+configurações.
+Se a gente for dar um describe nesse
+topic...
+Deixa eu dar um describe nele aqui
+primeiro.
+Describe...
+Cadê meu describe, meus amigos?
+Ele chama 2Json.
+2Json.
+Ele vai estar assim Zerado, né?
+Ele vai estar igual ao outro que eu
+criei Porque não tem nenhum tipo de
+padrão Eu posso vir aqui e alterar esse
+toque Então eu posso rodar comandos de
+alteração Vou vir aqui e vou rodar Esse
+cara
+aqui Opa, cadê?
+Nome, nome, nome, nome Posso subir aqui
+Então eu posso, de novo, tem que
+tomar cuidado Isso aqui eu estou
+mostrando para vocês Mas não vamos fazer
+isso amanhã não Pelo amor de Deus Não
+vão lá e mexer no tópico sem
+ter certeza Que vocês querem criar ele
+com um logo compacto Normalmente a gente
+vai Para o Criar ele de uma vez Compacto
+para aquele tipo de finalidade Aqui eu
+já modifiquei E aqui a gente vai ver a
+modificação Eu vou rodar um comando só
+Só para vocês poderem ver, depois eu vou
+criar ele já compacto Não tenho nenhuma
+dúvida Estou gostando de ver Eu mandei
+Isso aqui é uma das
+configurações Mas as configurações que a
+gente tem que fazer É o compact É
+reduzir a retention Um delete, ou seja
+Eu falo que ele é compacto, primeiro
+Depois eu falo, olha, o tempo para você
+ir lá E fazer o Crianap desse cara É de
+100 Então eu vou, o segmento, ele vai
+durar só 500 milissegundos O máximo que
+ele vai ter de byte é isso Então eu vou
+colocando configurações Para garantir
+que esse cara vai estar locado E eu vou
+deletar De novo, gente, aqui deleta a
+informação Por isso vocês têm que ter
+cuidado Quando for criar Se realmente é
+necessidade De vocês criarem um log
+compacto Tem casos que realmente tem
+Então eu vou colocar aqui 3 Para a gente
+poder gerar ele bonitão Com todas as
+configurações Na verdade eu queria gerar
+ele Normal
+Primeiro Não, pode ser 3 mesmo O que a
+gente vai ver na prática Então aqui eu
+vou criar um tópico novo Criei o 3 E aí,
+meus amigos, eu vou
+jogar Eu vou jogar um comando zip aqui
+Que esse comando O que ele está fazendo,
+tá?
+Ele está criando para mim, produzindo
+Ele é um console Produzir, de novo, esse
+aqui é para teste Para desenvolvimento,
+para você poder brincar Esse aqui é um
+comando SH, para você produzir Dados no
+Kafka Com a instalação do Kafka, você
+instala ele e já vem esse Kafka Vou, vou
+fazer assim Eu explico
+assim, tá?
+Eu explico Então aqui eu vou produzir os
+dados Beleza?
+Então eu criei um tópico compacto Falei
+assim, olha, eu quero que esse tópico
+seja compacto E agora eu vou Criar Eu
+vou produzir dados para
+ele Então aqui eu estou produzindo já
+Matheus, Luan e Victor E a gente vai
+Consumir para a gente ver se é isso
+mesmo Aí eu vou aqui Vou falar assim,
+será?
+Tá lá Vamos ver se os dados estão aqui
+Então eu vou lá, vou consumir Do meu
+tópico novo, que é o 3
+Tópico que não existia antes E tá lá,
+chave 1, Matheus Luan, Leonardo E
+Victor, beleza?
+Só que aí, de novo, eu quero manter
+Somente o último registro Porque se eu
+pegar um tópico normal A gente vai fazer
+o mesmo teste com o tópico normal Ele
+vai manter os dados repetidos duas vezes
+Então eu vou chegar aqui e eu vou falar
+assim Cara, agora a chave 1 é preciso E
+a chave 2 é na área Então eu vou chegar
+aqui No tópico 3, que eu criei E vou
+falar assim Produz para mim Chave 1,
+mesma chave Do meu e do Luan Chave 1 e
+chave 2 Mas com um valor
+diferente Já que são valores diferentes
+Deixa eu apagar Desse aqui
+Deixa aqui Chave 3 3, 3 vezes, não
+é?
+3 vezes Então eu vou consumir agora E
+tudo deu certo no ambiente E vai mostrar
+aqui agora somente A Priscila e A Nayara
+e o
+Matheus Não vão aparecer mais Ainda
+estão indo Quem ainda não fez o Trianap
+Tem que executar mais uma vez Fazer mais
+uma inserção de uma chave
+nova Opa, aqui tá errado Aqui é o 3
+3 Seria só mais um registro Para forçar
+o Trianap
+E agora ele tem que aparecer Somente o
+3 Vamos ver Aí, tá vendo?
+Aqui não tem mais Matheus e Luan Só tem
+agora Leonardo, Vitor, Priscila Que
+agora assumiu a chave 1 E a chave 2
+Lembra que eu falei?
+Você não acessa mais o dado E aí isso
+aconteceu porque Como eu triguei um novo
+evento Completamente novo Ele já gerou
+Opa, peraí, esse aqui é compacto E eu
+preciso Limpar Baseado na chave Então,
+de novo Se eu for aqui no meu Describe
+Describe E aqui eu vou 3 O que eu queria
+mostrar pra vocês aqui E se eu for no
+meu Describe, agora Eu vou ter uma
+partição só Só que é o tanto de
+configuração O config Eu falei, ó, o
+Trianap é compacto O segmento, esse aqui
+não Esse aqui não precisa preocupar não
+Então eu deixei esse aqui, ó É que eu
+deixei o mínimo de réplicas comum Pra
+ser mais rápido Que eu não queria que
+ele replicasse Que ele esperasse Tem que
+ter o mínimo de uma réplica Eu falei
+assim, ó, o Trianap é compacto A
+quantidade de segmento é essa O mínimo
+tem que ser pra ele fazer Gerar a rotina
+de limpeza Também tem que ser 0 .0 .1
+Pra ser rápido, tá?
+E aqui eu falei assim, olha Em 100
+milissegundos Você vai lá e deleta Se
+você for Se aquele dado For marcado Pra
+deleção Sacaram?
+Viu o que foi feito?
+Se a gente pegar um tópico normal Vamos
+pegar um tópico normal aqui
+Pra ficar mais Acho que esse tópico aqui
+é normal Vamos pegar o 2 O 2 não tem o
+compacto Se eu pegar aqui o 2 Vamos ver
+se ele tá Senão eu crio um 4 aqui zerado
+Não, o 4 tá Vou pegar um 4 Só pra poder
+pegar aqui Esse ambiente aqui é bicho
+patinado Teste mesmo Vou criar um tópico
+aqui Eu peguei o 4 aqui Se eu fizer a
+mesma coisa que eu fiz Olha só Eu vou
+gerar dados pro 4 Vou pegar no 4 E vou
+gerar a mesma coisa Matheus, Luan,
+Leonardo e Vitor Vou vir aqui E vou
+gerar pra mesma chave Chave 1, chave 2
+Eu vou gerar de novo
+Preciso de Nayar Eu vou gerar de novo
+Vou gerar aqui A Cristina Que é a roupa
+pra me intrigar Um novo evento Já entrei
+em 3 tópicos Já entrei em 3 tópicos só
+pra ficar mudando Mas é o mesmo tópico
+que eu tô trabalhando agora Tô inserindo
+dados no mesmo tópico Beleza?
+Ah, faltou mudar Vocês pegaram aí Tá
+vendo?
+Precisa de atenção Perfeito Gosto é
+disso Deixa eu
+ver aqui Aqui eu gerei certo Aqui foi 4
+Só os novos que não Tá vendo?
+Eu tava testando Tá prestando atenção
+Tava testando vocês Então aqui, ó Vou
+gerar pro 4 Pro 4 que é o certo E vou
+gerar o 4 aqui de novo
+Perfeito Comportamento normal Cráfica É
+um change log Se eu for fazer Consumir
+aqui pro 4 Eu vou ter todos os meus
+registros lá Tá
+vendo?
+E eu posso rodar Infelizmente Que não
+vai acontecer nada Tá vendo?
+Aí, tá todo mundo lá Tá vendo?
+1, 1 2, 2 3, 5 Por quê?
+O Kafka Ele foi feito pra ser um Pra ser
+um Se fosse um log serial Eu vou
+carregando Fazendo append Na frente do
+meu Dentro da minha partição Do meu
+offset O comportamento normal dele É
+você não compactar É você simplesmente
+Gravar tudo lá dentro Mas Em alguns
+casos A gente vai ver Que são
+interessantes Vocês vão começar A
+assimilar isso Só não importa O último
+registro O último registro Por exemplo
+Vou fazer uma agregação No Kafka Eu
+preciso ter Todas as informações De
+agregação Não, eu tenho que ter Só o
+dado da agregada Eu não preciso Ter toda
+aquela história Porque o agregado É o
+resultado final Eu não preciso Ter a
+informação Toda a agregação Então faz
+sentido A gente ter Um log compacto No
+fardo de agregações Tá?
+Pegaram?
+Então vamos brincar Mais um pouquinho
+Com o Kafka
+Então Esse condição Eu rodou É só um
+list É só um list Ele é considerado Um
+consumer É um consumer Gabriel Aqui na
+verdade O que ele está fazendo?
+Eu estou usando Um SH Dentro do Kafka
+Para ele Ele criar um consumer Interno
+Via SH E ler o dado lá dentro Tá?
+Você viu Que ele parou E ficou esperando
+Porque ele leu Aquele último offset E
+aqui eu falo From beginning Ou seja Do
+primeiro offset Ou eu falo Do primeiro
+Ou eu falo Do último Tá?
+Se eu tirar aqui Esse Esse From Eu vou
+ler sempre Do último Então sim Ele não é
+só um list não Ele é considerado Um
+consumer Nesse caso aqui Mas bem simples
+Só comando Bem simplesão mesmo Gente Eu
+acho melhor A gente seguir Vocês querem
+fazer Uma pausa agora?
+Porque eu acho que Melhor a gente seguir
+Porque senão A gente vai ter que pegar
+Um pouquinho da ideia Não sei se Eu Pra
+entrar tranquilo O negócio é vocês Vocês
+querem seguir Ou vocês querem Fazer uma
+pausa De dez
+minutos Manda um chat Eu vou deixar
+vocês
+Escolherem Então beleza Vamos embora
+Vamos embora Então vamos Vamos falando
+Bora, bora, bora Então bora, bora, bora
+Então tá Então deixa eu compartilhar
+Aqui de novo Pra gente entender Uma
+outra parte E eu
+explicar Então a gente pegou A parte Pra
+partição A gente viu Vocês viram aí Na
+Na tela aí de boa?
+Confirmem por favor Sky draw?
+Sim, sim, sim Perfeito Então tá gente O
+Kafka Ele tem uma Uma caixa
+Característica Que é muito legal
+Principalmente pra quem Trabalha com
+tecnologia O producer E o consumer Eles
+são totalmente Desacoplados um no outro
+O que isso significa É Se um consumer
+Falhar Não acontece nada Com o producer
+E vice -versa Então um producer Tá
+gravando aqui E esse cara tá lendo O
+Kafka controla isso Então não tem Nenhum
+tipo de interrupção Não tem lock -in Não
+tem nenhum tipo De problema Aqui, tá?
+Nesse tipo de situação Por exemplo Eu
+tenho mensagens Que são lindas Por
+Python e Java Aqui E como eu comentei O
+mais legal é Não importa o tipo de
+mensagem Que eu tô aqui Que é binário,
+né?
+Então se eu tô lendo Python Que aqui é
+Go É indiferente, tá?
+Aqui dentro Aqui ele vai Intempetar Vai
+ler em byte Vai entregar aquele dado
+Serializado ou deserializado Então aqui
+O que eu mando Mensagem O que eu leio
+Não atrapalha Nenhum outro Beleza?
+São arquiteturas Que a gente fala Que é
+totalmente desacoplada E é uma pool
+arquitetura Tá?
+Eu vou lá E acesso o dado Beleza?
+Ele não manda Para mim Eu tenho que ir
+lá Acessar E não afeta Se eu aumentar
+Aqui também Aumentei consumidora Que eu
+adicionei Uma aqui Também não afeta
+Produtor E por aí vai Beleza?
+Então Agora Que a brincadeira Começa a
+ficar legal E foi a coluna da Lívia, né?
+E a replicação?
+Como é que funciona?
+Vou dar um zoom aqui Para vocês poderem
+entender Certo?
+Aquele fator de replicação Quando eu
+falo Que eu tenho um fator de replicação
+Em nível tópico Tá?
+Em nível tópico isso Eu falo Eu falo
+assim Olha Eu quero que você Pega essa
+partição E replica ela Em lugares
+diferentes Só que eu vou ter um líder O
+que vai acontecer?
+Aqui, por exemplo Eu tenho um tópico De
+fator de replicação Igual a 3 Meu fator
+de replicação Ele pode ser Igual ou
+menor A quantidade de brokers Que eu
+tenho Tem um detalhe Muito importante,
+tá?
+Esse fator de replicação E esse processo
+de replicação E líder e follower Eles
+são Comunicações contínuas Então quando
+você vê Um cluster de mil Dez mil
+brokers Por exemplo Normalmente você vai
+ver Fator de replicação 5 Replicação 3
+Por quê?
+Porque eu tenho que Garantir um mínimo
+Se eu colocar um fator De replicação 5
+Muito grande Toda vez que um dado Entrar
+Eu vou ter que Para todo mundo Receber e
+replicar E me dar um ok Isso pode matar
+A sua latência Tome muito cuidado Quanto
+a isso Normalmente De novo Você vai ter
+3 Você vai ter replicação 3 5
+Incluências muito grandes 3 e 5 Eu não
+vi Mais do que isso Na verdade eu
+acredito Que 3 seja O melhor número
+Independente da quantidade Você tem que
+ter No mínimo 3 Brokers Eu estou de
+replicação Igual a 3 Como é que ele
+funciona?
+Lembra que eu falei Da eleição De um
+líder de partição?
+Eu falo aqui Esse cara é o líder Todo
+dado que chegar Ele vai para esse líder
+aqui E ele vai ser replicado Entre os
+followers Então o líder vai ser Tipo
+Gente O dado está aqui Quando acontecer
+Você tem que olhar para cá Você tem que
+olhar para o broker 2 Para receber a
+partição 0 Partição 1 O líder É um
+Follower e follower Partição 2 O líder é
+o 3 E nada impede De um broker Ter mais
+de uma partição Líder de mais uma
+partição A gente vai ver um pouquinho Da
+liderança Como é que isso funciona Vocês
+vão ficar bem claros Sobre isso Mas E
+qual que é o legal disso?
+A partir do momento Que acontecer alguma
+coisa Com o broker Automaticamente Ele
+tem uma eleição nova Que Na arquitetura
+Antes do broker Do craft Usa o keeper
+Que é responsável Por Gente Quem
+responder primeiro É o novo líder Ele
+vai responder E vai E vai trigar Aqui
+Então vamos de novo Uma outra demo Para
+vocês poderem ver Isso na prática Eu
+acho que Prática Fixa Então Vamos aqui
+Para A leadership Então aqui Eu tenho
+aquele
+meu tópico Lá Vou pegar o 2 É o 2 que eu
+criei E aqui Eu vou dar um Describe nele
+De novo Eu quero ver Como é que está A
+estrutura dele interna Isso aqui é bom
+Para vocês pegarem Ah tá Não deve ter o
+2 não Pode ser isso aqui Pode ser isso
+aqui Isso aqui Eu não usei para nada Não
+vamos resolver Aqui
+agora Aqui é porque Esse erro aqui Tá
+gente É porque eu coloquei Um tópico que
+não existe É desse erro Eu dei um
+Describe E um tópico que não existe
+Beleza Esse aqui é o meu tópico Então eu
+vou Copiar Esse pedaço aqui Para a gente
+ver Porque essa parte Que importa Como
+assim Essa parte que importa É essa
+parte Que me importa Olha só A minha
+partição 0 O líder é o 2 Né Então eu
+tenho Um dado no 2 No 1 E no 0 E eu
+tenho Minimum de replicação Entre
+eles todos Tá Então eles estão Todos
+sincronizados Tá Ou seja Em sync Quando
+aqui aparece Em sync É porque Todos os
+meus tópicos Estão ok Então Só que aí
+Vamos Vamos simular um desastre Que eu
+acho que é um desastre E é legal Para a
+gente poder ver Alguém chegou E falou
+assim Olha Não sei se vai dar tempo Né
+Deixa eu Fazer melhor Deixa eu fazer Um
+negócio aqui Para vocês poderem ver Para
+ficar mais rápido Eu vou dar um
+Challenge de Portion
+E Beleza Aí alguém Alguém chamado
+Matheus Chegou e falou assim Olha
+Eu Estou gostando Desse cluster Não Ele
+está Com elenco Aqui Você vai travar
+Warp Tá Tá bom Esse aqui é um terminal
+Tá gente Só para vocês poderem ver Que é
+um terminal Deixa eu fazer assim Uma
+pergunta E aqui eu falei assim
+Olha O 2 Está aparecendo Em 1, 2, 3
+Partições Vamos colocar aqui Que o 2 É o
+líder Da partição 0 E o 2 Da partição 3
+Da partição 3 E aí eu vou fazer Sim meus
+amigos Eu vou vir aqui Vou falar assim 2
+Tchau Elite Pode Eu vou Matar O meu 2
+Bom Matei Derrubei ele Perdeu
+comunicação Com o meu cluster Se eu for
+ver agora Se eu já Efetivei O conto Já
+foi Vamos ver Como é que está agora Olha
+lá O líder Não está mais E aqui Em sync
+Ou seja Minhas réplicas Estão
+sincronizadas Cadê o 2 aqui Não está
+mais Porque eu matei o 2 Então ele
+Automaticamente Ele flaga Fala assim A
+gente Joga para outro cara Porque tem
+réplicas Disponíveis Essas são as
+réplicas Que estão registradas Muda o
+meu líder E ó Tiro do ensinque Porque
+não está sincronizado Só que O meu clã
+Costuma subir rápido E aqui eu só matei
+rapidinho Para a gente poder ver
+Está no ar de novo Então se eu for vir
+aqui agora E rodar de novo Ele já vai
+estar No ensinque Está vendo?
+Ele já voltou para o ensinque Mas É
+importante Viu?
+Ele não volta a ser líder agora Então
+Quando um broker Perde a liderança de
+partição Ou seja Ele é o principal Ele é
+o cara que vai receber Os dados da
+leitura Ele que vai coordenar isso
+Quando ele sai da liderança De uma
+partição Ele volta para o cluster Ele
+não volta E assuma a liderança não Não
+tem que perguntar Ah, mas não quer dizer
+Que ele morre?
+Não, não volta Só quando acontecer Uma
+nova eleição E ele estiver elegível Ou
+seja Estiver funcionando o cluster Deu
+ok Que esse cara está funcionando Está
+up E aí ele pode concorrer de novo Por
+que ele vai correr?
+Vai ligar É porque o líder Ele vai ser
+responsável Por receber o dado E por
+coordenar Quem está acessando É uma
+estudante Considerável Sobre um servidor
+Beleza?
+Se a rep que eu fui deletada Por que ela
+voltou depois?
+Perfeito É Kubernetes Meu amigo Como é
+que eu fiz?
+Eu deletei o pod Mas eu tenho O volume
+Ele está fora Então quando eu deletei Eu
+mandei assim Mata Ele vai tentar subir
+Automaticamente Isso é uma
+característica Do Kubernetes Ele vai
+subir E falar assim Opa Esse volume É
+essa aplicação Ele atacha E volta Então
+em caso de desastre No cluster Ele é
+automaticamente Na característica do
+Kubernetes Ele vai tentar subir de novo
+Como eu só deletei Eu só falei assim Cai
+Eu não fiz nenhum tipo De configuração
+Modificação E o pod Ele tem um ciclo de
+vida Automaticamente ele voltou Então o
+que ele mudou Para mim Beleza?
+Então vamos copiar aqui Para a gente
+poder Ver Olha só Deixa isso aqui na
+verdade Para atualizar a gente Vocês
+poderiam Quando vocês forem ver a
+gravação Vocês poderiam ver Para vocês
+verem O exemplo
+Aqui Aqui eu deletei Ia deletar outro
+cara Mas eu Eu vou deletar esse zero
+também Eu deletei o zero Deletei o zero
+Vou deletar um Falso aqui De novo E é
+legal Porque Como eu comentei O próprio
+Springz Ele tem um operador dele E ele
+mesmo Começa a trabalhar Os clusters
+Então ele tem um log De ele Ele faz O O
+Esse cara caiu Olha lá Ele começa a
+fazer O reconcilio Do cluster como um
+todo Ele vai procurar Gente, olha Volta,
+volta, volta Está no ar, está no ar,
+está no ar Só que essa responsabilidade
+Para esse processo Aqui de eleição De
+novo Aqui nós estamos falando Do nível
+do cluster como um todo Para a eleição
+Quem faz isso É o broker É o É o
+zookeeper,
+tá?
+Beleza Até aí, tudo bem?
+Então Deixa eu só Confirmar
+aqui Enche E mais uma demonstração Aqui
+na verdade Espera aí Estão com pouca
+pergunta Estão gostando de ver Acho que
+vai dar tempo De fazer meia horinha De
+De pergunta, tá gente?
+Vou só confirmar Se é esse cara aqui
+Segmento Conseguimos conferir
+Aquele vídeo de refresh Nessa eleição Em
+caso de desastre Para não perder O
+balanceamento E a Agor Não Porque Há um
+processo Interno Eu não
+recomendo Mexer Nesse Configuração
+Específica, tá?
+Eu acho Mais fácil De pensar Em clusters
+Separados Em questão de desastre Em que
+você Comunicação Um com o outro Do que
+preocupar Com esse processo Interno dele
+De rebalanceamento Em caso de Partição
+Porque é muito rápido Tá?
+E se tiver Se você tiver Três replicas
+Eu tenho três momentos Para replicar
+Aquele dado ali E ele vai Sincronizando
+Automaticamente Com craft É bem mais
+rápido E o risco De você ter Algum
+problema É ainda menor Tá?
+Em questão Desse período aí Mas eu não
+recomendo Esse tipo Mexer esse tipo De
+configuração não Eu já vi Configurações
+Customizadas Que a galera Foi mexendo E
+Cara Descobrimos na verdade Que essa
+configuração Que estava dando problema
+Num comportamento Normal do carro Então
+Eu não recomendo Nesse nível De
+configuração não Tá?
+Recomendação Mexo Partição Mexo em
+algumas Configurações Nesse nível De
+heartbeat Que eu vou explicar A parte de
+consumo Isso Tem que ser feito Um fine
+tuning Absurdo Tem que fazer Testes E
+mais testes E seu ambiente Tem que ser
+muito Heterogêneo Tem que ser um
+ambiente Muito específico Tá?
+Aqui ó Vamos Pra Um negócio Que é bem
+legal Aqui Pra vocês poderem
+ver Tá?
+Eu falei Isso é muito importante Eu
+falei Que O dado no Kafka O data lá
+dentro Ele é um dado Na verdade Em
+tópico Ele é lógico A partição é lógica
+Né?
+O offset é lógico Então, Matheus E os
+arquivos, né?
+Como eu te disse Como é que Como é que
+ele armazena isso?
+Ele é binário Mas ele salva Ele é um
+disco Cara, o Kafka é um discão E eu vou
+mostrar pra vocês Por que ele é um
+discão A gente vai aqui Rodar esse
+comando Pra ver Os arquivos de log Do
+ambiente zero Do Kafka Do broker zero
+Ele vai me falar O path Que tá lá dentro
+Eu vou rodar Pra vocês poderem ver E ver
+como é que Vocês vão identificar Ele vai
+gerar um Que vai pegar Todos os Tópicos
+Que estão lá dentro E vão listar pra
+vocês Pode cuspir Isso pra outro lugar
+Se quiser rodar esse comando E cuspir
+pro outro lugar Não tem problema Lá no
+começão Eu vou ter aqui Um Não Não Não
+Não Não Não Não Não Cadê Cadê
+Cadê Cadê Cadê Log diretório Do zero Até
+que me achar Esse aqui é
+chato Log Log
+Dir Mano Eu tenho isso aqui pronto já
+Pula não Pula não
+Aqui ó Log dir Você vê que ele não Pusco
+no nível Aqui ó Ele vai trazer do tópico
+E vai falar assim ó O log dir Dos
+tópicos Estão listados Em data Kafka log
+2 Tá por exemplo E aqui vamos lá Pra
+gente poder ver Porque aqui é o Aqui é o
+Kafka 2 Eu vou no Kafka 0 Então se eu
+for aqui Esse comando É um comando Pra
+acessar O meu pod Antes do meu
+coberneiro É como se eu acessasse A
+aplicação Tá O cesto de aplicação E aqui
+Eu vou dar um CD Var Lib Kafka Data Acho
+que vai fazer Na data Aqui E aqui Kafka
+log 0 Se eu dar um Ls Aqui são Meus
+folders E meus tópicos Vamos pegar
+aquele tópico Que a gente criou Que é o
+training Aqui ó Kafka training Então
+aqui Deixa eu só tirar esse 0 Aqui Esse
+0 Nessa versão Então eu vou dar um CD
+Kafka training E aqui eu estou Acessando
+o broker Tá gente Portanto eu estou
+Dentro do broker Agora eu vou ver Os
+arquivos lá dentro Se eu dar um Ls Eu
+tenho O arquivo de índice Interno De
+arquivo dele E eu tenho Log Esse índex
+Tá gente Não é índice de banco não Tá O
+dado é muito importante A forma como ele
+coordena Como ele executa Eu já vi
+projetos Para indexar o Kafka E o
+pessoal desistiu Pela complexidade Tá
+Então É diferente Beleza Vamos acessar
+Vamos fazer um dump Dos dados Do 0 Log 0
+Então Aqui Eu tenho esse comando Digo
+aqui Kafka log 0 Log 0 E aqui eu posso
+Rodar um comando Para ler o arquivo Que
+está lá dentro Esqueci que não tem Que
+ler Esqueci que Não tem E aqui eu estou
+Rodando um comando Para interagir E
+printar Os dados Que estão lá dentro
+Aqui está zerado Acho que não vai ter
+Nenhum dado Para esses arquivos aqui
+Vamos pegar um Que tem arquivo Acho que
+vai ser Mais legal É o 4 Que eu gerei
+Cadê ele Vamos pegar O que tem
+arquivo É aqui O
+4 Substitui Vamos ver Se tem Nessa
+partição Partição
+0 Não tem Então vamos Na partição 1 Aqui
+De novo Não estou usando A chave Eu
+não sei Qual partição Inicialmente Ele
+vai começar A gravar A gente vai olhando
+Uma por uma Para achar O nosso dado
+Perdido Então E aqui ele vai fazendo
+Aqui já tem E vamos ver Vamos ver Aqui
+Está
+vendo Payload Payload Então aqui Olha
+que legal Nesse aqui Ele já achou Do meu
+5 Do meu 5 Do meu 5 chaves Dois dados
+Estão aqui dentro Então possivelmente As
+outras Estão lá Aí Os outros estão lá
+De novo Aqui gente São validações Para a
+gente poder Está vendo Aqui os 4 Aqui
+Aqui Leonardo Cristina Matheus Priscila
+Então aqui a gente consegue ir achando
+Cada partição A gente vai acessando Aqui
+você acessa Por nível De partição E
+arquivo Tá De novo É só para teste
+Porque imagina Se você tiver Aqui 100
+partições Aqui Vai ter milhares De
+arquivos Lá dentro Dependendo da
+quantidade De workloads No seu ambiente
+Mas Dá para você fazer Alguns
+troubleshooting Alguns Gente O arquivo
+está
+aqui Deixa eu só Aqui Gente Alguém está
+com alguma dúvida
+Até o momento Entenderam tudo Sim
+Entendi Estou perdido Aqui é
+devagar Para o primeiro dia É um dia
+mais Light De novo Amanhã E quarta E
+quinta Amanhã E quinta Para mim São os
+dias Mais Difíceis Porque é Produtos Ele
+Consume Tá A gente Começa a produzir
+Dados E começa A ler Dados Aí o trem
+Começa a ficar Esquisito Então beleza Tá
+então Deixa eu ver se eu tenho Mais
+alguma coisa Nesse cara Aqui Essa
+interação Ficou diferente Vocês podem
+rodar E testar O ambiente De vocês De
+novo Tudo aqui Eu vou subir No
+repositório Vocês vão ter acesso Eu só
+vou É Dar uma Melhorada Porque eu estava
+Executando Eu gosto De executar E depois
+subir A versão Nota atual Vocês não
+terão Acesso Tá Então vamos Para A
+última Parte E aqui
+Vocês Tirar As dúvidas Beleza Entendemos
+Como é Que funciona Eleição Partição E
+aqui A gente Entra Izuki Peri Controle
+Tá Gente Aqui Como é Que funciona Tá O
+controle É De novo Ele na verdade Ele é
+o Broker Principal Dentro De uma
+Estrutura De Carga O controle Ele é
+responsável Por Garantir Que Quando a
+eleição Ele que Vai fazer O At Bit Tá
+Junto Com O Keeper Ele trabalha Com a
+Parte De Consumer Dos Consumer Groups
+Então Controle Ele é meio Que Um Keeper
+Principal Normalmente O Controle É O
+Número Um É O Broker Normalmente Mas O
+Mateus É Isso É Uma Coisa Pouco Vocês
+Poderem Pegar É Se Vocês Estão Com Algum
+Tipo De Problema Em Ambiente Eu Já Vi Na
+Prática Tá Vocês Acessam O Keeper O
+Keeper Quando O Controle Como Eu
+Comentei Ele Abre Uma Pasta O Broker
+Alguma Passa Dentro Do Keeper Esse Cara
+E Tem Alguns Comandos Também Depois Eu
+Posso Compartilhar Com Vocês Se Esse
+Cara Tá No ID 7 Nos Últimos Ids Pode Ser
+Um Problema Muito Grande De Latência De
+Rede De De O Próprio Cluster Não Tá
+Funcionando Legal Isso É Um Indicativo
+Tá Quando Começa A Andar Que O Problema
+Não É Um Broker E Sim Um Cluster
+É Eu Vou Não Sei Porquê Não Sinto Alguma
+Coisa Aqui Não Vou Tentar Deixar Esse
+Esse Dia Aqui Para Amanhã Ver Se Eu
+Entro Em Contato Com A Uma Oi Tá Então
+Gente Os O que É Responsável Para Essa
+Sincronia De Configurações Ele É
+Responsável Para Detectar Fadas E Fazer
+O Recovery Ou Mandar Sinais
+O Controle É A Parte Justamente Para
+Passar Essa Parte De Administração Dos
+Produtos Seja Qual For Tá De Tecnologia
+Para Você Ter Uma Desenvolvimento Mais
+Rápido Então Para O Caso Que Funcionou
+Muito Bem No Lançamento Alguns Anos
+Porém Não Ficou Legal É Ao Decor Do
+Tempo Então Eles Lançaram Aqui 500 500
+Que Justamente Você Tirar O Usar O
+Keeper E Você Tem Um Cluster De Casca Na
+Verdade Olhando Para O Cluster De Casca
+Então Você Tem Agora O Que A Gente Chama
+De Casca Vários Controles Tem Vários
+Controles Que Eles Fazem Um Coro Do
+Processo Todo De Eleição Aqui Dentro A
+Cl Então Você Tira Do Keeper E Você Usa
+O
+Próprio Algoritmo O Craft Que É Baseado
+Em Impacto Consenso Para Poder Realizar
+Você Tem Uma Ideia Esse O Pacto Consenso
+É Justamente O Cálculo Do Relógio
+Atômico Em Que O Google Mandou Um
+Foguete O Espaço E
+Calculou Qual Que Vai Ser O Tempo De
+Retorno Daquele Daquele Do Sinal Então É
+Um Cálculo Que Eles Fazem Para Garantir
+O Tópico De Metadados Que Ele É
+Armazenado Feito Um Snapshot
+Periodicamente E Eu Tenho Essa Garantia
+De Dar 5 E 5 Isso De Novo Para Clases
+Gigantes Gente
+Isso Automático Tá De Novo Uma Coisa Que
+Evoluiu Junto Com Kafka É Ainda Tá Ainda
+Eu Vou Dizer Que Já Finalizaram Já Está
+Em Produção E Isso Aqui É O Que
+Comentará Para O Problema Para Quem Está
+No 4 .0 Já Vai Estar Nesse Formato Aqui
+Já Pode Começar A Preocupar Com Esse
+Formato Aqui O Qual MSK Já Está
+Disponível Já Para Trabalhar Com Craft É
+O Próprio Strings Já Tem Já Uma
+Distribuição Craft Para Poder Trabalhar
+Com Craft De Novo Craft É O Protocolo
+Raft Para Kafka Lêem Sobre Raft Que É O
+Parque Consensos Foi Desenvolvido O
+Protocolo Craft É Kafka Raft Para
+Garantir Justamente Isso Aqui Esse
+Controle Entre Os Controles Eles Podem
+Tomar A Decisão Mais Rápido
+Principalmente Em Clusters Gigantesco
+Que O Problema Grande É Quando Você
+Tinha Um Cluster Do Keeper Imagina O
+Cluster
+Do Keeper Vão Ter Uma Resposta Maior
+Mais Rápida Para Clusters Maiores E
+Menores Que Tem Os Menores Então É Ganho
+Para Quem Tem Um Café Pequeno Um Café
+Grande Você Vai Pegar Mais Mas Acabou
+Que Deu
+Certo Você Quer Perguntar Alguma Coisa
+Você Quer Deixar Para Amanhã Querem
+Comentar Informação Aqui Que Você Eu Vou
+Pausar A Gravação Aqui A Gente Pode Tem
+Trinta Minutos Para Dúvidas O Chat
+Gravar Depois Eu Envio O Chat Para Vocês
+Está No Chat Deixa O

@@ -1,0 +1,828 @@
+Então, vamos lá, gente.
+Vamos falar de arquitetura agora, tá?
+Se alguém tiver alguma dúvida, eu vou
+respondendo.
+Deixa eu só deixar aberto aqui o chat
+para poder
+ver.
+Eu quero terminar com vocês mais cedo.
+Vocês poderem curtir o final de semana,
+já sextou.
+Tomar uma cervejinha e ficar tranquilo.
+Então, vamos lá.
+Arquitetura.
+Capa, tá?
+Eu comecei com a capa.
+Porque a gente vai ver que a gente fez
+uma capa aqui.
+A gente começou essa arquitetura capa.
+Não faz todo sentido eu começar por ela.
+Então, a gente tem o sentido de todas as
+nossas fontes, elas entram num local só.
+Então, a capa tem a ideia de tanto batch
+como streaming entra para um lugar
+único.
+Tanto que a arquitetura capa foi
+desenvolvida por Jay Krabs, que é o
+criador do Kafka.
+Então, a ideia é, se você dá arquivo,
+banco, aplicação, tudo entra pela capa.
+De tempos em tempos, você tem um data
+lake para você poder colocar o seu dado
+histórico, tá?
+Então, aqui é o dado histórico.
+Histórico.
+O histórico, o data lake.
+E você escolhe como você vai processar
+esse dado.
+Se você vai processar ele diretamente no
+Kafka, em streaming, ou se você vai
+acessar o histórico e carregar aquele
+dado histórico para serem processados.
+E aí, você segue o caminho de entregar
+para uma camada de data warehouse,
+visualização e todo mundo tem acesso.
+Aquela camada, todos os usuários, né?
+Essa camada de relatório, tá?
+Então, o grande diferença dela para a
+Lambda, para quem já conhece Lambda, que
+a camada tem duas, hot e cold, eu não
+coloquei aqui porque, de novo, a gente
+quer mexer mais na parte de streaming,
+é, tudo entra para uma fonte só, um
+local só.
+Então, todas entram no Kafka.
+Do Kafka, eu vou falar assim, olha, eu
+vou colocar esse dado histórico do Kafka
+de novo.
+Não foi feito para longo prazo, né?
+Então, você vai ter que ir lá e baixar,
+baixar os dados que estão para algum
+outro lugar.
+No caso, aquela data lake que faz todo o
+sentido, coloco lá e aí eu processo
+esses dados sequencialmente no meu
+pipeline.
+Então, ingestão, armazenamento
+histórico, processamento, streaming ou
+batch, eu escolho essa camada de
+processamento aqui e dali em diante, eu
+crio minhas, ou minhas golds, ou minhas,
+minhas fatos, dimensões de fatos e por
+aí vai, tá?
+E vamos relembrar aqui, só um pedacinho,
+olha gente, olha, que a gente pegou os
+dados, todos os dados, tudo pelo Kafka.
+Então, Kafka Connect, Kafka, né?
+E condicionei aqui, o que que a gente
+não fez, né?
+Que seria para fechar a capa.
+Ter processamento em batch, colocar um
+lake house que eu poderia estar usando
+aqui do Delta Lake ou Iceberg, tá?
+Em que eu vou para landing, processing
+zone, curated zone, ou seja, bronze,
+silver e gold.
+Tem um sensor no Airflow para os dados
+que chegam na landing zone, transformar
+esses caras em flink job, aqui eu estou
+usando um flink, tá?
+Porque a gente está em um raciocínio
+único, mas poderia ser Spark aqui, e
+processo.
+O Kafka é capaz de ir no histórico do
+Data Lake e reprocessar um dado antigo?
+Você poderia, Thiago, colocar um
+conector para buscar os dados que estão
+no seu, no seu, no seu lake, e gerir um
+tópico novo, você poderia fazer o
+reprocessamento.
+E gerar um processamento é, eu vou fazer
+um replay no evento, né?
+Eu vou colocar ele na ponta do offset
+para reprocessar aquele dado.
+Mas ele não, você tem que colocar um
+conector.
+Ele sozinho não, tem que ser um
+conector.
+Então, beleza.
+Sensor, um jogo de processamento, por
+exemplo, esse flink ou Spark, e ali eu
+insiro o dado no pinnacle, como eu
+comentei, né?
+Tem a parte do dado frio, colocaria o
+dado num local só.
+Então, teria aqui um analytics premium
+histórico offline, por exemplo.
+Só um exemplo mesmo de como é que seria
+uma estrutura capaz de a gente analisar
+a tela toda, se o tratamento fosse, né,
+focado mais de lente até fundo, prazer,
+flow, das outras coisas.
+Então, aqui no final, eu tenho dados
+analíticos, e aqui os meus clientes
+felizes acessando o meu dado analítico,
+tanto em tempo real como em batch,
+tá?
+Beleza.
+Data mesh.
+Data mesh, gente, não sei se vocês são
+familiarizados, eu vou entrar aqui,
+porque ele é bem complexo e bem grande,
+então eu vou entrar mais no macro dele.
+A ideia dele é você criar domínios.
+Qual que é a ideia de domínio?
+Você tem uma pessoa de dados, um time de
+dados, dentro da área de negócio, que
+ela vai criar um domínio da área de
+negócio.
+Por exemplo, o domínio de cliente, tá?
+De customers.
+Em vez do time que trabalha com CRM, do
+time de relacionamento com o cliente,
+eles demandarem algumas coisas, eles vão
+ter um analista de dados, ou alguém de
+dados no time deles, que vai criar esse
+domínio, vai processar o dado da forma
+como eles acreditaram e vão gerar
+produtos de dados.
+Então, aqui, muda.
+Antigamente, a gente tinha aquela ideia
+de ATI, vai ter o time de dados na
+ATI.
+O produto de dados final, na verdade,
+vai ser uma tabela fato, ou algo nesse
+sentido, é requisitado para a ATI, a ATI
+vai entender com o time de clientes como
+é que funciona, para ela modelar e
+entregar.
+Aqui, não.
+Aqui, você tem um time dentro aqui de
+dados, ele vai fazer todo o processo,
+ferramenta, ele que escolhe, tudo que
+ele escolhe, ele vai criar a identidade,
+todo o processo.
+E vai entregar o produto.
+E aqui, você vai ter vários tipos de
+domínios diferentes.
+O que vai acontecer?
+Esses domínios podem ser entregues
+dentro de uma plataforma de dados, que,
+normalmente, a Confluent vende essa
+ideia muito bem, mas era mais, de novo,
+a plataforma de dados.
+Toda parte do domínio é conceitual, é
+tudo cultural, gente.
+Você pode fazer o que for.
+O Kafka funciona muito bem nesse meio,
+por quê?
+Porque você consegue fazer comunicação
+retripiais, integração de banco de dados
+de uma maneira muito simples, como a
+gente viu no treinamento todo.
+Então, ele casa muito bem com esse
+processo de data mesh.
+Por isso que funciona muito bem, por
+isso que vende muito bem essa ideia.
+Então, cada domínio pode chegar da forma
+que você quiser.
+Então, tem um domínio aqui chegando por
+API, tem domínio chegando por banco, e
+eu também entrego domínios também do
+outro Data Stories.
+Então, você consegue uma plataforma
+completa ali que vai estar entregando
+para você todos os dados por domínio.
+Então, você cria domínios em cima disso.
+Beleza?
+LakeHouse, para quem já fala bastante,
+então eu vou só dar um overview.
+LakeHouse é, eu tenho um processo de
+LakeHouse, e eu quero o melhor do Data
+Lake na hora do LakeHouse.
+Eu vou criar aqui a minha fonte, vou
+trazer para um formato de arquivo, nesse
+caso, a gente está escolhendo Delta
+Lake, poderia ser o Iceberg.
+Eu vou trazer esse cara para um formato
+de arquivo otimizado para Analytics.
+Então, pensa o seguinte, eu tenho lá, o
+CSV, que eu falei que é ruim no início,
+com formato de arquivo.
+Agora, eu tenho um formato de arquivo do
+tipo Delta Lake, que ele é otimizado
+para fazer query em cima dele.
+Então, ele tem toda uma inteligência
+dentro dele para ele poder ter a parte
+de metadada, a parte de checkpoint, a
+parte de você poder, de ACID, garantir
+atomicidade, consistência, isolamento e
+durabilidade.
+Então, é como se fosse uma tabela mesmo
+dentro de um arquivo, em que você
+consegue acessar de maneira mais rápida.
+É mais simples.
+Então, eu tenho um processo de bronze,
+que é o dado cru da fonte, ou seja, li o
+dado dos bancos aqui, trouxe para bronze
+exatamente como é que ele está, não
+mexo.
+Aqui, eu faço um refinamento, então, eu
+crio um domínio para ele, eu faço, olha,
+esse dado aqui agora é usuário.
+Então, se o usuário estava aqui, aqui e
+aqui, para eu caracterizar um usuário,
+um domínio que vai ser usado para todo
+mundo da corporação, eu vou criar minha
+silver usuário.
+Eu vou criar minha silver, isso aqui é
+um dado mais bem tratado, mas ele não
+tem viés, ou seja, um usuário na visão
+do financeiro tem uma visão, é um
+usuário.
+Um usuário na visão da operação tem
+outro viés, é outro usuário.
+Então, aqui, a gente tem um para todo
+mundo, é um padrão.
+Todos veem essas informações.
+Eu gero para eles o agregado.
+Financeiro, qual que você quer ver?
+Ah, eu quero ver agora a informação do
+usuário baseado no quanto que ele gasta
+X.
+Beleza, então, isso vai ser uma gold.
+Ah, para a ação, não, eu quero ver
+quanto que ele solicita o movimento e
+qual o endereço que está aqui.
+Então, é outra.
+Então, você faz tabelas agregadas e
+entrega várias.
+Então, aqui, geralmente, aqui é as is,
+aqui são algumas e aqui são várias.
+Aqui é atender todas as regras de
+negócio.
+Então, a gente cria uma atrás do outro.
+Beleza?
+Então, a gente fala bastante sobre lake
+house, então, eu não vou entrar em tanto
+detalhe.
+Se quiserem, a gente pode fazer alguma
+sessão.
+Então, é algo do tipo durante as outras
+aulas lá.
+Por fim, e a mais nova, é a Stream
+House.
+A Stream House é a utilização, na
+verdade, do Flink e Apache Payment.
+O Apache Payment, para quem não conhece,
+é um formato lake house otimizado para
+tempo real.
+Apache Payment.
+Bem legal esse cara.
+Então, o Apache Payment, ele é um lake
+house para habilitar, é arquitetura de
+lake house dentro do Flink, usando Flink
+ou Spark.
+Quem usa Spark pode usar o Payment
+também.
+Então, a ideia, na verdade, é você ter
+tabelas do Payment dentro de um tempo
+real.
+O que aconteceu, gente?
+O lake house funciona muito bem para o
+Betting, porque, na verdade, o Spark é
+feito para o Betting.
+Então, quando ele nasceu na nossa
+concepção, por mais que ele suporte
+streaming, ele não nasceu para
+streaming.
+E isso é uma diferença muito grande,
+gente.
+Tecnologias que nascem para uma coisa,
+elas vão fazer aquilo muito bem.
+Tecnologias que nascem para um
+determinado objetivo, e elas são
+modificadas, ou acrescentadas a feature
+para aquilo, ela vai fazer, mas não vai
+ser o melhor naquilo, porque ela não
+nasceu para isso.
+Então, não estou falando mal, o Dell tem
+a esperança, são excelentes formatos.
+Mas o Apache Payment, ele vem com o
+conceito do tipo ser um lake house para
+pipelines de streaming.
+Então, a Ververtica, que é a empresa dos
+caras que criaram o Flink, da Artisans,
+eles criaram o Payment.
+Acho que são esses que criaram também.
+E olha só que legal.
+Vamos pegar o nosso exemplo aqui, tá?
+Eu vou acessar agora, eu vou criar, vi
+um Flink CDC, detalhe importante, a
+gente nem tocou Flink nesse treinamento,
+tá?
+Vocês acham que a gente viu o Flink, mas
+a gente não viu nem um porcento de
+Flink.
+O Flink tem uma parte exclusiva de
+conectores.
+Então, ele tem o que eu chamo de Flink
+CDC.
+Você vai acessar via Flink mesmo,
+conectar no banco, vai criar uma ODS,
+tá?
+No operational data store, ou seja, uma
+cópia exata do dado cru aqui para
+dentro.
+Aqui, você vai rodar uma aplicação do
+Flink SQL lendo a minha ODS e criar uma
+DWD, uma Data Warehouse Ideas.
+Esse é legal porque, na verdade, essas
+nomenclaturas DWD, DSA, ADS, tudo são
+nomenclaturas que a própria Alibaba usa,
+tá?
+Então, você vê muita referência aqui.
+O Verbuttica também, né?
+Eles estão muito próximos da Alibaba por
+conta do Flink, que é o maior case de
+sucesso do Flink, que é o Alibaba Cloud.
+Então, você vê muita nomenclatura nesse
+sentido para essa parte aqui de Stream
+House.
+Então, você tem um detail, tá?
+Que, na verdade, é como se fosse uma
+tabela fato, uma granularidade maior.
+Você tem um sumário, tá?
+Que aqui já são agregações mais baseadas
+em métricas de negócios de mais alto
+nível.
+E aqui, você tem o ADS, Application Data
+Service, que, na verdade, ele é onde vai
+ser entregue a informação.
+É o nosso Data Survey, beleza?
+Então, eu processo o dado na sequência,
+ODS, DWD, DWS e depois ADS, que eu
+entrego aqui na minha old serving.
+Poderia ser um Click House.
+De novo, eu escolho, né?
+Mas, se vocês olharem, a ideia do Stream
+House, pelo menos a primeira paper dele,
+né?
+É ele ser Flink.
+Praticamente, o Flink e o Payment fazem
+tudo aqui, tá?
+E o legal, que eu acho interessante a
+gente pensar, Matheus, mas você falou
+que o próprio Spark faria esse pedaço
+aqui do CDC com Flink.
+O ideal da gente ver isso aqui é que o
+Flink, ele tem uma...
+Um específico, uma API específica para
+conectores.
+Então, tem o Flink Connectors que você
+pode acelerar, tem o JDBC, se não me
+engano.
+Não são muitos, tá?
+São poucos.
+Mas, você vê, você já vê isso separado.
+Eu não tenho que criar um sistema, uma
+aplicação, desenvolver algo para poder
+utilizar.
+Então, eu acho que isso é um ganho muito
+grande.
+Precisa contar que são evoluções
+diferentes, né?
+Eu tenho API de streaming num momento.
+API de conecto no outro.
+Tem um negócio chamado Table Store, que
+é outro carinha também que eu vou falar
+com ele depois.
+Eu posso conversar com vocês lá na
+reunião presencial.
+Mas, aqui a gente tem o Stream House,
+tá?
+Tá crescendo bastante essa ideia.
+Já começou na Vênus, eu vi um artigo,
+agora tá vindo dois, três, quatro aí.
+E, gente, alguma dúvida?
+Porque de conteúdo, eu queria passar
+isso aqui mesmo, tá?
+Ótimo.
+Vamos tirar as dúvidas.
+Você quer tirar?
+Vou falar ainda.
+Aí, eu acho que já mutei.
+Pode ir.
+Foi?
+Vou tentar de novo.
+Vai tentar de novo agora.
+Opa, agora foi.
+São dois pontos, Matheus.
+Primeiro é, como é que você lida com as
+questões da LGPD no processamento Kafka?
+Por exemplo, mascaramento de dados.
+Existe alguma forma de aplicar isso no
+conector para garantir isso?
+Não sei se você já teve que passar por
+algum outro.
+Já, já tive.
+Normalmente, a gente faz na camada,
+deixa eu mostrar aqui.
+Vou pegar um exemplo nosso aqui que a
+gente fez.
+Eu mostro um exemplo que a gente fez.
+Na camada de processamento.
+Geralmente, o dado cru, a gente não
+mexe, vem cru.
+Aí, você não dá acesso a ninguém ao dado
+cru.
+E o dado processado, você já pode
+colocar ele mascarado.
+Por exemplo, tem uma forma também que no
+Lensys, aí de novo, em nível de
+aplicação enterprise, você pode criar
+uma política de mascaramento.
+Vou botar aqui e -mail.
+Ele faz um discovery em todos os
+datasets que ele tem acesso.
+Então, você não precisa nem especificar
+qual que tem.
+Você pode falar assim, ah, eu quero esse
+aqui.
+Vou botar raio.
+Eu quero que todos os datasets que eu
+tenho acesso, eu vou procurar e -mail
+dele.
+Vou botar aqui, acho que é e -mail que
+eu faço.
+Acho que é isso mesmo.
+Quer ver?
+Não lembro se é isso.
+Tem que passar o campo que tem o nome do
+campo referente.
+Aqui, olha.
+Já fez, olha.
+Já pegou todo mundo.
+Esse aqui são todos os tópicos.
+Você vê que vai ter e -mail.
+Aí, ele foi lá e mascarou o e -mail para
+mim.
+Aqui, olha.
+Caramba, legal.
+Só que qual é o legal disso?
+Ele não altera a informação, porque não
+pode alterar a
+informação.
+Então, aqui é quem acessa o Lensys que
+vai ver a informação mascarada.
+Se você tentar fazer alguma coisa em
+nível de aplicação, você vai modificar o
+dado.
+Aí, ninguém vai conseguir acessar de
+novo.
+Tem esse detalhe.
+Você não desfaz um amascaramento igual
+você faz num banco de dados, por
+exemplo.
+Não tem isso.
+Eu tenho só mais outra pergunta.
+Pode fazer.
+A questão do data quality.
+Existe algum tipo, algum great
+expectation da vida para aplicação do
+Kafka assim?
+Por exemplo, a gente garantir que em
+algum campo está vindo o dado esperado.
+Alguma coisa assim, sabe?
+Entendi.
+Dá para você...
+O Soda, talvez, te ajuda melhor.
+Mas tem um great expectation que dá para
+fazer dentro da API de processamento.
+Você tem que fazer um processo antes.
+Mas isso é um gap que a gente tem na
+parte de streaming.
+Não vou mentir, não.
+A gente tem esse gap.
+Boa, valeu.
+Algo específico ainda para teste de
+Kafka.
+Acho que deveria ter.
+Dá uma olhada se mudou o cenário.
+Mas até onde eu tinha olhado, não tinha
+mudado.
+A gente só consegue garantir aquelas
+questões, né?
+Exactly one, para garantir a...
+Nível de configuração que a mensagem vai
+ser gravada.
+Agora, você abrir a mensagem, daria para
+fazer em nível de producer?
+Daria para fazer.
+Daria, talvez.
+Daria.
+Não seria muito difícil, não.
+Boa, valeu.
+Porque a porção da mensagem é pequena.
+Uma porção é pequena, não é que você não
+vai ter uma data set muito grande.
+Daria, daria.
+Depois eu vou pensar em uma forma de
+criar um vídeo e mostrar para
+vocês.
+Mais alguém?
+Tem alguma oportunidade na storage do
+Paymon?
+Nathan, até onde eu sei, não.
+Eu estou para começar a desenvolver o
+treinamento de Flink, que vai ter
+StreamHouse.
+Aí sim eu vou...
+Porque na verdade eu já tenho todos os
+livros, já li tudo.
+Só que eu ainda não fiz essa conexão de
+trazer Paymon, usar o CDC, usar outros.
+Eu ainda não estou nessa parte, eu estou
+especificamente no Flink.
+Tem dois anos que eu estou estudando
+Flink, então...
+Tem muita coisa.
+Mas eu, até onde eu sei, não.
+Não teria, não.
+Esses carros todos que eu mostrei, a
+parte de...
+Eles tem muita coisa de compressão, não?
+Tem muito disso.
+Então, gente, mais perguntas?
+Se não, eu vou parar.
+Aqui eu vou fazer minha prova, que
+ninguém vai ver.
+Na segunda -feira eu vou aplicar a prova
+em vocês.
+Vai ser assim, ó, tá aqui.
+Vamos ver quem realmente participou.
+Então, o que vocês estão querendo...
+Eu sei como é que é.
+Deixa para segunda -feira também, né?
+Depois a gente vai estar de novo.
+Não tem problema, não.
+Deixa eu só ver se...
+Ah!
+Importante.
+Galerinha.
+O Git da...
+Deixa eu ver aqui, né?
+Não sei se quem entrou depois que a
+gente comentou.
+Mas eu liberei uma lá.
+Ah, já colocaram.
+Muito bem.
+Eu já libero o acesso ao Git.
+Matheus, você não colocou o seu Git,
+não, tá?
+Vou só fazer um negócio aqui.
+Eu vou consertar tudo agora.
+De novo, explicando que o Git vai ter...
+Está totalizado.
+Porque eu tenho que subir as coisas de
+hoje.
+Tenho que subir algumas coisas, tá?
+Então, vocês não vão ver.
+Eu recomendo usarem até o dia 3.
+Eu garanto.
+De dia 4 para a frente eu tenho que
+subir.
+Não subir tudo, não.
+Deixa eu...
+Dúvidas?
+Considerações finais?
+Gostaram do treinamento?
+Aí, Marcos.
+Deixa isso.
+Vai cantar, Marcos.
+Pelo autor.
+Matheus.
+Realmente, cara.
+É muito conhecimento aí.
+Que você transmitiu para a gente.
+Muita informação.
+Muito bom mesmo.
+É muita coisa, né?
+Muita coisa.
+E agora a gente se organizar aqui para
+poder Processar, praticar.
+E eu queria só...
+É...
+Só complementar aí.
+Cara.
+Fiquei impressionado com esse lenço.
+Sabe?
+Na segunda -feira...
+Se você conseguisse...
+Apresentar ele...
+Mais coisa?
+É...
+Porque...
+Para nós, assim...
+É uma...
+Vai ser uma ferramenta e tanto, tá,
+cara?
+Porque, igual eu falei no chat...
+É...
+A gente tem um cenário de...
+Open Search...
+E New Relic.
+Então, eu...
+Eu acompanho o status...
+Do meu recurso, do meu conector...
+No New Relic.
+E tenho o Open Search para trabalhar...
+Com aqueles...
+Atributos de log lá que você mostrou.
+Sabe?
+Que é o...
+O morning...
+É...
+Agora o lenço.
+Sim.
+Você pega em nível log, né?
+É.
+Em nível log.
+Agora, o lenços, assim...
+Realmente é um...
+É uma solução que...
+Ela aborda aí...
+Muita coisa, né?
+E ainda...
+Eu acho que a cereja do bolo...
+Ainda ela...
+Te permite...
+Querar em cima do...
+Do tópico...
+Para você ter uma...
+Uma prévia...
+Até mesmo de...
+Pensar em...
+Como desserializar...
+A sua mensagem...
+Então, assim...
+Realmente...
+É uma ferramenta e tanto...
+Cara...
+Ela...
+Ela é só...
+Eu gosto de mostrar no último dia...
+Pelo fato de você passar por todo aquele
+processo...
+De entendimento da tecnologia
+primeiro...
+Que tipo assim...
+A minha ideia nunca vai ser...
+Nunca fui vender lenços, né?
+Tanto que eu nem...
+Eu estou mandando...
+Está chegando...
+Está chegando...
+Para quem colocou na lista aqui...
+Acho que eu mandei a Bitlyd...
+Vou mandar a Bitlyd de novo.
+Está chegando aí os...
+Os convites.
+Aqui, ó.
+Está aí, ó.
+Queria acessar...
+É...
+Que adicionem para mim...
+O nome do Git...
+Vai aparecer no Git de vocês o
+convite...
+Para...
+Para o repositório...
+Para a organização...
+Tá...
+Eu já mandei para os primeiros...
+Quem já preencheu a...
+A planilha...
+Vai receber, então...
+Quem que colocou...
+Deixa eu ver se eu consigo achar...
+Alguém colocou...
+Aqui, ó...
+Vou ver se eu consigo...
+Colocar de novo...
+Eu vou subir...
+Aqui...
+Nosso amigo...
+Gabriel...
+Ele colocou uma...
+Beleza...
+Então fica mais fácil...
+Vou colocar o...
+Seu aqui...
+Para eu marcar...
+Vai ficar mais fácil...
+Gente, alguma...
+Alguma dúvida...
+Aí...
+Eu gosto de dúvidas...
+Fala eu aí...
+Por favor...
+Oi?
+Não me fala aqui no chat...
+Foi não?
+Pera aí...
+Entra agora...
+Opa...
+Agora sim...
+Não, é que...
+Aproveitando a sua expertise aí...
+Hoje a gente chegou a uma discussão
+sobre o uso de...
+Do...
+Definições de...
+Tópicos e sources...
+E na questão do conector do...
+Do Postgre...
+A gente geralmente coloca...
+A tabela...
+Heartbeat...
+Né?
+É...
+Eu queria entender melhor da sua
+parte...
+Assim...
+Qual a usabilidade...
+De utilizar o...
+De criar um tópico...
+Né?
+Baseado nessa tabela...
+E de...
+De também...
+Fazer uma conexão do Kafka...
+Conector nessa tabela do Postgre...
+Em uma...
+Em um processo específico...
+Tá...
+Eu acho que é esse caso...
+Lembrando a gente de conversar na...
+Na segunda...
+Que a gente consegue fazer...
+Mais...
+Você pode mostrar mais detalhe...
+Ah...
+Beleza...
+É porque a gente consegue entrar mais em
+detalhe...
+Específico do seu problema...
+Vai ser mais legal...
+Não...
+Na verdade não é nenhum problema...
+Era mais uma dúvida mesmo...
+Pra o...
+Qual é...
+Ah...
+Beleza...
+Então...
+Tranquilo...
+Mas leva ela pra segunda...
+A gente responde na segunda...
+Mais alguma outra?
+Alguém?
+Gente...
+Ó...
+Os convites já foram enviados...
+Todo mundo mandou aqui...
+Tá?
+Aí vocês já conseguem já acessar o
+repositório...
+Como eu comentei...
+É...
+Do dia três pra trás...
+Ok...
+Do dia quatro e cinco...
+Eu vou atualizar eles hoje ou amanhã...
+Não é possivelmente amanhã...
+Mas já podem já brincar no ambiente...
+Tá tudo bonitinho lá...
+Data set também tá ok...
+Parte data set tá ok...
+Parte de...
+Esquima também eu não mexi...
+É mais uma questão dos dias...
+É...
+Deixa eu...
+É...
+E...
+Deixa eu fazer uns negócios...
+Deixa eu parar a gravação...
+A gente consegue conversar...
+Com mais liberdade...
+Que não é coisa de...
+Vide...
+Pera aí...
+Peraí...
+Peraí!
+...
+Pera aí...
+Ate você deseja...
+Host...

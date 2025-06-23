@@ -1,0 +1,1874 @@
+Vamos lá para o último.
+Então tá, gente.
+Para quem não me conhece, meu nome é
+Matheus Oliveira.
+Eu trabalho aqui na UNO -B com a parte
+de arquitetura de dados.
+Eu sou hoje especialista de carta.
+Lá em 2010 comecei como estagiário,
+trabalhei como DBA no Bom Sucesso,
+depois olhei a Consignado, depois eu saí
+da área de DBA em 2019.
+Eu vou dizer que em 2020, 2021, por aí.
+E aí eu aprendi a tecnologia de
+engenharia de dados, que realmente eu vi
+que eu queria me especializar na Kafka,
+porque a Kafka é extremamente complicada
+na minha cabeça quando eu era DBA.
+Ele supria um problema que para mim,
+banco de dados, não conseguia suprir a
+minha especialidade.
+Então realmente o filme era muito
+confuso inicialmente.
+Vocês vão ver que o Kafka não é uma
+tecnologia tão fácil, tá?
+Mas também dá para aprender, dá para se
+especializar, dá para a gente pegar as
+nuances dele.
+Em 2002 eu vim o líder de engenharia
+aqui da UNO -A.
+Eu sou engenheiro e arquiteto.
+Em 23 eu comecei a trabalhar em projetos
+fora do país.
+Fiquei praticamente alocado em cliente
+durante um ano, em qual eu pude
+trabalhar com a Marte, Engine, Exactly
+Care e outras empresas internacionais,
+que eu não posso mencionar aqui porque
+são de MDA, tá?
+Mas trabalhando como expert em Kafka.
+Fui também Kafka Summit, tanto como
+telespectador, como patrocinador.
+Participei de um dos estandes lá, foi
+bem legal.
+E foi interessante a gente ver como é
+que as pessoas, como as empresas estão
+usando Kafka, tá?
+É bem interessante isso.
+O evento em si, para quem queria saber,
+o Kafka Summit não é tão bom como já foi
+antes, mas para networking eu recomendo
+fortemente, tá?
+Na verdade uma das recomendações que eu
+já deixo para vocês aqui é participem de
+eventos, tá?
+Participem de summits, DTA Summit, Kafka
+Summit, etc.
+Airflow Summit também é outra muito boa.
+Participem de comunidade, tá?
+Tentem estar o mais próximo possível,
+tá?
+Eu falo isso não só por a questão da
+empresa que você trabalha, mas em
+questão do seu profissional, você como
+profissional.
+Está antenado com o que as empresas
+fazem, ampliar o networking é bem
+importante.
+Recomendo a vocês sempre, de novo,
+procurem por comunidades, tá?
+Sejam locais, sejam regionais, sejam
+nível Brasil ou fora do país.
+Eu participo de algumas bem
+interessantes.
+Pois bem, vamos lá.
+Vamos começar o dia 1, tá?
+Fundamentos.
+Fundamentos de dados.
+Primeiramente a gente tem que entender
+que dados, ele passou por três grandes
+momentos, né?
+Volumetria, variedade e velocidade.
+Então, o que aconteceu?
+Teve uma explosão de stories, tipos de
+banco de dados
+diferentes, formatos de arquivo, inicial
+de giga, para tera, para peta.
+Muito rápido, tá?
+Muito rápido.
+Então, em 2006, a gente teve a explosão
+do Hadoop e o zoológico que veio ao
+decorrer disso.
+Em 2009, a gente vê também a questão da
+variedade de fontes diferentes.
+Então, eu vou ter agora, não só a SQL
+Server, mas eu vou ter no SQL.
+Eu vou ter consumo de API.
+Eu vou trabalhar com API.
+Então, dados mesmo teve essa mudança.
+A volumetria e variedade.
+E o nosso grande foco aqui é a
+velocidade, tá?
+Então, eu tenho um volume muito grande.
+Eu tenho uma variedade de tipos de
+fontes.
+De como é que eu vou trabalhar com
+entrada e saída de dados.
+Só que agora eu tenho que ter uma
+velocidade, né?
+Então, a gente tem Netflix, Spotify,
+Airbnb, LinkedIn.
+Empresas que não são de tecnologia
+gerando produtos.
+Produtos de tecnologia para a sua
+conhecidade própria.
+Netflix gerou o Apache Iceberg.
+Spotify usa muito o SEO, que é uma
+biblioteca do BIM.
+Para processamento de dados em
+streaming.
+Airbnb, Airflow.
+E o LinkedIn, o Kafka.
+A gente vai falar um pouquinho desse
+cara.
+Então, a velocidade é o nosso foco aqui.
+Esqueçam volume, variedade.
+No momento, a gente vai entrar.
+Você vai ver que vai ter um pontinho ali
+de cada um desses caras.
+Mas o principal foco desse treinamento é
+a gente trabalhar em streaming.
+E aqui, gente, a gente começa a sair da
+seara de segundos, minutos para
+milissegundos.
+A minha preocupação agora não é
+processar dados em 15 em 15 minutos.
+De uma em uma hora, agendado, não.
+É eu ser reativo.
+É eu trabalhar em milissegundos.
+De uma ponta a 10, 100 milissegundos de
+uma ponta.
+E sair com 200, 300 milissegundos na
+outra com o processamento completo.
+Ou seja, o dado entra cru.
+Ele é processado e entregue de forma
+rápida.
+Eu estava até lendo alguns artigos.
+Principalmente ano passado.
+O pessoal falando.
+Ah, mas Stream Analytics é uma coisa que
+chegou realmente.
+É interessante a gente pegar para esse
+lado.
+As empresas estão desesperadas por isso,
+gente.
+Porque a necessidade existe.
+E agora com o IA.
+Ficou ainda.
+Mais complicado.
+E ficou maior esse desafio.
+Que agora eu não quero mais algo em
+hora, minuto.
+Eu quero dar a resposta do meu cliente.
+Em segundos, em milissegundos.
+Na verdade eu quero que a resposta seja
+rápida.
+E a latência de internet.
+Ou seja, o tempo que a página da
+internet vai carregar.
+Que seja demorado.
+Porque eu não consigo controlar essa
+parte.
+Mas qualquer coisa antes disso.
+Já está totalmente feita.
+E aí a gente começa a falar desse cara.
+Esse cara começa a entrar muito mais em
+cena.
+Então o cara fica um pouco mais em
+evidência.
+Então a gente tem esses três grandes Vs.
+De novo.
+Na realidade como eu falei.
+Tem quatro, seis, dez, dezesseis Vs.
+Eu vejo inicialmente esses três.
+Como sendo os principais.
+Volume, variedade e velocidade.
+Em que a gente nosso foco aqui.
+É velocidade.
+De novo.
+Esquece em segundos.
+Esquece em minutos.
+Esquece em horas.
+A gente já trabalha na casa dos
+milissegundos.
+A latência aqui tem que ser na verdade.
+Até onde o hardware consegue acompanhar.
+E a gente já sabe.
+Que o hardware já está extremamente
+avançado.
+Beleza?
+Então.
+Com isso a gente tem que trabalhar.
+Numa cotização de dados.
+A gente tem que fazer análise de
+comportamento.
+Predição.
+Suporte a cliente.
+Detecção de fraude.
+Esse é um dos casos mais latentes.
+Em qualquer empresa.
+Hoje em dia várias empresas estão
+fazendo.
+Essa parte de detecção de fraude.
+Para garantir esse processo.
+O que é extremamente.
+Custoso antigamente.
+Se a gente pegasse.
+Eu vou pegar aí.
+Cinco.
+Seis.
+Vamos botar.
+Vamos botar até mais.
+Vamos botar aí.
+Oito anos atrás.
+O tempo.
+Que é uma bandeira de cartão de crédito.
+Detectava uma fraude.
+Que é uma compra.
+Que veio errado.
+Ou que foi feita.
+Cartão planado.
+Algo desse sentido.
+Demorava meses.
+Você pegava ali.
+Talvez a terceira.
+Quarta fatura.
+Aparecia para você ali.
+Ó.
+O sistema pegou.
+Um desvio.
+Aqui.
+No seu.
+No seu.
+No comportamento.
+Do seu.
+Seu perfil.
+Aí.
+Você recebe um e -mail.
+Uma ligação.
+Olha.
+Teve aqui.
+Dez.
+Dez.
+Dez.
+Dez.
+Praticamente.
+Reais.
+Acontecendo.
+E várias vezes.
+É no mesmo valor.
+Mesmo.
+Isso aqui é seu.
+Não.
+Não é.
+Então.
+Demorava ali.
+Algum tempo.
+Hoje.
+É praticamente.
+Na hora.
+Hoje.
+Hoje.
+Já.
+De.
+De.
+De fraude.
+Por conta desse.
+Da necessidade de.
+Streaming.
+Eu consigo já.
+Ser.
+Tal.
+Em milissegundos.
+Já.
+O comportamento daquele cliente.
+E ter um retorno.
+Ali.
+Estar totalmente fora.
+Já liga para ele.
+Já bloqueia.
+A primeira compra.
+Então.
+De novo.
+Tempo real.
+Hoje.
+A gente não quer.
+Esperar.
+Temos que ser rápido.
+Até mesmo.
+Por causa de.
+Tempo de mercado.
+competição, né?
+Não tem como fugir disso.
+Beleza.
+Vamos falar da primeira coisa que vem
+antes de tudo, tá?
+Quando a gente fala primeiro na parte de
+troca de mensagem, tá?
+Cês vão ouvir muito isso, mensagem,
+evento, nem tanto fila, tá?
+Que a fila eu vou parar até aqui, a
+gente vai só a parte de sistema de
+mensageiria, eu tenho alguém que produz
+um dado, tá?
+Entra numa fila e esse dado é consumido
+e depois ele é dropado.
+Normalmente, tá?
+Um sistema de mensageiria ele trabalha,
+ele trabalhava dessa forma.
+Se a gente pegar o mais famoso deles,
+que é o RabbitMQ, eu tinha vários eh que
+são publicadores, eles gravavam dentro
+de que fazia rota pras filas, tá?
+Isso aqui é de novo, eh vou passar pra
+vocês rapidamente pra vocês verem como é
+que foi a evolução.
+Eu entrava na fila, alguém lia, essa
+mensagem não durava, tá?
+Ela durava dentro daquele momento que
+você fazia a busca daquela fila.
+A busca daquela mensagem na fila.
+Então, eu tinha vários consumidores
+lendo das filas, tá?
+Então, eu tinha aqui mensagem B, chegou
+aqui na fila um, leu pelo subscrever um.
+E aí, teve algumas evoluções.
+Por exemplo, o RabbitMQ, ele trouxe a
+ideia de que é o que?
+Ele não mais deletar a mensagem na hora
+de consumir.
+Por que disso?
+Porque depois do momento que eu começo a
+colocar mensagens que elas são efêmeras
+demais, não tenho algo que eu posso
+utilizar pra toda organização, eu não
+posso colocar o que é crítico lá dentro,
+mas.
+E o Rabbit também é um caso bem
+específico, tá?
+Bem, eu digo que ele ele é um sistema de
+mensageria muito bom pra quando eu tenho
+esse tipo de cenário.
+Eu quero publicar um dado que eu sei que
+esse dado ele não vai durar, não tem que
+durar muito tempo, ele tem que ser só
+consumido.
+Por exemplo, um alerta, algo desse, esse
+sentido faz aqui sentido pra esse
+cenário aqui.
+Beleza?
+Então, eu tenho um Rabbit que é o mais
+famoso.
+De novo, vamos pegar aqui um exemplo de
+aprovação de contrato, tá?
+Ou ativação de algum processo.
+Eu mando minha mensagem pra fila, o meu
+microserviço, ele lê aquela mensagem e
+ativa ou aprova o contrato.
+Beleza?
+Então, tô mandando, tô aprovando aqui
+desses caras ali.
+Um exemplo que a gente pode usar o
+Rabbit em que que é somente, é somente
+para mandar assim, ó, pode ser aprovado
+ou não vai ser aprovado.
+Tá?
+Já descarta já e e acabou aquele
+processo ali.
+Só que aí, gente, teve algo bem
+interessante aqui.
+Foi se ver que eu preciso do que tá aqui
+no meio.
+Eu não posso simplesmente deixar, eu
+tenho que criar algo que vai superar as
+necessidades das organizações como um
+todo.
+Então, eu criei os agora o que é
+diferente do que eu não tenho fila mais,
+esquece fila, não tem fila.
+Eu tenho um tópico, tá?
+Então, eu eu gravo esse dado num tópico,
+ele persiste em disco, tá?
+Ele é consumido por uma outra aplicação.
+Então, já mudou, eu já não tenho mais
+aquela questão de a minha mensagem chega
+de um lado, consumiu e acabou.
+Vocês vão ver que principalmente essa
+parte da da de né?
+A gente tem que ter o dado, né?
+A gente persistir, né?
+O dado, ele vai ter vários viéses
+diferentes.
+Um dado que um departamento A produz,
+ele pode ser usado pra o departamento X,
+Y, Z.
+Assim como ele pro A só vai seguir com
+uma determinada função.
+Então, vendo isso, super essa
+necessidade aqui.
+Agora eu tenho que persistir em disco.
+Só que agora não é fila mais, né?
+Agora eu tenho o dado numa representação
+de tópico, que é similar a uma tabela,
+tá?
+Eu vou ter o chave valor, ou seja, eu
+vou ter I, dois pontos, vale em que
+aqui, por exemplo, eu vou ter no campo
+ID, que é igual a um e aqui eu vou ter o
+vale, nome, que é igual, cê não tão
+vendo,
+ó?
+Ué, peraí, deixa eu ver aqui.
+Ah, tá, que susto, cês tão vendo?
+Ah, tá.
+Marcos, tenta atualizar o seu.
+Pode ser alguma coisa no seu.
+Talvez entrar e sair de novo.
+Tava aqui, eu tava até preocupado.
+Tenta fechar de novo.
+Talvez o seu só fechar de novo e
+resolve, tá?
+Pode ser alguma coisa no Zoom, alguma
+coisa no internet do seu lado.
+Vamo me falar, vamo dar um feedback, tá,
+gente?
+Eu tô vindo aqui, vamo dar um feedback.
+Perfeito.
+Eu vou devagarzinho aqui pra você não
+perder nada.
+Então, aqui, ó.
+Normalmente é esse processo aqui, ó, em
+que eu tenho uma chave, um campo, aqui é
+um filtro, né?
+Deixar bem claro que aqui é um filtro,
+né?
+E aqui é o vale do filtro.
+Mesma coisa aqui.
+E eu vou explicar mais sobre isso em
+detalhes, tá?
+Vamos chegando lá devagarzinho e chega
+lá.
+Então, beleza.
+Com isso, né?
+Surge -se o Kafka.
+Como é que o Kafka trabalha?
+Olha pra vocês verem.
+Lembra que eu falei do o ele pra um
+componente chamado que vai rotear aqui
+uma filha pra executar.
+Como é que ele funciona no Kafka
+funciona?
+Eu mando a mensagem pra um tópico que é
+uma representação de tabela que a gente
+vai ver um um tópico daqui a pouco na
+prática, podem ficar tranquilos, vão ver
+isso.
+E esse tópico ele é particionado em um
+ou várias partições.
+Então, o que acontece é o tópico ele é
+quebrado, tá?
+Em várias partições ou as alocações onde
+vai ter um meu dado e eu coloco essas
+partições em servidores distribuídos.
+Então, nesse momento, eu posso inserir
+um milhão de mensagens, por exemplo, eu
+mando um milhão, ele vai quebrar aquele
+um milhão em várias mensagens menores em
+partições aqui, vai persistir em disco,
+tá?
+E o meu a minha aplicação de consumo ela
+vai ler esse tópico aqui e vai começar a
+carregar as mensagens que estão sendo
+gravadas.
+O fator de escalabilidade, ou seja, o
+quanto eu consigo ler mais rápido,
+depende de do quantidade de partições
+que eu tenho.
+Ou seja, só posso abrir instâncias da
+minha aplicação a quantidade igual ou
+menor as minhas partições, tá?
+Então, beleza.
+Produzo o dado, ele cai nessa
+representação de tabela, de novo,
+representação de tabela, não é uma
+tabela, tá gente?
+Na verdade, esse dado ele é quebrado na
+quantidade de partições e eu aloco esses
+caras aqui.
+Dentro dos meus servidores, beleza?
+Extremamente eh performático,
+distribuído em que o disco também tá nos
+servidores aqui e eu faço, eu carrego
+esse dado aqui dentro.
+E eu tenho o que é o cara que fica
+olhando para meu cluster e fazendo
+algumas atividades administrativas, tá?
+Então, o básico, o básico do Kafka é o
+broker que eu vou explicar um daqui a
+pouco, que é um broker, que é o que é
+todo, mas o básico é esse cara aqui,
+beleza?
+Broker, o producer, ele cai, consumir e
+eu tenho o meu, beleza?
+Ele pode perguntar, deixa eu tirar o
+mute aqui.
+Pode tirar o mute, pode perguntar se
+quiser perguntar no alto.
+Olá, boa noite.
+É só uma dúvida aqui em relação a o
+disco.
+Se caso tenha um interessante, pode ser
+utilizado o SSD ou é só disco mesmo pra
+fazer armazenamento?
+Não.
+Se você tiver uma, se você precisar ter
+um workload muito alto, aí a
+recomendação é usar o SSD, que eu vou
+falar no no último dia, tá?
+Mas.
+Beleza, obrigado.
+Nada.
+Então, beleza, né?
+De novo, aqui eh só ver se todo mundo
+voltou, o Marcos tá aí, tá vendo agora a
+tela, dá um OK aí pra pensar todo mundo,
+dá um OK aí.
+Beleza, perfeito.
+Então, tá, vamos colocar aqui, um
+exemplo de detecção de fraude, tá?
+Insiro meu dado no top, beleza?
+Esse dado é o dado cru, pensa que o
+cinza é a mensagem, tá?
+Eu vou ter uma outra aplicação de
+processamento em tempo real que vai
+falar se isso é um contato aprovado ou
+negado, né?
+Pra identificar se esse cara aqui é uma
+fraude, entende -se que o vermelho é uma
+fraude, tá?
+Ele passou, ele não passou.
+Então, eu pego esse dado, eu gero um
+novo dado dele, aprovado ou reprovado e
+aí os microserviços vão começar a seguir
+como diz, ó, gente, ó, chegou um aqui
+negado por questão de fraude, entra em
+contato com o cliente, né?
+Ou entra em contato com o órgão
+responsável, falando, ó, tevemos uma
+fraude aqui, vamos ter que investigar.
+Então, aqui, pelo fato dele persistir,
+eu posso em algum momento vim processar
+o dado que tá lá dentro, a gente vai
+falar sobre processamento no na terceira
+aula, tá?
+Então, fiquem tranquilos, ele vai ficar
+bem legal, tá?
+Eu fiz uma aplicação bem interessante
+pras pessoas poderem ver.
+Então, eu tenho um lado, eu tenho um
+produtor, um produtor e um consumer.
+Até a nomeca toda muda, tá, gente?
+Se a gente pegar um um sistema de
+mensageria e um sistema de um sistema de
+mensageria vai chamar quem gera dado de
+publica o dado e quem assina e no nosso
+caso aqui a gente vai trabalhar com
+produtor e
+consumidor.
+Beleza?
+Até aí, gente, tudo bem?
+Entenderam essa parte aqui, tá
+tranquilo?
+Me dá um OK, todo mundo que fala, que
+entendeu, manda um OK pra mim, por
+favor.
+Vou começar devagar, depois a gente vai
+aumentando, tá?
+De novo, porque eu quero deixar o mais
+simples possível pra vocês.
+Então, vamos falar da estreia da noite,
+né?
+Kafka, vamos dar um zoom aqui.
+Kafka ali é um sistema distribuído de
+evento em alta escala, tá?
+Ele tem histórias distribuídos em
+integrações e eu posso processar ele foi
+criado em dois mil e onze no LinkedIn.
+Então, o LinkedIn tinha um problema
+muito latente de quê?
+Os dados não conseguiam chegar a outras
+aplicações.
+Eu tinha vários bancos, eu não conseguia
+ter aplicações consumindo dado pra
+outras aplicações, por exemplo.
+Então, eu tinha uma série de problemas.
+Visto isso, criou sua carta com um
+barramento central onde todas as
+mensagens passam por ele, tá?
+Em dois mil e onze meses, ele foi doado
+para a parte ou seja, o LinkedIn
+internamente criou, tá?
+A sacada se vocês tiverem uma ideia
+mostra como ganhar dinheiro parte dois,
+tá?
+Criou -se em dois mil e onze, em dois
+mil e onze do ele praticamente deu uma
+adoção absurda e em dois mil e quatorze
+os criadores do Kafka dentro do LinkedIn
+fundaram a empresa chamada ou seja, J
+Crabs e Jun Hao saíram da do LinkedIn e
+fundaram a Confluent.
+Hoje a Confluent ela vale sete ponto
+sete ponto dois bi de dólares.
+Então, ficaram bilionários.
+Essa é a segunda forma de você, é
+segundo caso de você ser milionário
+compensoso, não faz assim, mas como o
+cara fica milionário compensoso?
+Tá aí.
+Criou, entregou pra comunidade, pegou o
+produto, montou uma empresa em cima
+daquilo e criou um produto gerenciado,
+tá?
+Normalmente vocês vão ver muito isso no
+espectro de dados, tá?
+Tem isso acontecendo bastante.
+Tá, e por que Kafka, né?
+Vamos pegar um um truputizinho aqui pra
+vocês terem uma ideia se ele aguenta a
+mesmo trânsito.
+Em dois mil e dezesseis o LinkedIn
+soltou um paper que eles faziam dois
+trilhões de mensagens por dia, ou seja,
+eles tinham um fluxo de de dois
+trilhões.
+Em dois mil e dezenove e sete trilhões,
+tá?
+Eles têm dois trilhões.
+Deve ter mudado, porque dois mil e
+dezenove em diante eles não soltaram
+mais nenhum nenhum blog post, nada do
+tipo.
+Mas eles têm, eu vou no último, no dia
+cinco, eu vou trazer alguns casos
+gigantescos que vocês poderiam ver, algo
+mais recente, Uber, vou trazer alguns
+casos bem legais, mas eles têm cem tá?
+Com quatro mil ou seja, quatro mil
+servidores, mais de cem mil tópicos e
+sete bilhões de partições.
+Lembra aqui ó, olha aqui, pensa aqui,
+esse cara aqui eu tenho cem mil e esse
+aqui eu tenho sete bilhões, ou seja, eu
+tenho cem mil tópicos, nesse cem mil
+tópicos eles estão quebrados diversas
+partições diferentes, tá?
+Então, o game é um pouco diferente,
+porque surgiu lá.
+E como é que eles trabalham, tá?
+Isso é importante pra vocês também terem
+algumas ideias.
+Grandes empresas, geralmente, eles não
+trabalham com um um clúster único,
+gigante não.
+Eles fazem um um clúster de entrada, tá?
+Com algumas, a gente vai ver que tem
+configurações diferentes, no último dia
+eu falo sobre as configurações de livro
+tá?
+Então, eu faço configurações pra
+absorver o choque e eu vou ter um pra
+gravação, ele vai espelhar entre eles e
+depois eu vou ter esse dado aqui pra
+leitura, tá?
+Então, eu vou ter camadas de cáfica
+diferentes,
+beleza?
+Então, vejo o o cáfica hoje, tá?
+Eu tenho produção de dados de API, via
+banco de dados, seja qual for, o dado
+passa pelo cáfica, então, ele é uma
+plataforma de em tempo real, beleza?
+Ele tá no meio, onde ele alimenta tanto
+como alimenta como alimenta a aplicação,
+então, a ideia dele e as empresas, a
+gente ouvia isso na prática, tá?
+As empresas colocam em um dado ali
+dentro.
+Lógico que eu vou explicar algumas
+coisas sobre retenção.
+Ah, Matheus, dado fica lá bilhões e
+bilhões de registros?
+Não, tá?
+Adianto que não.
+Até mesmo o último caso eh que tinha
+retenção infinita, quem chama, ou seja
+eh antigamente o New York Times, ele
+tinha toda a sua base de artigos, todas
+as edições publicadas, tava
+armazenamento do cáfica, tá?
+Todas e não tinha retenção.
+Mas, uns anos pra trás, mudaram pro tá?
+Se não me engano.
+Então, hoje tá dentro da Google.
+Mas beleza, né?
+Como eu comentei, a empresa que são os
+criadores do cáfica criaram um produto
+inicialmente de conta de plataforma,
+depois passado pra onde tá presente nas
+três nuvens.
+Então, eu tenho gerenciado na Google, na
+Google, na Microsoft ou na AWS.
+Importante dizer, que a subscription, ou
+seja, aonde está hospedado esses
+clusters é da Confluent, não é uma uma
+um produto que você traz pra dentro em
+house e você consegue usar gerenciar
+dentro da sua nuvem, não.
+Ele é da nuvem da Confluent e tem uma
+série de vantagens e desvantagens dessa
+forma com isso.
+Eu vou citar aqui as vantagens, vocês
+vão entender porque é bem interessante.
+Beleza.
+Lembra que eu falei dos dois, né?
+Então, vamos pegar o primeiro componente
+aqui, ó.
+Broker, tá?
+É onde tá o algoritmo do cáfica, é onde
+o dado do cáfica tá.
+Quando vocês vêm falar, ah, o acesso ao
+broker, tá?
+É o servidor onde tá armazenado os
+dados, é onde tá armazenado os tópicos,
+nível lógico, tópico, partição e os
+segmentos arquivos dentro do broker, tá?
+Então, ele é toda, ele é o principal
+componente do cáfica.
+Também qualquer broker pode ser o que a
+gente usa.
+A gente chama de bootstrap.
+O que que é bootstrap, tá?
+Não tem um principal.
+Se eu tenho um cluster, por exemplo, de
+cinco brokers, eu posso chamar qualquer
+um deles, eu consigo conectar, eles
+conseguem conversar entre eles, trazer o
+dado que eu quero.
+Eu preciso acessar o dado aonde o dado
+reside e eu vou explicar porque reside
+brokers diferentes.
+Eu vou explicar isso também, podem ficar
+tranquilos, tá?
+Mas qualquer um funciona como bootstrap,
+beleza?
+Depois disso, eu tenho as APIs, tá?
+Eu tenho API producer e consumer, ou
+seja, a API que eu trabalho com os
+clientes, aplicações, vou fazer uma
+aplicação em Java, vou fazer uma
+aplicação com o sistema, né?
+Em Python, eu vou usar a API producer
+pra produzir dados, então, eu vou aqui,
+vou produzir os dados que tão lendo, vou
+escrever dentro do cáfica e aqui eu vou
+ler, tá?
+Essas são as APIs de baixo nível que, na
+verdade, elas são base pras próximas.
+O cáfica connect, ou seja, a API de
+integração que eu tenho, que eu vou
+mostrar pra vocês amanhã na parte de
+ingestão da a primeira parte que é o
+source, o cáfica connect e nada mais é
+do que a abstração do producer e
+consumer, tá?
+Então, eles embedaram ele, encapsularam
+ele, então, esse é o connect.
+Só que aconteceu uma coisa muito
+interessante.
+Passou -se um tempo e começou -se a
+perceber, depois que o cáfica foi
+lançado, open source, lá em dois mil e
+onze, dois mil e doze, que eles tavam
+tirando um dado do cáfica.
+Então, o cáfica, o dado chegava,
+produzia, só que ele não tava ficando lá
+mais, somente por causa do Spark.
+Então, criou -se o cáfico Strings que é
+o quê?
+É uma biblioteca de processamento de
+dados em Java em escala, ou seja, eu vou
+processar um dado no cáfica diretamente.
+Eu não tenho que tirar ele do cáfica,
+colocar em outro lugar pra eu
+transformar aquele dado que eu quero
+para depois eu dar outro viés, tá?
+Então criou -se essa biblioteca.
+E o Zookeeper, que a gente vai falar,
+que ele foi, na verdade, na arquitetura
+do Kafka durante muitos anos, foi um
+grande problema que o Kafka teve.
+Por quê?
+Porque o Zookeeper ou a parte do
+Zookeeper, ele é um componente externo à
+arquitetura do Kafka.
+Ele foi criado para a parte
+administrativa.
+Autenticação, autorização, saber qual
+broker é responsável por qual partição.
+Só que começou a ser um ponto de
+lentidão.
+A gente vai falar um pouquinho mais na
+frente, no dia de hoje mesmo, tá?
+Por que esse cara virou um ponto não tão
+interessante e qual foi a solução dada
+para resolver esse problema.
+Já temos a solução, já.
+Mas ele é um componente, hoje, de uma
+arquitetura normal de Apache Kafka.
+Pessoal, até aí, ok?
+Entendemos o que é o Kafka.
+Estão com alguma dúvida nesses seis
+pontos aqui?
+Querem perguntar?
+Obrigado, eu gosto quando alguém fica
+perguntando.
+Pode desmontar e pode perguntar.
+Tá.
+Eu só não entendi, me perdi aqui, por
+que o Streams foi criado?
+Qual foi a justificativa?
+Porque quando o Kafka foi criado, o que
+acontecia?
+Eu produzia dados no Kafka, só que com o
+crescimento do Spark, eu tirava o dado,
+colocava no Data Lake e processava no
+Data Lake.
+Processando no Kafka diretamente, porque
+para processar no Kafka diretamente, era
+extremamente complexo no começo.
+Eu tinha que ter bibliotecas, eu dar
+jar, era extremamente difícil de fazer,
+não era rápido.
+Então, para poder facilitar, criou -se o
+Kafka Streams, que é uma biblioteca em
+Java Scala, para processar direto no
+Kafka e você fazer processamento.
+Ou seja, eu modelar o dado diretamente
+no Kafka como eu quero.
+É bem leve.
+Se me permite só mais uma pergunta, por
+favor.
+O Zookeeper, ele é, fazendo analogia,
+tipo o Yarn do Spark?
+Ele é o gerenciador de...
+Não, não, não.
+Não é nesse nível, não.
+Ele é mais um...
+É porque o Zookeeper, ele é um
+componente bem específico, você vai ver,
+mais arquitetura de Big Data.
+Pensa nele como um cara que ele está
+externo, ele não tem um nível de
+decisão, de recurso, mas ele aloca
+algumas coisas.
+Por exemplo, nesse caso do Zookeeper
+aqui, que permissionamento dentro do
+Kafka, os ACLs, é dentro dele.
+Então, quando o Kafka vai, quando alguém
+vai pedir, tentar acessar o Kafka,
+inicialmente, tem que ver se esse
+usuário ou essa aplicação tem acesso
+dentro do Zookeeper.
+Ele abre uma pasta dos brokers dentro
+dele, com essas informações.
+E a mesma coisa, em questão de, eu
+preciso saber quem que é o responsável
+para esse cara.
+E a processa é bem simples.
+A questão de quem é o responsável por
+partição, ele simplesmente abre uma
+pasta com um ID do broker, e lá eu sei
+que esse cara é o responsável pela
+partição.
+Partição zero, por exemplo, o broker não
+é responsável.
+Mas eu vou explicar isso mais na parte.
+Entendi, obrigado.
+Fala, Marcos, deixa eu botar você,
+gente, gostei de ver, vocês estão
+perguntando.
+Pode tirar um múltiplo.
+Ô, Matheus, boa noite.
+Qual que é a relação do Kafka Connect
+com o DeVisio?
+Tem alguma relação?
+Tem.
+O DeVisio, na verdade, é um tipo de
+conector que ele é hospedado no Kafka
+Connect.
+Quando eu explicar amanhã, vai ficar
+mais claro.
+Mas pensa nele que o DeVisio é uma
+aplicação e o Connect é onde vai rodar a
+aplicação.
+Basicamente é isso, tá?
+Mas segura a sua pergunta, sua pergunta
+amanhã eu respondo com mais clareza.
+Também que eu mostro na prática.
+A gente vai ver, vai montar e vai ver
+direitinho lá.
+Ótimo, gente.
+Agora eu vi que todo mundo acordou.
+Maisa, pode desmontar.
+Olá.
+Eu fiquei confusa quando você falou
+assim que o Kafka Connect é uma API de
+integração, que é uma abstração do
+producer e do consumer.
+Você poderia dar um exemplo?
+Posso.
+Pensa o seguinte, tá?
+Eu vou explicar mais detalhes amanhã,
+mas eu vou explicar rapidinho agora, tá?
+Só pra vocês poderem ver.
+Vou jogar aqui no cantinho.
+Aqui ficou legal.
+Quando eu falo em producer ou consumer,
+eu tô falando de aplicação, ou seja,
+código.
+Eu tô falando de código.
+Tem que criar código mesmo.
+Não vou mostrar agora, não tô mais
+confuso ainda.
+Mas tem que criar código.
+Quando eu falo de Kafka Connect, o Kafka
+Connect, o pessoal pensou, isso aqui nem
+todo mundo faz.
+Tem que criar código já, vou entender
+uma linguagem de programação, leva
+tempo, tudo mais.
+Em alguns momentos, eu quero
+simplesmente ir num banco de dados,
+trazer o dado do banco e trazer pro
+Kafka.
+Eu quero fazer só isso.
+Pensando nisso, criou -se o Connect.
+Kafka Connect.
+Que é um componente em que ele tem, eu
+vou deixar, isso amanhã vai ficar mais
+claro, tá?
+Eu só vou dar uma ideia que agora eu
+quero que vocês pensem agora pra amanhã.
+Ele é simplesmente esses dois APIs
+embedadas, em que eu tenho um arquivo de
+configuração que vai fazer esse processo
+ou de produzir ou de
+consumir.
+Em resumo, é isso.
+Mas segura a pergunta porque anota ela
+porque amanhã vai ficar mais claro no
+final do dia, tá?
+Amanhã eu vou explicar.
+Amanhã eu entro em detalhe do Kafka
+Connect.
+Entro em detalhe, mostro prática, vai
+ficar mais claro.
+Mas pensa que é isso, tá?
+É uma abstração pra facilitar a
+integração de dados, de banco de dados,
+de outros stories pra dentro do Kafka ou
+pra fora do Kafka.
+Me manda um ok no chat se você entendeu
+e se não, segura que amanhã eu vou
+explicar em mais detalhe, tá?
+Mas ótimo, tô gostando de ver.
+Olá, Thiago.
+Essa carta sempre pega.
+Pode perguntar, tá cheio do mute.
+Boa noite, pessoal.
+Tudo bem?
+Cara, me perdoe a redundância, mas você
+poderia recrutir, por favor, qual a
+diferença entre o Connect e o Streams?
+O Connect e o Streams?
+É isso?
+Esse aqui?
+Esse aqui?
+Me manda um ok no chat se você quer
+saber.
+Isso, beleza.
+Kafka Connect é uma API de integração,
+onde eu vou trabalhar com dados pra
+produzir dados pro Kafka ou pra
+audiputar dados do Kafka.
+Kafka Streams é pra modelar o meu
+evento.
+Eu vou acessar os dados no Kafka, eu vou
+transformar, eu vou processar mesmo em
+código de processamento e eu vou gravar
+no Kafka direto de novo, desses dados.
+O Kafka Streams, ele depende do Kafka,
+tá?
+Ele vai ler do Kafka e voltar pro Kafka
+o resultado que tiver.
+Vai ficar mais claro no dia 3, tá?
+Que é o dia de processamento.
+Vou explicar também Kafka Streams em
+detalhe.
+São várias perguntas.
+Gente, quem tiver uma pergunta sobre
+alguns componentes aqui, dá uma segurada
+porque aí nos próximos dias eu vou
+entrar em detalhe, tá?
+Mas eu tô adorando as perguntas.
+É porque realmente é bom vocês
+perguntarem, tirarem dúvidas.
+Eu vou entrar em detalhe nesses...
+Esses caras todos aqui, eu vou entrar em
+detalhe.
+Nos próximos dias.
+O Zookeeper hoje, tá?
+Mas esses caras todos aqui a gente vai
+entrar em detalhe nos próximos dias.
+Beleza?
+Vamos lá.
+Então vamos entender o Confluent Cloud.
+Por que eu trouxe o Confluent Cloud, tá?
+Porque primeiro vamos entender o
+gerenciado.
+Eu já expliquei o open source, os
+componentes open source.
+Vamos entender os componentes agora do
+gerenciado.
+Por quê?
+Porque na verdade esses caras são os
+caras que criaram o Kafka.
+Eu vou explicar um pouco também de
+MSSky, eu vou explicar um pouco de HD
+Insight.
+Vamos entender esse cara aqui a
+princípio.
+Beleza?
+Então, eu tenho gerenciado uma
+governança de streaming onde eu posso
+taguear meus streamings.
+O que tá acontecendo dentro do meu
+ambiente?
+Eu tenho uma tag, eu tenho informações
+de governança.
+Eu vou falar, eu vou explicar amanhã
+sobre o Schema Hash, tá?
+Mas ele é o nosso repositório de
+esquemas, de estruturas de evento.
+De novo, não precisa se preocupar com
+isso agora, tá gente?
+Eu vou passar um pouquinho mais rápido.
+Mas não precisa se preocupar com isso.
+Aqui eu tenho uma construção de pipeline
+gráfica chamada Stream Design, onde eu
+puxo caixinha pra criar os meus
+pipelines dentro do Confluent.
+Esse aqui é novo, deve ter dois anos,
+esse aqui no máximo.
+Um ano, um ano e meio.
+Isso aqui é bem legal.
+Eu vou falar de REST também nos pros
+amanhã, então segurem também.
+Mas o REST é a integração via REST com o
+produtor, o consumidor e algumas partes
+administrativas do Kafka.
+Tem esse embedado dentro dele.
+Eu tenho Kafka Connect, ou seja, eu
+simplesmente falo qual fonte eu quero
+conectar.
+Só pra mim o Cluster de Kafka Connect
+executa pra mim.
+Eu tenho um recente, tá?
+Isso foi anunciado no Kafka Summit do
+ano passado e agora ele reforçou isso
+aqui.
+Eu tenho um Flink gerenciado dentro do
+Confluent Cloud agora.
+Lembra que eu falei do Kafka Streams?
+Só pra você ter uma ideia, isso é
+importante.
+O Kafka Streams é a parte de
+processamento.
+O Flink também.
+Porém, o Kafka Streams é só Java e
+Scala.
+O que aconteceu?
+Eu não tive tração suficiente.
+Quer processar dados?
+Eu trabalho com Python e SQL, gente.
+Scala foi bom.
+Eu vou ser bem cego com vocês.
+Foi bom, talvez há 10 anos atrás, para
+processamento de dados.
+Hoje as tecnologias já estão flexíveis
+pra você usar Python e SQL porque é
+muito mais rápido de você desenvolver.
+De novo, é a velocidade.
+Se eu tiver o mesmo tempo de entrega e
+eu tiver a mesma qualidade, a mesma
+performance de entrega, mas eu tiver o
+tempo reduzido para a empresa, isso é um
+grande diferencial.
+Ainda tem case 5DB que eu vou explicar
+também no dia 3.
+Que é um processador e SQL de streams.
+Eu tenho control center, eu tenho a
+parte de segurança completa e eu tenho
+replicação entre clusters diferentes.
+Tudo isso dentro de uma caixinha única.
+E eu vou explicar daqui a pouco o que o
+Icebreak está aqui fora.
+Isso foi anunciado esse ano no Kafka
+Summit.
+Hoje, quando você vai no Confluent
+Cloud, você clicar no seu tópico e
+habilitar o Table of Flow, ele cria
+automaticamente dentro ainda da
+Confluent Cloud uma tabela em Icebreak.
+O Icebreak, para quem não entende, é um
+sistema, é um formato de arquivo
+otimizado para Analytics.
+Então pensa o seguinte, ele cria um
+formato de arquivo inteligente.
+Eu posso fazer query em cima do arquivo
+e ser extremamente rápido.
+Eu vou explicar também no último dia
+quando eu falar de Lake House e
+Streaming House arquitetura de dados.
+No dia 5.
+Beleza.
+Vamos ver um pouquinho da história?
+Porque eu acho que a história é
+importante.
+Versão 0 .7 .0 criado no LinkedIn.
+Depois, como eu falei, eu vou dizer que
+no final de 2011 para 2012 ele saiu, na
+verdade foi em 2011 que ele foi doado,
+mas em 2012 ele saiu de Incubator para
+Top Level.
+Então ele, praticamente em um ano, ele
+teve uma adoção tão grande que ele saiu
+para um dos projetos da parte mais
+utilizados e foi graduado.
+Normalmente não é tão rápido assim não.
+Além dele, essa velocidade foi só o
+Spark que teve.
+2014, a Confluent é criado e é
+engraçado, porque quando eu comecei a
+estudar era esse símbolo aqui.
+Mudou completamente.
+Era esse brand deles, é bem legal.
+E aí eu trabalhei com Confluent Platform
+versão 3 .02
+.7 Em 2016 eles lançam o Kafka Streams.
+Então, cinco anos do lançamento é
+lançado a API para processamento de
+dados.
+E vocês vão entender porque ela é
+diferente, porque não tem que ter uma
+API específica para processamento.
+Não é somente consumir, eu fazer um
+Progo do tipo e voltar.
+Não é isso.
+É mais complexo do que vocês imaginem.
+Eu vou mostrar porque no dia 3.
+Segurem aí.
+2016 Kafka Streams, a versão 0 .10.
+2020 eles anunciam o projeto
+Metamorfose, que na verdade é o
+Confluent Cloud.
+Então antigamente você instalava o
+plataforma, você instalava o seu
+ambiente.
+Não tinha um ambiente 100 % gerenciado
+porque você estava no seu ambiente, você
+tinha um produto Kafka Confluent
+Platform.
+Tudo com os recursos todos embedados.
+Aí eles tiveram o que?
+Colocaram tudo dentro de uma nuvem.
+Eu só dou, eu só crio minha credencial.
+Next, next, finish.
+Está lá meu ambiente.
+Eu pago pelo que eu uso.
+Eu não me preocupo com infraestrutura,
+não me preocupo com disco.
+É uma série de outras coisas por detrás
+disso.
+Tanto que o Kafka aqui dentro não é
+chamado Kafka.
+É chamado de Core Engine.
+É uma...
+Eles refizeram o core do Kafka para
+trabalhar de forma distribuída dentro de
+um sistema gerenciado.
+Quando eu falo de sistema gerenciado,
+gente, é um sistema que você não tem que
+preocupar com nada a não ser sua
+utilização.
+Você não se preocupa com infraestrutura,
+com disco, não se preocupa com nada.
+Você só se preocupa em utilizar.
+Em 2020, a Kipe é Kafka Improvement
+Proposal.
+Então, quando eu falar Kipe, é Kafka
+Improvement Proposal.
+Ou seja, uma proposta de melhoria do
+Kafka para retirada do Zookeeper.
+Lembra que eu comentei que o Zookeeper é
+um recurso a par da arquitetura do
+Kafka?
+Não é igual o YARN, igual eu comentei
+com vocês, né?
+Ele virou um ponto de fonte de falha.
+O que o pessoal pensou?
+Vamos criar um novo protocolo para fazer
+o que o Zookeeper faz, chamado Craft.
+Ele é baseado no protocolo Raft, que eu
+vou explicar lá embaixo.
+E aqui foi a primeira release do 2022.
+Então, na versão 2 .9, se não me falha a
+memória, eles chegaram e falaram assim,
+gente, você pode, em ambiente de
+desenvolvimento, desativar o Zookeeper
+para testar o Craft.
+Realmente, você já pode rodar isso em
+produção.
+Eu vou explicar um pouco mais na frente.
+Em 2023, eu estava lá e eles anunciaram
+o sistema gerenciado do Flink dentro da
+Confluent Cloud.
+Ou seja, entenderam que o Flink é, de
+fato, a plataforma open source para
+processamentos de streaming mais
+performático, porque aceita Java, Scala,
+Python e SQL.
+E trouxeram isso para dentro da nuvem.
+Em 2024, eles anunciaram a integração
+com o Iceberg.
+Eles chegaram e falaram assim, a partir
+de hoje, se você for lá no seu top e
+clicar TableFlow, ele vai criar uma
+tabela Iceberg para você.
+E eu vou explicar um pouquinho disso
+mais no último dia.
+Por que isso é importante para quem está
+aqui na parte de dados e Analytics.
+Beleza?
+Até aí, pessoal.
+Todo mundo vivo?
+Eu vou dar uma feiradinha, senão a gente
+acaba perdendo conteúdo.
+Se eu...
+Me mandem as perguntas aqui no chat,
+quando tiver pergunta, porque eu analiso
+se vai ser respondida mais na frente ou
+se eu respondo agora, para ficar mais
+fácil para a gente.
+Se não, a gente responde amanhã.
+Eu vou abraçá -la mais cedo.
+Entra com as perguntas.
+Então, beleza.
+Como eu comentei, o Kafka vai ter tipos
+de implementação diferentes.
+Eu vou ter o que eu chamo de Vanilla, ou
+baunilha.
+É o meu Kafka puro, open source, na
+Apache.
+Então, entra aqui na Apache Foundation.
+Eu venho aqui, eu download, baixo e eu
+faço a instalação completa.
+Esse é o famoso open source.
+Eu posso ir para a Confluent.
+De novo, eu vou lá, estou na Confluent,
+faço um cadastro, adquiro o plano que eu
+quero usar, e aí eu pago pela utilização
+das minhas aplicações, meus dados lá
+dentro.
+Tempo de retenção, eu falo sobre isso
+também hoje.
+Eu posso ir para a AWS e usar o MSK.
+MSK é Manage Service for...
+Apache Kafka.
+Eu não sei o que com Apache está.
+Acho que é só Kafka.
+MSK.
+Em que a infraestrutura da AWS, ela me
+dá um cluster de Kafka para moldado, mas
+tem alguns detalhes.
+Quando eu for explicar o MSK, eu explico
+em detalhes.
+A gente vai ter uma aula de MSK com um
+dos meus especialistas aqui da One Way,
+que está bem por dentro.
+O cara teve até reunião com um
+arquiteto, da AWS, da MSK, fora do país,
+no começo de março.
+Que não pude participar, ele participou.
+Então, o cara de MSK, que eu confio
+100%, vai trazer uma aula bem legal para
+vocês sobre MSK na sexta.
+Então, eu vou explicar o MSK aqui, mas a
+gente vai entrar em detalhes no último
+dia.
+Beleza?
+Para a Microsoft, eu tenho um HDInsight,
+que eu vou explicar um pouquinho dele,
+uma plataforma de dados, em que não só
+tem Kafka, tem Spark, tem Hive, tem
+vários tipos de sistemas open source
+aqui dentro.
+E eu tenho o Springz, que é o Kafka
+Kubernetes.
+Eu, particularmente, gosto muito desse
+cara aqui.
+Nossas aulas, nossas demonstrações, vão
+ser baseadas nesse cara.
+Por quê?
+Porque o custo é baixo, a forma que a
+gente consegue explicar é muito mais
+simples, eu consigo mostrar muito mais
+rápido para vocês as coisas.
+E, de novo, hoje, para produção e
+desenvolvimento, esse cara aqui está
+sendo, para mim, ou feito por meus
+clientes, ele é um dos melhores.
+Ele está sendo acelerado o tempo
+inteiro, sempre tem uma release nova, a
+comunidade é muito responsiva, e é 100 %
+open source.
+É um projeto da Red Hat, na verdade, é o
+sistema da Red Hat de Kafka, gerenciado,
+que eles fizeram um projeto open source
+entregado para a comunidade, que é
+mantido pelo time da Red Hat.
+Então, a gente vai falar um pouquinho
+também sobre a questão de open source,
+quem mantém e tudo mais, eu vou falar um
+pouquinho no final do último dia.
+Mas esse cara aqui, particularmente, é o
+que eu mais gosto de trabalhar, tá?
+Simplicidade, de novo, tem várias coisas
+que facilitam a nossa vida.
+Beleza.
+Vamos ver uma arquitetura de Kafka.
+Olha só que desenho legal.
+Gente, quando eu falo de Connect, eu vou
+ter um servidor ou conjunto de
+servidores de Connect.
+Então, é um componente do Kafka, mas ele
+não está dentro do broker.
+Beleza?
+Importante frisar isso.
+Então, eu vou ter aqui o meu cluster de
+Connect.
+Eu vou ter o meu cluster de Kafka com
+meus brokers lá dentro.
+Eu vou ter o meu cluster de Zookeeper.
+Ou seja, são máquinas que trabalham de
+forma distribuída que fazem parte do meu
+ecossistema de Kafka.
+Aqui eu vou ter disco, geralmente aqui
+eu trabalho com disco de Kafka.
+Eu vou explicar quando a gente trabalhar
+amanhã o Connect.
+Beleza?
+Eu coloquei um host aqui, mas eu poderia
+ter vários.
+Aqui, como eu comentei, está vendo qual
+é a questão da integração?
+Eu conecto nos bancos de dados ou via
+source lendo ou gravando nesses bancos
+ou via source lendo do Kafka ou gravando
+no Kafka.
+Beleza?
+E aqui eu tenho um microserviço que eu
+vou direto no cluster de Kafka.
+Então, eu trabalho com microserviço aqui
+em nível de Connect.
+Eu trabalho exatamente com um broker.
+Tranquilo?
+E aqui meu processamento também, eu vou
+direto no Kafka.
+E aqui eu dependo do Kafka.
+Nesses dois casos aqui, tanto o Kafka
+Streams ou KStreams como o K5DB eu tenho
+uma dependência.
+E é interessante eu coloquei aqui,
+gente.
+Ah, Matheus, o K5DB está no servidor e o
+Kafka Stream não.
+Por quê?
+Porque aqui eu dependo de um servidor e
+aqui é uma aplicação, é um sistema.
+Então, eu posso subir aqui dentro do
+Docker.
+Eu posso subir dentro de um servidor
+separado, dentro do servidor de Kafka,
+dentro da máquina.
+Não é recomendado, tá, gente?
+Eu já vi e esse é um caso muito...
+Isso aqui eu vou deixar bem claro para
+vocês.
+Todo mundo está aqui e todo mundo está
+assistindo.
+Nunca coloquem os servidores ou as
+aplicações de Azuki no mesmo servidor de
+Kafka.
+Eu peguei um cliente recente para fazer
+uma análise de um ambiente de Kafka e eu
+assustei.
+Por quê?
+Porque tinham instalado tantos
+Zookkeeper com Broker nas mesmas
+máquinas.
+Então, eu tinha Broker 1, Zookkeeper 1.
+Broker 2, Zookkeeper 2.
+Isso leva a uma série de problemas.
+Essas estruturas foram criadas para
+serem desacopladas uma da outra.
+Ou seja, eles terem recursos
+computacionais totalmente distintos.
+Eu tenho um cluster de um lado e um
+cluster de outro.
+Não foram feitos para rodar no mesmo
+cluster.
+Não só isso não é uma boa prática, como
+isso gera uma série de problemas.
+Ah, mas eu ganho network.
+Não, você não ganha network não.
+Porque justamente um dos problemas que
+estava tendo nessas máquinas era que
+eles estavam perdendo a conexão de uma
+máquina com a outra.
+E eu suspeito que foi por causa da
+estrutura que foi realizada tudo num
+ponto só.
+Eles não conseguiam se enxergar mais por
+algum motivo da parte de network.
+Os logs estavam me falando isso.
+Estão sempre separados.
+Eu vou falar sobre a parte de eleição de
+quanto que ele é controle.
+Podem ficar tranquilos.
+Vamos falar então de como é que funciona
+o HDInsight.
+No Microsoft você fala que quer um
+cargo.
+Ele vai subir para você um cluster de
+cargos em que ele vai trabalhar o
+Zookeeper ela vai gerenciar e aqui é
+gerenciado com máquinas virtuais da
+Microsoft.
+Vale salientar que geralmente as versões
+que estão aqui são versões antigas.
+Porque isso é da antiga Ortonworks.
+Eu não sei se tem alguém que trabalhou
+com Ortonworks aqui mas ele era um
+sistema de big data que a Cloudera
+comprou que tinha várias distribuições
+de open source e a Cloudera adquiriu e
+acabou com a empresa.
+Mas a Microsoft tinha um acordo com a
+Ortonworks de utilizar os sistemas dela.
+Então ela manteve o HDInsight.
+O HDInsight tem gente que reclama por
+questão de versão não tem evolução mas é
+por conta disso.
+É por conta dessa situação.
+Normalmente eu não recomendo a
+utilização dessa distribuição.
+Porque de novo as versões de carga são
+antigas é bem difícil de você gerenciar
+as máquinas e por aí vai.
+Então eu não recomendo.
+Já o MSK como eu comentei que é da AWS
+ele já é um bem evoluído pela AWS.
+Então as versões são sempre as últimas.
+Em que ela tem toda a parte de segurança
+do cluster feita pela AWS e pelo outro
+open source.
+Um detalhe muito importante Por que eu
+falo que esse carro não é 100 %
+gerenciado?
+A infraestrutura é.
+Alguns componentes sim.
+Mas é o carro com open source.
+Se você tiver algum problema ou bug
+específico vai levar para ele também nas
+versões atuais.
+Por exemplo, eu tive um cliente até esse
+dia brasileiro.
+Ele falou cara, a gente ligou para a AWS
+e tinha um problema específico da
+comunicação de mensagens e quando a
+gente mostrou o erro a AWS perguntou
+para eles verem para a gente.
+Eles falaram que era um erro específico
+de carga que eles não poderiam estar
+atuando.
+Então pode acontecer.
+Pode acontecer.
+Esse caso não acontece.
+O problema é que a Confluent Cloud é 100
+% gerenciada é porque você não tem que
+se preocupar com nada antes disso.
+O próprio core engine, ou seja, o
+principal core deles é gerenciado por
+eles.
+Toda a versão, tanto que a versão aqui
+não é a versão do Kafka atual.
+É a versão do Kafka extremamente
+avançada interna, enterprise de ter uma
+equipe de tantas pessoas trabalhando com
+ela.
+Mesmo que o que já esteja sendo removido
+do Kafka, que o MSK ainda usa ele ainda
+funciona em versões novas Ótima
+pergunta.
+Ele funciona, mas vai entrar como
+deprecated na versão 4 .0.
+Então até o momento você pode usar.
+Na versão 4 .0 do Kafka ele vai entrar
+em deprecated e a gente não vai começar
+a não aceitar da 4 em diante.
+Então ele funciona, mas da 4 em diante
+não é ideal.
+Nós estamos na versão 3 .8 que foi mês
+passado que eles lançaram.
+Então tomem cuidado com isso.
+Já comece a pensar nisso aí.
+Uma dúvida sobre aquele do hdinsight.
+Você falou que não é uma boa prática
+usar o Zookeeper no mesmo cluster.
+Seria um problema usar o hdinsight em
+comparação com as outras alternativas?
+Não necessariamente.
+Aqui ele está fora.
+Na verdade ele está fora.
+O Zookeeper aqui é gerenciado pelo
+próprio Microsoft pelo paper dela.
+Então você não precisa se preocupar com
+isso não.
+Ela gerencia isso para você.
+O negócio todo é você fazer manualmente.
+Eu vi essa empresa, por exemplo, ela que
+criou esse cluster e ela fez essa
+instalação tudo no mesmo lugar.
+Então aqui é já um pacote fechado.
+Não tem tanto problema.
+O problema não é necessariamente esse.
+O problema aqui é que são versões
+antigas.
+Bugs que foram resolvidos.
+Você não vai ter resolução aqui dentro.
+Se for Microsoft...
+Ah, mas eu tenho que ir para o
+Microsoft.
+Eu geralmente recomendo ir para a
+Confluent.
+Ou usar o Event Hubs que eu vou explicar
+um pouco.
+E na quinta.
+Sobre esse cara.
+Que é o sistema gerenciado de
+mensageiria dentro da Microsoft.
+Só que ele tem...
+Ele não é um Kafka.
+Ele tem algumas limitações.
+Mas não tem esse problema não.
+Com a adição do Flink ele passa a ser...
+Com a adição do Flink ele passa a ser
+esculpido.
+Depende do caso de uso.
+Perfeito.
+Depende do caso de uso.
+Sua aplicação lá.
+Não tem problema nenhum.
+Porém você já tem pronta.
+Que é mais fácil.
+Qual caminho seria melhor tomar com
+essas duas classes?
+João, eu vou explicar lá embaixo.
+Pode ficar tranquilo.
+A solução existe.
+Fique tranquilo.
+Beleza, gente.
+E eu tenho um Sprinter.
+Que é o operador de Kubernetes.
+Paulo Apachka.
+Então pensa o seguinte.
+Eu tenho meu cluster de Kubernetes.
+E não preciso ter conhecimento de
+Kubernetes para esse treinamento, gente.
+Eu vou explicar algumas coisas.
+Depois é ideal vocês darem uma estudada
+que eu recomendo sempre.
+Eu tenho meu cluster de Kubernetes.
+Ele está distribuído.
+Eu estalo o Strins.
+Ele distribui para mim.
+E o operador, que é a cabeça aqui.
+O principal cérebro aqui.
+Ele vai ficar olhando os meus recursos.
+E isso é uma grande vantagem do ponto de
+vista de administração.
+Porque eu simplesmente subo.
+Escalo quando eu preciso.
+E ele vai garantir que as minhas
+aplicações estejam no ar.
+Então existe um duplo fator de
+observabilidade aqui dentro.
+O próprio Kubernetes ele vai tentar
+subir as suas aplicações o tempo
+inteiro.
+Deixar que elas estejam disponíveis.
+E o cluster de Operator.
+Ou seja, o pod de Operator.
+Ele vai estar olhando.
+Então eu vou olhar para ele.
+Eu vou ser o log por ele.
+Ele expõe métricas.
+Então assim, tem toda a surface.
+O ecossistema de Kafka disponível.
+Eu tenho Connect.
+Eu tenho Broker.
+Eu tenho Expo.
+Eu tenho a remoção do Zookeeper
+disponível.
+Que eu vou explicar.
+Então, eu tenho muita coisa aqui.
+Fazer o deploy de Kafka em Kubernetes na
+AWS seria algo parecido com isso?
+Se você estiver usando o Strins, sim.
+Porque tem outros tipos de distribuição
+de Kafka no Kubernetes.
+Você pode usar.
+Tem da Bitnami, tem Banzai Cloud.
+Esse que eu comentei aqui é específico
+Strins.
+É um dos tipos.
+E é o que eu mais gosto.
+Eu testei todos.
+Tem muito tempo que eu não uso Banzai
+Cloud.
+Realmente depois que eu preciso da
+Strins ele continua sendo evoluído.
+Então eu nem olho direito os outros.
+Mas eu posso escolher o tipo de storage.
+Eu quero testar alguma coisa.
+Não quero gerar um custo maior.
+Eu posso gerar discos que só vão existir
+naquele cluster.
+Eu não vou alocar discos maiores ou
+discos SSD ou algo do tipo.
+Não vai persistir o dado.
+Para teste, excelente.
+Eu vou mostrar o ephemeral hoje.
+Eu posso persistir o dado.
+Eu posso usar o JBOD.
+Ou seja, eu tenho vários discos e eles
+trabalham com um só.
+Isso também é algo do Kafka que veio
+para o Strins.
+Posso saber a color de balance.
+Tem a parte de segurança TLS.
+Tem a indicação 2 .0 por token, ACLs e
+por aí vai.
+Uma comparação de valores.
+Para vocês terem uma ideia da questão de
+custo.
+Se eu for usar o MSK como uma instância
+Kafka M5 LARGE.
+Ou seja, 8GB de RAM.
+3 VMs.
+Eu vou usar o Connect.
+A unidade de Connect aqui.
+Eu vou usar duas unidades de Connect de
+4GB.
+A gente vai ver isso também lá no
+Strins.
+1TB de disco.
+Eu vou dar 620 dólares por mês.
+De novo, não é caro.
+7 .220 dólares por ano.
+Isso aqui é o mínimo.
+Estou jogando aqui bem para baixo.
+Normalmente a gente vai ver veículos de
+15, 10, 8, menores de 8 em produção.
+Ou seja, para um workload bem pequeno.
+Normalmente eu vou ver de 8 para cima
+aqui.
+Mas de novo, vamos começar pequeno.
+Para vocês conseguirem ver a proporção.
+E aqui eu tenho a gerência do Kafka em
+si.
+Porque é um Kafka.
+Eu vou ter que fazer upgrade.
+Eu vou ter que subir versão, modificar
+versão.
+Então eu vou ter que olhar o meu Kafka
+ainda.
+Importante.
+A Microsoft e a AWS elas olham a
+infraestrutura.
+HD Insight.
+Eu aumentei aqui.
+Dobrei.
+6 VMs.
+8 GB.
+1 TB.
+1123 GB.
+E aqui eu vou ter 13 mil de dólares de
+custo anual.
+E aqui de novo.
+Versão antiga.
+Continua ainda não 100%.
+Aqui começa a brincadeira ficar
+interessante.
+Vou deixar essa aqui por último.
+Vou abrir daqui a pouco.
+Dá um zoom aqui para vocês poderem ver o
+Confluent.
+O Confluent ele tem uma medida
+diferente.
+Ele vai te perguntar assim.
+Quantos consumidores vão ler?
+Qual que é a média de escrita?
+E qual que é a média de retenção?
+Ou seja, qual que vai ser o plano que
+você vai usar?
+Você quer um plano dedicado?
+Você quer um plano padrão?
+Então o custo dele é baseado nesse
+conjunto.
+Não, ele vai colocar dessa forma.
+Se a gente colocar 5 consumers lendo o
+tempo inteiro a 10 MB de leitura por
+segundo de gravação por segundo e
+retenção de 7 dias do tópico dá em torno
+de 7 mil dólares por mês.
+84 mil dólares por ano.
+Gente, lembrando que essa informação
+esse dado a Confluent está produzindo
+muito no mercado brasileiro.
+Eu estimo que negociando diretamente com
+ela dá para conseguir 50 % de desconto.
+Ou seja, esse valor vai para 42.
+Ainda a alta mas eu não me preocupo com
+o abençoamento eu não me preocupo com a
+infraestrutura e praticamente uma pessoa
+ou duas pessoas podem me tirar a folga
+eu tenho duas pessoas que podem levar o
+parque de cárrega praticamente.
+Mesmo assim que eu falo olhar é a
+questão de evolução, pernicionamento
+porque não tem muito o que fazer em
+nível administrativo aqui.
+A Confluent legisla isso.
+Então parece que ela é bem mais cara mas
+aqui você também tem que colocar em
+consideração o valor de por isso que as
+vezes a conta não é tão
+rápida assim.
+Eu sempre falo com qualquer cliente que
+é cara, pensa um pouco vamos avaliar tá
+tudo ok, minha tela bem?
+Como é que tá aí?
+O áudio tá bom?
+Eu não sumi não?
+Me dá um ok por favor no chat.
+Tem mais alguém cortando a não ser que o
+João?
+Tá, vocês vão me falando aí.
+De qualquer forma a gravação acho que
+vai estar de boa.
+Então se vocês não pegaram me avisa que
+eu explico de novo tá, vocês pegaram.
+Beleza.
+StreamZ Se eu subir 3 marcas virtuais de
+8 gigas, eu vou ter um custo de 216
+dólares tá, aqui na AWS que eu fiz o
+cálculo.
+M5 a large Eu vou ter um custo anual de
+2 .520 dólares Beleza?
+E detalhe importante a gráfica é muita
+coisa.
+Aqui eu tô colocando Connect Me,
+Homemaker, Exporter, eu vou colocar aqui
+Prometheus, Grafana Elastic Stack toda
+completa pra tudo isso e vai me sobrar
+máquina pra fazer mais coisas.
+Eu vou mostrar porque, porque eu tenho
+um cluster de Kubernetes aqui eu vou
+mostrar pra vocês quanto tá o que que eu
+tenho nele atualmente tá, pra vocês
+verem em questão de custo -benefício tem
+várias empresas que estão seguindo por
+esse caminho Beleza?
+Então em questão de custo é o melhor,
+porém porém, voltando a mesma ideia do
+time, né, eu tenho que ter um time com
+conhecimento de Kafka e Kubernetes, aí
+já muda um pouco a brincadeira.
+Tem clientes que eu falo, olha, se vocês
+não têm alguém procurado Kubernetes eu
+recomendo vocês irem pra algo mais
+gerenciado, nem que vocês paguem mais
+que vocês vão ter que ir pra um
+pagamento em algum momento não existe
+almoço de graça aqui Eu particularmente
+eu gosto muito
+do Strinze, tá?
+Se tiver alguém que trabalha com a parte
+administrativa, eu vou mostrar um pouco
+dele, vou mostrar também no último dia e
+eu prefiro ele em questão de tá
+trabalhando com ambiente de Kafka tá,
+hoje.
+Geralmente eu vou tem três vertentes, né
+eu vou pra Strinze, se alguém se a
+empresa quiser, tipo, olha eu quero
+algo, sempre que eu penso, nossa, eu
+quero mover as coisas de um lado eu
+quero falar assim, ó, amanhã eu vou pra
+Microsoft, pum amanhã eu tô na Google,
+bum aí eu vou pro Strinze ou Confluent
+Cloud se for gerenciado que eu não
+preciso me preocupar, porque ele vai tá
+na nuvem da Confluent, né Agora MSK, por
+exemplo, eu meio que fico locado dentro
+da AWS, porque eu não consigo movimentar
+meu SK pra outra nuvem e o Crossflow,
+gente, não é uma realidade não já tá
+acontecendo, tá?
+Não é um sonho não, já tá acontecendo
+Muitas empresas tão trabalhando com
+Microsoft, AWS Google querem mover
+workloads pra lugares diferentes quer
+que as aplicações estejam de um lado e
+isso é uma coisa muito normal então tem
+que pensar nisso tudo no momento também
+que for pensar no seu caso tomem cuidado
+com isso Então tá, gente, vamos pra
+demo, e aí vamos fazer o seguinte, vocês
+querem fazer uma pausa mais ou menos
+umas 8h45 pode ser?
+O que vocês acham?
+Então, ok isso vocês querem fazer antes
+de ir pra banheira pra解ificar essas
+coisas eu vou mudar de tela e eu vou,
+vamos cortar essa gravação eu vou cortar
+aqui pra gente poder ter a demo depois a
+gente volta deixa eu parar aqui valeu
+eu vou fazer o seguinte Eu sei que é
+meio chato de parar a gravação
+importante só porque vai ficar melhor
+pra vocês lá na frente eu sei que é meio
+chato de parar a gravação importante

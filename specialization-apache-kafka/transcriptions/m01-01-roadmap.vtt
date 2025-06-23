@@ -1,0 +1,95 @@
+Beleza, pessoal.
+Primeiramente, bem -vindo ao treinamento
+de engenharia de dados com Apache Kafka.
+Esse treinamento é dividido em cinco
+momentos, sendo o primeiro momento
+voltado para fundamentos internos.
+A gente vai falar um pouquinho de Big
+Data, a gente vai falar de fundamentos,
+de mensageria, de plataforma, de
+streaming.
+A gente vai falar sobre os tipos de
+deployment, de implementações que você
+pode trabalhar com Kafka.
+A gente vai falar de Kafka, internamente
+nele, tópico, partição, o que é offset,
+o que é log compaction.
+O que é esse tal de liderança de
+partição e replicação, craft e as
+propostas também gerenciadas.
+Esse é o dia um.
+No dia um eu vou centralizar a ideia do
+tipo, o que é?
+Depois que eu falo o que é, a gente
+começa a primeira etapa de um pipeline.
+Esse treinamento é um treinamento
+voltado para o time de dados.
+Por mais que muitas empresas, muitos
+profissionais trabalhem com Kafka mais
+voltados para desenvolvimento, o Kafka é
+um produto de dados.
+Ele é armazenamento de dados.
+A gente vai ver mais sobre isso.
+Então, aqui eu vou falar muito com o
+viés para o time de dados analíticos.
+Então, o segundo time fala de ingestão.
+Como é que eu trago o dado para o Kafka?
+Como é que eu pingo o produtor?
+Quais são os formatos de dados?
+Kafka Connect e alguns casos de uso.
+Beleza?
+Dia três, processamento.
+O dado somente por si só, parado dentro
+do Kafka, não tem valor para a gente.
+Então, como é que eu vou processar os
+dados dentro do Kafka?
+Eu vou falar sobre Event Processing,
+trabalhando com Python, trabalhando com
+SQL, Flink, Kafka Streams, KSQL DB e
+ByteWax.
+Eu vou trazer algumas coisas para vocês
+começarem a pensar em projetos e POCs
+que podem ser interessantes.
+Vamos falar de Apache Spark, claro, e
+vamos também entrar um pouquinho mais no
+Flink.
+Eu vou explicar daqui a pouco por que
+que acaba que a gente fala um pouco mais
+de Flink no momento de processamento em
+streaming.
+Eu vou falar um pouco desse caso.
+Depois que eu ingeri processar...
+Depois que eu ingerissei, eu vou
+disponibilizar aquela informação.
+Então, a gente vai falar sobre Kafka
+Consumer.
+Como é que eu leio o dado?
+Como é que eu exporto os dados do Kafka,
+usando Kafka Connect, para outras fontes
+de dados?
+Vamos falar de OLAP System e MDW, More
+Electric Houses.
+Vamos falar um pouquinho de
+virtualização.
+Então, como é que eu consigo tirar o
+dado do Kafka?
+Porque a gente vai ver que leitura para
+o Kafka não é tão interessante.
+Eu vou explicar bastante sobre isso.
+E no final, eu vou falar algumas coisas
+de melhor experiência.
+Estratégias práticas, estratégias
+avançadas, tanto para iluminação como
+para desenvolvimento, tá?
+Vamos dar algumas ideias também de
+arquitetura, principalmente, e alguns,
+eu posso dizer, brindezinhos aí para
+facilitar o trabalho com o Kafka.
+Só que esse momento, gente, você só
+começa a entender realmente como ele
+funciona, como é que realmente tem
+valor, a partir de passar por todos
+eles, tá?
+Então, de novo, vamos com calma.
+Esse aqui é o primeiro.
+VOU MURD MAN DIA 20 DIA 4 DIA 7 DIA 45

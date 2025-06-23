@@ -1,0 +1,2017 @@
+Beleza, pessoal?
+Quarto dia, quarta aula de Apache Kafka.
+Espero que vocês estejam gostando da
+aula.
+A gente agora vai entrar na parte de
+consumo.
+A gente entendeu os fundamentos, o que é
+top, qual o set, partição, broker,
+resup, e de novo, muita coisa ficou de
+cheiro.
+A ideia do primeiro dia, da aula 1, é
+vocês se situarem no ambiente Kafka.
+Ah, isso aqui é isso, isso aqui é isso,
+isso aqui é isso.
+Beleza, agora a gente começou a ligar.
+Ingestão com o produtor, vocês olhando a
+aplicação na mão, conectores, vantagem
+de um, vantagem de outro.
+Depois a gente pegou aquele dado e
+processou, porque aqui, na verdade, é um
+treinamento de Kafka para engenharia de
+dados.
+Então, a gente tem que pensar no modo de
+pipeline, ou seja, eu começo o dado em
+algum lugar cru, eu preciso transformar
+esse dado para poder entregar na IT, por
+sinal das contas.
+Então, a gente está chegando no final,
+que é a parte da gente que está com o
+dado pronto, pronto para ser consumido.
+Então, a gente vai falar como é que a
+gente lê dado, particularidade de
+consumo, sync e conector, e também a
+gente tem um adicional aqui, que é uma
+parte que não é essa parte do
+treinamento.
+Então, normalmente, a gente fala de
+banco de dados, que você vai ver sim e
+tudo mais, mas faz muito sentido a gente
+entrar um pouquinho numa parte que não é
+esse casamento dele com o Kafka.
+Então, aqui a gente acaba que a gente
+entende o quê?
+O Kafka recebe a informação, o Flink é
+um casamento muito interessante para
+fazer processamento, transformação do
+dado, ou seja, eu vou pegar o dado em
+streaming, vou trabalhar aquele dado e
+vou gerar outros streams a partir dele.
+E agora a gente vai ver esse final.
+Eu peguei o dado, transformei, agora a
+gente vai acessar esse
+dado.
+Beleza, vamos começar a falar de
+consumo.
+Só que antes disso, deixa eu fazer só,
+deixar uma brincadeira aqui.
+Funciona.
+A gente vai deixar isso aqui
+funcionando, depois a gente vai ver de
+colégio.
+Depois eu volto aqui e vejo.
+Então, beleza.
+Consume, tá?
+Lembra que eu comentei que as APIs
+primárias são sempre produtos de
+consumo?
+Então, aqui faz todo sentido a gente
+iniciar com os clientes, o ForseBet
+continua sendo o Java Scala, porque, de
+novo, são as APIs do mesmo nível.
+Uma de gravação no Kafka, uma de
+leitura.
+Então, eles seguem a mesma...
+Elas seguem as mesmas regras.
+Usam a Liberty Kafka, tá?
+Como a biblioteca em C++ para os
+clients, de novo, qualquer coisa.
+Tem um cliente em, sei lá, C Sharp,
+Python, Go, seja qual for, ele vai usar
+essa biblioteca que eu mostrei numa
+parte de produtos.
+Então, aqui a gente tem a mesma regra,
+suporte a XAPI One Semantics completo
+por ela, toda a parte de compressão.
+Então, tudo que eu preciso para
+desenvolver dados com Kafka, com os
+frameworks existentes, as linguagens e
+programações existentes, eu vou
+trabalhar.
+E, exatamente, a gente tem também o
+Confluent Python para o consumo.
+Então, quando eu for ler, eu vou usar
+uma biblioteca única, tá?
+A gente não usa uma biblioteca para
+gravar, uma biblioteca para ler, os
+métodos diferentes.
+Então, a gente já começa com esse cara
+aqui, ó.
+Olha que interessante aqui.
+E aqui é importantíssimo.
+Vou ler dados de um tópico, tá?
+A gente já começa aqui.
+Hoje, de novo, presta atenção, tá?
+Piscou, perdeu e aqui é complicado.
+Então, perguntem se tiverem dúvida, que
+aí eu vou explicando aqui e eu vou
+adentrando detalhes.
+Não se preocupem que a gente vai começar
+de novo.
+A gente vai ver uma visão mais macro,
+depois eu vou fazer um drill down.
+Então, não se preocupem com a questão de
+Consumer Group, Consumer Group
+Coordinated, como é que funciona essa
+comunicação entre eles, porque eu vou
+explicar aqui tudo, tá?
+Então, eu vou entrando e vou explicando.
+Beleza.
+Estamos lendo dados de um tópico, né?
+Como eu comentei, lembra da partição?
+Eu vou acessar por partição.
+Então, aqui eu tenho uma instância na
+minha aplicação, abri uma aplicação
+aqui, fiz uma request no meu Kafka.
+Eu falei, olha, Kafka, eu quero acessar
+aquele meu tópico.
+O Kafka, ele cria o que a gente chama de
+Consumer Group, que eu vou explicar
+daqui a pouco o que é, tá?
+É uma organização dos meus consumers.
+Ele vai falar assim, olha, como é que
+você vai ler?
+Você quer começar o Auto Offset Reset
+pelo Urlist?
+Ou seja, sua primeira leitura vai ser,
+já que é um tópico que está recebendo
+dados, já tem dados já antes de você
+começar a sua leitura, já tem dados
+antigos, você quer começar do início ou
+do fim?
+Urlist, não, eu quero começar do
+primeiro, o primeiro offset.
+Então, eu vou 0, 1, 2, 3, 4.
+Então, eu vou começar na ler do
+primeiro, tá?
+Sempre serial.
+Então, eu vou numa partição, vou ler uma
+partição, vou ler outra partição.
+Lembrando que, se eu tenho uma
+instância, eu quero ler, eu tenho lá
+nove partições, e eu quero achar um dado
+lá dentro, eu vou ter que percorrer
+todas as partições, tá?
+E o próprio Kafka, como é que faz?
+É o algoritmo dele interno que ele vai
+escolher qual partição você vai começar
+a ler no primeiro.
+Então, ele vai sempre ler do início do
+offset, mas ele vai pensar, olha, tá
+aqui, ó, esse Group Coordinator, por
+exemplo, esse líder de partição
+respondeu mais rápido.
+Então, eu vou começar a ler a partição
+dele.
+Ele vai carregando tudo e vai varrendo
+tudo.
+Isso é um problema que, a gente vai ver
+pra nossa parte de Analytics, né?
+Eu ler tudo envolve que eu não consigo
+filtrar, eu não consigo ter um dado
+preciso exatamente que eu quero.
+Eu vou ter sempre uma performance ruim
+se eu tiver um mundaréu de dados, tá?
+Por isso que, geralmente, a gente não
+retém o dado dentro do Kafka.
+Por quê?
+Porque senão eu vou ter que ficar lendo
+tudo o tempo inteiro, tá?
+Mas a gente vai chegar lá também.
+Então, o mais importante é, toda vez,
+tá?
+Toda vez que eu, em Consumer, é ligado,
+executo um Consumer, ele,
+automaticamente, ele vai ter que
+participar de um Consumer Group.
+Não existe, tá?
+Não existe.
+Nenhum Consumer que não é participante
+de um Consumer Group.
+Se você não passar o seu Group ID,
+automaticamente, o Kafka vai gerar um
+hash e vai te incluir dentro desse
+Consumer, tá?
+Desse Consumer Group, desculpa.
+Então, o Consumer Group é o agrupamento
+das minhas instâncias aqui na minha
+aplicação, tá?
+Geralmente, é.
+Eu vou abrir lá, por exemplo, eu vou
+igual aqui, ó.
+Eu tenho aqui uma thread.
+Eu posso abrir várias threads aqui nesse
+Consumer Group dessa aplicação em que
+ele vai carregar, cada uma vai plugando
+ali na minha partição e vai trazendo um
+dado, beleza?
+Estamos tranquilos de Consumer Group.
+Consumer Group, de novo, não tem como eu
+ler um dado no Kafka sem participar de
+um Consumer Group, tá?
+Eu vou ler dados de um Kafka,
+automaticamente, ele gera para mim essas
+informações.
+Beleza?
+Vamos ver se vocês estão vendo aqui.
+Olha aqui, ó.
+O exemplo que eu falei.
+Uma instância, né?
+Eu vou carregar essa partição, essa
+partição, essa partição, essa partição,
+e vou trazer para cá, tá?
+Então, o primeiro caso que a gente tem
+aqui é abrir uma instância só.
+Abri uma instância.
+Eu vou ler os dados dela de forma
+serial.
+O meu Group Congenator, ele vai passando
+quais que eu vou lendo e eu vou
+carregando ela até achar a informação
+que eu preciso.
+Então, eu vou ler em tudo, tá?
+E a minha aplicação é responsável, né?
+É responsável por esse processamento de
+leitura.
+Por exemplo, ordenação, né?
+Quem vai ordenar é a minha aplicação,
+uma lógica de aplicação que eu vou
+ordenar.
+Eu estou lendo partições que podem vir
+dados muito diferentes.
+Mas isso pode acontecer por quê?
+Eu estou lendo aqui, ó.
+Nesse cara, eu vou ler esse cara, eu vou
+ler esse
+cara.
+Normal, né?
+Tenho aqui três instâncias na minha
+aplicação.
+Ou seja, isso é uma aplicação única.
+Eu abri uma instância.
+Um, dois, três.
+Dentro do mesmo Consumer Group.
+Essa minha instância vai pegar dois,
+essa pega um e essa pega um.
+Ele vai fazer isso de novo.
+Para quem responder mais rápido, tá?
+Quem responder mais rápido.
+Lembrando que, para o Kafka, quando eu
+ensino uma aplicação na prática, na
+teoria dele, essa aplicação não vai
+desligar mais.
+Ele vai estar consumindo aqui só se
+acontecer uma diversão ou algo nesse
+sentido.
+Ela não foi feita para ficar...
+Não, ela vai continuar.
+Ela vai continuar ligada.
+Porém, a gente vai ver que a questão da
+instância está ativa ou não.
+O Consumer Group pode, se minha
+aplicação desligar, ele vai inativar o
+Consumer Group para a gente.
+A gente consegue acessar e ver algumas
+informações interessantes
+disso.
+Beleza.
+Tenho quatro partições e tenho quatro
+instâncias.
+Cada partição, ela vai pegar uma
+partição.
+Cada instância vai pegar uma partição.
+Eu não vou ter o caso, por exemplo, de
+aqui eu tenho quatro partições e quatro
+instâncias, e uma instância pegar duas
+partições, por exemplo.
+Então, a gente vai ser assim.
+Normalmente, a gente coloca a quantidade
+de instâncias baseada na quantidade de
+partições.
+Eu quero ler rápido.
+Eu quero ler rápido, então, eu vou olhar
+as quantidades de partições que eu tenho
+e eu vou carregar a quantidade de
+instâncias.
+Essas instâncias do Grupo Cognito
+replicam dados entre elas?
+Não, elas não replicam, não.
+Cada uma delas vai assinar, ela vai
+assinar lá uma partição e ela vai ter a
+sua identificação de qual offset que ela
+parou.
+Então, na verdade, a falha aqui está no
+offset.
+Se essa instância aqui, por algum
+motivo, parar e voltar, ela sabe, ele
+sabe, o Grupo Cognito sabe em qual
+posição que está e ele vai eleger uma
+nova instância para pegar aquele dado
+ali onde parou.
+Você não tem que ler duas vezes.
+Porque pensa o seguinte, é como se
+uma...
+É que é uma aplicação única, tá?
+É uma aplicação dividida em várias
+instâncias, por isso que tem um Grupo
+Cognito.
+Ele vai falar assim, olha, deu problema
+aqui.
+Esse cara aqui vai ser o novo cara.
+A gente vai falar daqui a pouco.
+Um dos maiores do registro de cabeça,
+chamado rebalance, acontece justamente
+por esse tipo de situação.
+Eu vou mostrar as situações de rebalance
+dentro de um Consumer Group, tá?
+Isso pode acontecer também em
+conectores, tá?
+Tenha muito cuidado também.
+Segue a mesma lógica.
+Tudo que eu mostrar aqui segue a mesma
+lógica, tá?
+De um conector ou de uma aplicação,
+tanto faz.
+De novo, lembra que eu comentei?
+Um conector só seria um producer, um
+conector sim, ele é um consumidor,
+afinal das contas, né?
+E aí eu pergunto para vocês, eu tenho
+aqui quatro aplicações, quatro
+partições, e eu tenho cinco instâncias,
+ou seja, eu abri uma instância a mais.
+Vocês acham que acontece isso?
+Ou isso, ou isso, ou isso?
+O que vocês acham?
+Jogue no chat, eu quero saber a resposta
+de vocês.
+Tem uma instância a mais.
+Ela vai ficar idle?
+Tenho certeza.
+Então, gente, vamos, interação.
+Toda vez vocês interagindo.
+Não fica, acha que fica idle.
+Vai ficar, não vai.
+Ele vai eleger uma nova, vou conectar
+aqui.
+Eu tenho instâncias lá em cima, se a
+gente tiver menos instâncias, cada
+instância pode pegar mais de uma
+partição.
+Por que não poderia acontecer de uma
+instância pegar mais de uma partição
+aqui?
+Ele pega o que responde mais rápido?
+Porque tem umas que tem duas instâncias.
+Perfeito, Lilian, essa é lógico.
+Pode, vamos chegar lá.
+Perfeito no raciocínio, tá?
+Baseado nisso aqui, né?
+Eu tenho instâncias, por exemplo, aqui,
+que estão pegando mais de uma partição.
+Beleza.
+Quem mais acha outra coisa?
+Vamos, gente, participem.
+Só eu e a Lilian aí.
+O que vocês acham?
+Quero a opinião de vocês.
+Aí, olha eu fazendo a provinha, e todo
+mundo
+falando.
+Eu vou passar um...
+Não participa não, hein?
+Não deita dormindo ainda.
+Vamos, gente, vamos lá.
+O warm -up do cluster aí, ó.
+Estou mandando informação em tempo real,
+vocês não respondendo.
+Olha eu esperando aqui, ó.
+Vamos lá, só para a gente não perder
+tempo.
+O que acontece?
+Ele fica idle, tá?
+O que acontece?
+Porque ele fica idle, tá, Lilian?
+Esse raciocínio faz sentido aqui, mas
+para o Kafka, o que acontece?
+Sempre vai ser a quantidade de partição,
+não a quantidade de instância.
+Se você passar a quantidade de
+instância, igual ao número de partição,
+ele automaticamente não vai deixar esse
+cara entrar aqui, ele vai deixar ele em
+idle.
+O que acontece é, você tem um recurso
+que está parado necessariamente, tá?
+Mas realmente, se você tiver a
+quantidade maior de partições, ele não
+faz nada, tá?
+Ele fica parado.
+Sim, é bem parecido.
+Aí, nesse caso, é bem parecido mesmo.
+Então, sempre que vocês calcularem a
+quantidade de instâncias versus a
+quantidade...
+Por exemplo, lembra que eu comentei que
+as tasks, né, eu vou fazer as tasks e a
+quantidade de instâncias que eu vou
+abrir no conector?
+Se vocês tiverem a quantidade de tasks
+de sync diferentes das partições, vocês
+vão ter task parada lá, instanciada no
+seu connect, se necessário, ocupando
+memória.
+Está vendo como é que a realidade,
+talvez, tem que ter muito cuidado nesse
+entendimento de partição?
+Porque parece, ah, não só com a
+aplicação, mas o connect é a aplicação
+também.
+Então, também cuidado, também, em
+dimensionar a quantidade de tasks dentro
+do sync.
+Eu vou explicar isso na parte de sync,
+tá?
+Vamos chegar lá, eu vou demonstrar, mas
+tomem
+cuidado.
+O que acontece muito é, normalmente,
+quando você quer uma nova instância,
+você cria um novo consumer group.
+Lá no seu group ID, por exemplo, você
+cria um group ID diferente do atual, da
+mesma aplicação, e aí você tem um novo
+group ID com mais instâncias, tá?
+Normalmente é assim, ah, eu quero
+realmente aumentar.
+O que leva a um outro problema se você
+não estiver pensando muito bem por que
+você fez isso?
+Porque eles vão ler em momentos
+diferentes.
+Não tem garantia que você não vai, na
+verdade, o que vai acontecer?
+Você vai lhe dar duplicado o tempo
+inteiro.
+Esse cara aqui já vai ter lido, esse
+cara aqui não sabe, que esse cara aqui
+leu, porque são grupos diferentes, ele
+vai lá e vai ler de novo.
+Tá?
+Então, é isso, é quando eu quero ter uma
+certeza e eu até no meu negócio eu posso
+ter overlapping, né?
+Ou seja, uma sobreposição de, os dados
+podem estar duplicados, eu não posso
+perder dados de forma alguma.
+Eu prefiro ter dados duplicados do que
+perder dados.
+Tá?
+Então, aí a gente cria um novo Consumer
+Group para isso.
+Beleza?
+Gente, até aí a parte de Consumer Group
+versus instâncias.
+Pegaram?
+Todo mundo me mandou joinha aí, por
+favor, no chat.
+Estou esperando.
+Joinha dali, nego.
+Ah, só tem vocês aqui.
+Ah, agora sim, agora eu vi o pessoal
+chegando.
+Vamos lá, gente, eu vou começar a falar
+o nome, igual professor de
+escola.
+Então, vamos lá.
+Perfeito, passamos para a parte de
+Consumer Group.
+Quais são as configurações iniciais que
+eu preciso ter para eu criar meu
+consumidor, né?
+Eu preciso saber o Bootstrap, né?
+Ou se eu vou me conectar.
+Qual vão ser a minha chave para
+desterilizar o dado ou serializar o
+dado?
+O nome do meu tópico, tá?
+E automaticamente eu vou entrar em uma
+opção de loop, né?
+Eu tenho que loopar aquele dado.
+Aonde ele vai entrar?
+Vai entrar dentro do coordinator, vai
+fazer o partition rebalance, vai fazer o
+heartbeat entre as instâncias para
+garantir que estão funcionando e o
+fetching do dado, tá?
+E, eventualmente, ele vai, primeiro,
+achar um grupo coordinator, ou seja, um
+broker que vai estar como líder.
+Depois, vai ingressar dentro do Consumer
+Group, vai receber do Consumer Group
+qual a partição que ele vai ler e cada
+consumer vai ter a sua thread lá dentro,
+que vai ter a sua partição dentro da sua
+partição, tá?
+Então, esse é o processo normal quando
+eu leio a primeira vez.
+Cheguei, liguei o meu consumer.
+A gente vai ver isso aqui na prática,
+tá?
+Esse é o caminho que a gente faz.
+Beleza?
+Então, de novo, recomendação também que
+é sempre vocês, além dessas aqui
+iniciais, sempre coloquem grupo ID e
+client ID, tá?
+Sempre pensem em como vocês vão montar a
+lógica de vocês.
+A lógica, gente, é muito pessoal.
+Eu sempre falo que você pode fazer
+muitas coisas depois com programação,
+né?
+De forma diferente.
+Mas a configuração primária sempre
+pense, cara, eu tenho que criar um grupo
+ID, eu tenho que criar um client ID, que
+eu tenho que identificar qual grupo que
+eu vou ser inserido e qual o client que
+vai ser.
+Se esses caras mudarem a forma como o
+Kafka vê, opa, esse cara mudou, vamos
+supor, eu tenho um grupo ID igual a
+Matheus e eu mudei agora para Natan ou
+para o Richard, por exemplo.
+Automaticamente, o que o Kafka pensa?
+Opa, é novo, zera tudo e começa a ler
+tudo de novo.
+Agora, se você sempre chamar, sua
+aplicação caiu.
+Você ingressou novamente no Consumer
+Group com o mesmo nome ID, o mesmo
+client ID, o que vai acontecer?
+Opa, esse cara parou nesse ponto, nisso
+aqui.
+Olha o utilizador safado aí.
+Então, você leu exatamente onde você
+parou.
+A gente vai falar que isso também não é
+tão simples como parece.
+Apesar de ser, mas não é.
+Beleza.
+Rebalance.
+Esse aqui é legal.
+Prestem muita atenção.
+O rebalance, gente, é o seguinte.
+O meu, quando o grupo de NATO, quando
+ele recebe um rebalance, ele fala,
+ninguém conecta mais.
+Eu vou assinalar tudo de novo.
+Quem vai, qual instante você vai ler o
+quê, onde você vai ler.
+Adicionei uma nova thread no meu
+aplicado, no meu Consumer Group.
+Para, eu vou rebalancear todo mundo do
+lado da aplicação.
+Ninguém, ninguém desse Consumer Group,
+tá, gente?
+Ninguém desse Consumer Group vai ler
+mais.
+Enquanto, eu não, eu não adicionar esse
+cara aqui no meu, ele tá online e eu
+falar quem valeu o quê.
+Então, de novo, tem a aplicação lá que
+ela tá, sei lá, sem threads.
+Eu já vi isso também.
+Acredito ou não, mas já vi.
+Sem threads.
+Adicionei a 101, todos assentaram.
+Ninguém lê enquanto eu não terminar de
+ingressar o cara, eu acertar o
+balanceamento e fazer o rebalance.
+E aí, tem o mais legal.
+Um das minhas instâncias parou.
+Mesma coisa.
+A minha instância parou de consumir,
+cresceu, não tá respondendo mais.
+Ó, para todo mundo, eu vou rebalancear.
+Gente, costuma ser de milissegundos a
+segundos, tá?
+Mas, dependendo da quantidade de volume
+que você tem, onde você tá lendo, como é
+que é, seu Kafka tá regional, tá, zonas
+diferentes.
+Aí, isso vai somando, somando, somando,
+isso vira um, um, um tempo de
+disponibilidade que você não poderia
+ter, por exemplo.
+Pra coisa simples.
+De novo, aqui é coisa simples, né?
+Eu adicionei um consumer group, parei.
+Abri uma instância nova, parei.
+Tinha uma instância nova, parei.
+Agora, esse aqui, costuma ser o mais
+sério de todos.
+Adicionei uma partição.
+Pô, eu fui lá e adicionei uma partição.
+Estou falando de mais prévias.
+Você para esse consumer group todo e
+você para todos os consumer groups que
+estão lá naquele, naquele tópico.
+Então, você automaticamente liga o
+rebalance em todos os tópicos.
+Os consumer groups estão naquele tópico.
+Tá?
+Esse é o mais sério de todos.
+Por isso que eu, eu sempre falo,
+dimensionem corretamente as suas
+partições.
+Não criem 100, tá?
+Porque, de novo, 100 também não é bom.
+Você vai ter que replicar 100 vezes lá,
+vezes a quantidade.
+E, também, se você precisar reduzir e
+modificar ela, de novo, você vai cair
+num problema muito grande.
+Mas, também, não crie muito pouco,
+também, aquele escalar.
+Você não escala, você vai começar, ok,
+6, 9, 18,
+tá?
+Esses são os ambientes que eu trabalho.
+Geralmente, o que eu faço?
+Crio um tópico novo, a parte nova,
+comecei com 6.
+Vejo que está dando, faço uma
+verificação, né?
+Quantos consumer groups eu tenho aqui?
+Ah, eu tenho 2.
+Beleza.
+Posso alterar, mas se 2 for impactado,
+faço um horário, né, fora do horário
+comercial, estamos lá.
+Se tiver vários, aí, eu prefiro
+modificar uma nova, ou talvez, até
+copiar essa informação para um novo e ir
+mudando, aos poucos, para um novo
+tópico, tá?
+Porque, de novo, o dado, o caso,
+praticamente, tem que ser efêmero, né?
+Ele tem que durar horas, dias, no
+máximo.
+Talvez, semanas, mas, se for um caso bem
+específico.
+Então, é fácil de você criar outro e,
+praticamente, o dado vai, né, deletando
+e aí, você muda e só tem o dado atual
+aqui.
+Então, acaba que não teria um problema
+muito grande.
+E, se você quer pegar o dado de agora, o
+dado de agora, a gente vai ver isso
+daqui a pouco.
+Então, esse aqui é o mais perigoso, tá?
+Eu sempre falo, gente, tome muito
+cuidado.
+Tópico modificou, consumer shut down, ou
+adicionou um novo consumer, frigou
+rebalance, tá?
+Rebalance é parei todo mundo, beleza?
+E é natural do cara, É um, não é um
+erro, tá, gente?
+E, se você tentar conectar, ele vai
+falando, tá?
+Se você, se a estância tentar fazer,
+conectar em rebalance, fala assim, ó,
+nesse momento, esse grupo, o consumer
+group, está em rebalance.
+Esse rebalance, tem que esperar, tá?
+Tem que esperar.
+Isso não é um rebalance de nível tópico,
+esse rebalance de nível consumer group,
+beleza?
+Mas, como é que uma aplica, não é só
+pelo fato, porque ela
+pode estar inativa, é diferente de ela
+estar offline.
+Ela pode estar inativa, ele vai mandar
+um consumer, um, um react bit para ela,
+que vai ser, olha, está respondendo,
+está no ar, está no ar, se não
+responder, ele tira ela do consumer
+group, e aí, começa o rebalance, tá?
+Então, ele manda um hard bit, quando
+você ingressa no consumer group, ele te
+manda um hard bit.
+Se você respondeu, ok, se não respondeu,
+ele tira automaticamente, esse cara, é,
+da estância.
+E aí, né, acabou.
+Ele vai, ele pode se ingressar depois,
+mas, de novo, aconteceu outro rebalance.
+Então, você pode, é configurável, mas,
+de novo, tome cuidado com a parte de
+configuração, desses tipos de processos,
+tá?
+Geralmente, eu, eu, eu sempre testo,
+primeiro, vejo, é em milissegundos, já,
+geralmente, a aplicação está acontecendo
+igual, eu trabalho muito com aplicação
+de Kubernetes.
+Então, a própria aplicação, ela já está
+dentro do mesmo cluster do Kafka, em nós
+diferentes, em namespaces diferentes, só
+que no mesmo, só no mesmo, na
+infraestrutura.
+Então, teoricamente, tem que ser muito
+rápido o retorno.
+Eu não tenho, eu posso trabalhar em
+milissegundos de hard bit.
+Quando tem muito, aumentar muito, essa,
+essa, esse time, esse timeout de hard
+bit, você tem um risco de mascarar um
+erro, tá?
+Um problema.
+Porque você não sabe, você pode ter, um,
+um falso positivo em algum momento.
+Um falso, é um falso negativo.
+não é falso negativo.
+Beleza?
+Então, é muito cuidado com essas
+configurações, mas é, é configurável.
+Depois eu mando a configuração exata.
+Até aí, tudo bem, gente?
+Vocês não estão com dúvida disso aqui,
+não?
+Tem certeza?
+Porque isso aqui é sério.
+Você tem que sair daqui entendendo isso
+aqui.
+Manda um joinha para nós.
+Muito cuidado com essa, principalmente,
+o rebalance,
+tá?
+Beleza.
+Eu sou esperto demais.
+Tchau.
+Tchau.
+Tchau.
+Beleza.
+Beleza.
+Beleza.
+Então, tá.
+E a gente tem commit offset, tá?
+Então, a gente, na verdade, quando eu
+leio o dado no CASC, acontece isso aqui,
+ó.
+Olha que interessante.
+Por padrão, tá?
+O auto commit offset, é equal to true,
+tá?
+Por padrão.
+Em cinco, em cinco segundos.
+O que que ele faz?
+Você está lendo o offset, em cinco
+segundos, ele vai flegar para você,
+aquele, como comentado.
+Tá?
+Lá, no meu tópico de consumente, no
+consumers offset, tá?
+Fala assim, olha, esse cara aqui já
+commitou.
+Então, você está lendo aqui, por
+exemplo, tá?
+Aqui, deixa eu confirmar, calma.
+O último commit que eu tive, no último
+segundo, foi no offset dois.
+Só que eu já continue lendo, eu não
+paro, né?
+A ideia é que você não para, você não
+espera o commit aqui.
+Só vai flegar, olha, flegou aqui.
+Ele vai continuar lendo, tá?
+Em caso de falha, nesse momento, olha,
+eu cometei no dois, mas eu continuei
+lendo.
+O que que ele vai fazer?
+Volta.
+Três, quatro, vai começar a ler tudo de
+novo.
+Por quê?
+Em caso de problema, a minha, quando eu
+falo problema, não é de cá, na verdade,
+tá?
+Eu vou até movimentar.
+Aqui, ó.
+Minha aplicação parou, e eu fui ler de
+novo, o mesmo Kafka, tá?
+Eu perdi a comunicação de qualquer uma
+das duas
+partes.
+Voltei no ar, comecei a consumir de
+novo, opa, qual que é o commit, o último
+commit que eu tenho?
+Ah, não, o último commit que você tá
+aqui, a sua aplicação é a, é a PIEP?
+É, sua PIEP, então, na verdade, ela tava
+no dois.
+Então, você comitou no dois, tá?
+Dois pra frente.
+Então, três, quatro, cinco, seis, isso é
+auto, isso aqui é um, auto commit igual
+a true, tá?
+Só que, né, a gente, vai lá e
+desabilitou, desabilitei, tá?
+O auto commit igual a true, que é
+padrão, eu fui ter duplicado aqui, tudo
+mais.
+Beleza.
+Não fora de ordem, Eduardo, o problema
+aqui, é maior, é a questão de duplicado,
+é duplicado mesmo.
+Por quê?
+Porque você, quando você voltar, ele vai
+falar assim, ó, essas partições que você
+tá vendo aqui, continua da outra vez que
+você comitou pra frente.
+Então, já plegou meio, desplegou o batch
+aqui, ó, ele vem aqui e fala, olha, você
+leu aqui a última vez, aí você começou
+aqui, ó, você vem aqui e começou, três,
+quatro, cinco, e falhou.
+Não deu cinco segundos, ele ia falar
+assim, opa, voltou?
+Volta pro três, então, você vai ter
+duplicado mesmo, tá?
+Fora de ordem, nesse caso, uma partição
+única, não.
+Aqui, esse, esse tipo de cenário, por
+exemplo, uma partição, é, e uma
+instância, né?
+Porque você não pode ter mais de uma
+instância, não, é uma partição só.
+Aí, o risco é só, se é só aplicação de
+produto, você manda errado.
+Mandar, tipo assim, igual eu comentei,
+né?
+Ela manda um maxi -inflar request mais
+do que cinco, e aí, um envio, ele mandou
+fora de, fora de ordenação, sem estar
+com o exactly one semântico
+desabilitado.
+Aí, você pode ter.
+Agora, na leitura, nessa situação aqui,
+não, desordenado não.
+Você vai ter, na verdade, duplicado.
+Podem acontecer, tanto o broker, como o
+co -ordinator, falaram que o broker é um
+co -ordinator, tá?
+Ô Thiago, é, pensa no, no, no co
+-ordinator como um broker, tá?
+Ele é o broker, na verdade.
+Então, o broker, ele vai ser o, que é o
+líder da partição, ele vai ser o co
+-ordinator daqui.
+Opa, peraí, esse cara aqui, se acontecer
+qualquer problema, no co -ordinator, que
+não for o, o, ou a partição, o líder da
+partição, que você tá lendo, o que vai
+acontecer, que vai ser leito novo, mas,
+pra aplicação, não tem nenhum tipo de
+problema.
+Você vai, vai ser muito rápido.
+O problema é quando é, ele é de
+partição, aí, você vai ter que, ele vai
+ter que mandar, fazer um rebase, isso
+também que é rápido, também.
+Na verdade, todas as operações que eu tô
+comentando, são rápidas, em pequenas
+escalas, se você tá pensando, tipo, em
+ter pouco dados, da trigonometria.
+Quando a gente pensa em algo, classes
+gigantescos, tal, aí, você tem um risco,
+de demorar um pouco mais, porque vai ter
+que, ler nova leição, depende muito do
+fator de rede, tá?
+Grande parte do fator de rede.
+Com, o RAP, com o CRAFT, isso reduz
+drasticamente.
+Então, beleza.
+Fui lá e desabilitei, né?
+Matheus falou assim, não, que é
+duplicado, não.
+Desabilitei.
+Dei offset igual, a false, e eu setei, o
+valor que eu quero.
+Aí, você seta, tal.
+Você põe lá, o, eu vou pegar aqui, no
+código.
+Eu falo assim, olha, agora, eu vou falar
+quanto tempo, que eu, eu quero
+coordenar.
+Então, vamos seguir a mesma situação.
+Estou lendo do 2, tá?
+Só que, quando eu coloco igual, a false,
+o que que ele faz?
+Ele já fecha, o batch, que eu estou
+lendo, naquele momento, que agora, não
+tem mais, o commit, igual a true.
+Ele vai falar assim, olha, qual que é o
+tamanho, que você está lendo, olha, ele
+vai começar a marcar, ele já vai marcar
+para você, automaticamente, olha,
+marquei esse pedaço aqui, está em batch,
+lembra?
+Só que, no momento que você foi ler,
+você trouxe, ele já marcou, que você vai
+ler da frente, quando você põe o, isso é
+um cuidado, tem que ter, viu?
+Desabilitei, mas, ele já marcou o batch,
+que foi até o 6, aconteceu a falha, vou
+botar a falha, no meio, aqui.
+Olha, o que que acontece?
+Você perde o dado, por que que isso
+acontece?
+Porque, na hora que você dá o auto
+commit, igual a false, você coloca no
+segundo, ele considera, que você vai,
+você carregou o batch, você tem a
+responsabilidade, de manter aquilo.
+Se, no meio do caminho, que você
+carregou o batch, você perdeu a
+informação, e for ler de novo, aí, ele
+já perdeu, ele já vai falar assim, opa,
+é dali para frente, eu esqueci tudo.
+Qual que é o nome dos mundos, aqui,
+Matheus, nesse caso?
+Dois, duas situações, tá?
+O eu, eu, posso deixar o auto commit,
+igual a true, ele auto commitar, em
+cinco segundos, tá?
+Não vejo problema, até ter duplicado,
+porque eu prefiro, ter dado duplicado,
+para tratar isso, na aplicação de
+processamento, ou, na de leitura, do
+que, simplesmente, eu tomar conta disso,
+a meu, tá?
+Mas, em alguns, tem como você fazer, uns
+finetunes, aqui, para você pegar, e
+fazer batches menores, onde o risco, de,
+de você perder dado, é muito mais menor.
+Quando você tem um batch maior, você vai
+fazer, e fala assim, olha, eu quero
+esse, esse montante aqui, ó, preciso
+cuidar de size, tem que tomar muito
+cuidado, com isso.
+O meu size, é gigantesco, é, cara,
+então, toma cuidado, aqui, tá?
+Então, depende do size, que você for
+trabalhar, e, principalmente, de novo,
+teste, validação, workload, né, eu
+sempre falo, que Kafka, é realmente o
+teste mesmo, é você identificar o, qual
+que é a melhor configuração, para você,
+tá?
+Então, eu vou mostrar os dois casos,
+aqui, para vocês poderem ver, tá?
+É simples, mas, retabilitar, com
+desabilitar, beleza?
+Além disso, eu posso trabalhar, com três
+modos, tá?
+Ou, vou botar aqui, quatro modos, de
+commit, tá?
+Eu posso fazer o commit, o auto commit,
+dentro da minha aplicação, então, eu
+tenho um auto commit, dentro lá, do
+consumer, tá?
+Aqui, eu estou abertando o guarda -true,
+eu posso fazer um sync commit, tá?
+Em que, eu desabilito esse cara, eu
+coloco um batch de try, e eu, se, ele só
+me cometa aquilo ali, se eu, realmente,
+trazer aquela informação, mas, o normal,
+é trabalhar com ele, assim, que, pela
+questão da latência, tá?
+Então, assim que, eu não, de vez em
+quando, ficar esperando a resposta, o
+retorno, eu já peço, o próximo batch,
+desse cara, e se acontecer, algum
+problema, ele cai na, no callback, tá?
+Ele cai na, nos logs lá, de callback,
+beleza?
+E aí, ele faz o retry.
+O que pode acontecer ali, é eu lhe dar
+duplicado, tá?
+O que vai acontecer, é que a pessoa,
+opa, pera aí, volta, lê, e eu posso
+combinar os dois, eu posso ter um
+processo, tanto síncrono, como
+assíncrono, tá?
+Existe como fazer, que é eu combinar,
+tanto o síncrono, como o assíncrono, ter
+os dois, tipo, se acontecer algum
+problema, eu mando ele assíncrono, se
+acontecer algum problema, ele
+sincroniza, ele invoca o síncrono, para
+garantir, que não tenha nenhuma falha,
+beleza?
+Então, aqui uns exemplozinhos, para a
+gente ver.
+Então, commit assync, tá?
+commit sync, commit assync, e aqui os
+dois.
+Eu crio um bloco de try, ele assync, se
+der algum erro, ele sincroniza.
+Opa, vai dar assíncrono, deu o erro
+aqui, então volta e lê o
+dado.
+Sync no premium.
+De novo, nível aplicação, tá gente?
+Isso aqui é aplicação, então, vamos ver
+algumas coisas, se parece.
+Então, tá.
+Como eu consumo, né?
+Quando eu consumo, deixa eu só...
+Gente, alguma dúvida, até o momento?
+Por favor, deixa eu ver se eu paro aí,
+alguma dúvida, tudo, esconde tudo, né?
+Não esconde tudo.
+Deixa eu só fazer um blenditions aqui.
+Deixa eu testar um negócio aqui, gente,
+enquanto eu tô mudando aqui, pra mostrar
+pra vocês.
+Vou fazer uma inserção lá também.
+Vou fazer uma aplicaçãozinha, tá?
+Ah, gente, pera aí.
+Aí não, né?
+Será que a aplicação é errada, ligar?
+Não aconteceu nada mesmo, né?
+É, puxar de boa.
+Ah, então, só tem como setar commit por
+tempo, não tem como ser por distância,
+como assim?
+Enfim, só por tempo, Eduardo, a pergunta
+é assim.
+Você não fala por quê?
+Porque eu não sei, de novo, lembra do
+unbounded?
+Eu não sei quando termina.
+Eu sei que vai acontecer, por tempo.
+Mas, eu não consigo setar se você vai
+ter offset 10 mil, 100 mil, não tem
+como, porque é unbounded, né?
+Agora eu sei que você vai consumir em
+segundos.
+Então, o processo, ou o que já
+aconteceu, você tem.
+Eu não tenho, é o que vai acontecer para
+frente.
+Rapaz, como é que deu certo?
+Então, deixa eu compartilhar a minha
+tela.
+Vocês estão sacando demais, eu estou até
+preocupado.
+Preocupado se vocês estão realmente
+pegando, de novo.
+Tem que sair daqui sabendo, hein?
+Senão, vou fazer aquele negócio, vou
+fazer a prova
+presencial, lá, oral, pessoal falando na
+hora, lá, perguntando na hora, e para
+quem participar, vai ser pior.
+Eu vou ter tempo de montar a prova.
+Cadê, cadê, cadê?
+Consumir.
+Vou fechar outras coisas, aqui.
+Tem as surprises.
+Resolve, ó.
+Então, tá.
+Tá vendo minha tela, aí?
+Vai rapidinho, gente.
+Fechar a foto.
+Vai bater esse, vai bater esse, vai
+bater
+esse.
+Ok, ok, ok, ok.
+Então, tá.
+Vamos ver alguns comandos, aqui, tá?
+Primeiro.
+Primeiro vamos rodar a aplicação, vamos
+ver a aplicação primeiro, depois eu rodo
+os comandos.
+Cadê o meu consumir?
+Vou pegar o mais simples, tá?
+JSON.
+Esse base que eu criei, tá?
+É só porque eu criei uma abstração
+antes, em um nível de camada acima, ele
+já trazia algumas funções
+automaticamente para mim.
+Então, desde eu ficar tendo que criar
+vários códigos, eu crio um código
+reusado, tá?
+Então, na verdade, aqui eu tenho um base
+que vai ter as configurações padrão e
+esse base aqui, essa classe base chama,
+a minha classe superior chama classe
+base, tá?
+É só uma abstração que eu usei, tá?
+vamos lá.
+Por exemplo, aqui eu não estou usando
+esquema registry, por quê?
+Porque eu estou usando JSON, não estou
+usando esquema registry nesse caso aqui.
+Então, aqui eu vou dar start, eu tenho a
+opção de start consumir, stop consumir,
+e aqui eu começo o loop, tá vendo que eu
+comentei do loop?
+E aqui eu falo, o timeout para mim vai
+ser de 0 .1, tá?
+milissegundos ali, então ele vai fazer,
+ele vai executando e vai trazendo para
+mim em batchs de 100, só que de novo,
+essa aplicação depois que eu startar
+ela, ela não para mais, tá?
+Então vamos pegar aqui nossa aplicação,
+e aqui são só erro handles, tá?
+E aqui de novo, também tratação,
+tratamento de retorno.
+Aqui eu vou pegar a mensagem, eu vou
+transformar ela em JSON load, pegando o
+value, tá vendo?
+Ou seja, aqui eu estou lendo o valor
+dela, estou trazendo aqui para eu
+mostrar aqui na tela.
+E essa aplicação aqui, ó.
+Aqui eu tenho a informação broker, ó lá
+ó, offset reset, earliest, tá?
+O que é ler do começo, tá?
+A gente vai criar um consumer group novo
+aqui para a gente poder ver aqui na
+prática.
+Eu vou chamar de training, tá difícil,
+training, group, né?
+Porque eu consumo meu group ID, e aqui
+eu vou chamar meu client de training
+JSON consumer client.
+Vou ler esse meu protocolo aqui, tá?
+Que está consideravelmente bem maior do
+que estava da outra, se vocês viram
+ontem.
+E aqui ó, eu coloquei uma opção dentro
+do meu que eu vou estabelecer isso aqui.
+Tá no base, tá no base.
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Cadê?
+Eu estou falando que ele é async.
+Ele olha.
+O meu async é igual a true.
+Então, é melhor realmente por questão de
+latência.
+Eu comentei.
+Eu trabalho geralmente com async.
+Então, vamos lá na minha aplicação.
+Então, sem esquema registry.
+Sem lag.
+Não quero retorno.
+Não quero ficar esperando.
+Eu quero que você vá lendo e vá
+carregando tudo que você for pegar para
+ler.
+Vou chamar a minha função.
+Vou criar a minha função.
+Vou chamar a minha função aqui.
+Minha classe, desculpa.
+Vou chamar a minha classe.
+Vou colocar o broker.
+O offset.
+Tudo que eu coloquei aqui do lado de
+fora.
+Então, grupo ID, client ID.
+Não tem esquema.
+Eu estou esperando por isso.
+Aqui a minha aplicação espera por isso.
+E aqui a gente vai destratar.
+E aqui tem um loop para a gente carregar
+os dados lá dentro.
+Vamos rodar esse cara aqui para vocês
+poderem
+ver.
+Daqui a pouco ele começa a carregar.
+Então, ele começa a trazer.
+Porque eu coloquei tanto o login de
+nível info como o debug.
+Então, ele está carregando todos os
+dados que ele está lendo aqui.
+Matheus, como é que a gente sabe que
+esse consumer group está lá dentro?
+Vamos deixar ele rodando aqui.
+Ele está ativo, né?
+E a gente vai abrir um terminal.
+Deixa eu fazer uma coisa mais fácil.
+Vou colocar como porção o shared.
+Eu acho que vai ser melhor.
+E a gente abre aí.
+E aí eu vou pegar aqui o meu terminal
+que está em algum lugar.
+Vou dar um zoom aqui para vocês poderem
+ver.
+Enquanto ele está carregando, eu vou
+pegar aqui os meus códigos.
+Os meus códigos.
+Então, primeiro eu vou listar todos os
+consumer groups existentes.
+Então, aqui tem esse H aqui de consumer
+groups.
+E não se preocupem que amanhã eu vou
+mostrar para vocês um hacking bem legal.
+Vocês vão falar assim, pô, você mostrou
+isso tudo aqui para no final mostrar
+como é fácil.
+É, vocês têm que ver como é difícil
+primeiro de valorizar.
+Então, primeiro a gente começa com o que
+é chato.
+Então, eu vou rodar aqui o comando.
+E vou procurar o meu training.
+Aqui, ó.
+Training JSON consumer group.
+Ok.
+Achei meu consumer group aqui.
+E vamos fazer um describe nele, ó.
+Vou pegar aqui o nome, ó.
+E é o mesmo esquema.
+Vamos rodar ele aqui.
+E aqui eu vou trazer algumas informações
+importantíssimas para
+vocês.
+Isso aqui é importantíssimo.
+Deixa eu conseguir abrir mais.
+Vou ter que reduzir um pouquinho, tá?
+Está todo mundo em linha.
+Eu acho que vai ser mais fácil para
+vocês entenderem.
+Apesar que eu acho que se eu fizer
+assim...
+Vocês vão conseguir ver de boa?
+Dá para ver legal?
+Deixa eu fazer um...
+Deixa eu ver se eu vou colocar assim.
+Aqui eu acho que é certo.
+Apareceu?
+Deixa eu ver como é que está.
+Meu joinha.
+Informações interessantíssimas aqui que
+a gente tem que usar, tá?
+E esse comando aqui é bem legal.
+Por quê?
+Olha só.
+Aqui eu tenho 15 partições.
+16 partições nesse meu 0 ao 14.
+Então são 15.
+Tem 15 partições aqui dentro do meu
+cluster.
+Dentro do meu tópico, desculpa.
+Nome do tópico.
+É o nome do grupo, né?
+Nome do tópico que eu estou lendo.
+Partição.
+Offset atual.
+O final do offset e o lagging.
+Quando está assim, quer dizer que eu já
+li tudo.
+Já estou no final do offset.
+Beleza?
+Ou seja, aqui não tem nada.
+Aqui onde eu já lia, que eu já lia, que
+eu não tenho nenhum tipo de lag.
+Essa parte aqui é importantíssima.
+Por quê?
+Essa é a parte que mostra a diferença da
+minha aplicação, onde ela está.
+E aqui mostra o meu atraso em comparação
+do último offset gravado dentro dela.
+Ou seja, aqui eu estou 80 mil registros
+para trás.
+Porque aqui o offset que eu estou lendo
+é o 5100.
+Aqui o offset é o número inteiro, que
+ele vai armazenar no evento, que começa
+do zero até a quantidade que eu tenho.
+Então, aqui te mostra.
+Se aqui estiver alto, é problema.
+Ou a sua aplicação consumer parou de
+ler, ou ela não está conseguindo ler
+para algum motivo.
+Normalmente é assim.
+Ou dado, por exemplo, tem muito caso de
+pós -1pil.
+O que é o pós -1pil?
+Eu mando um dado, eu espero um tipo de
+dado específico, só que alguém manda
+mensagem errada.
+O que ele faz?
+Quando eu li aquela partição, em muitos
+casos, como a aplicação foi montada, se
+der erro, ela trava, ela para.
+Então, ela acontece, ela fica lupando.
+Então, ela não para de...
+Porque está lendo ali, está lendo.
+Então, isso aqui está lendo.
+Se eu fizer aqui, se a gente fizer mais
+um comando aqui, para ver, vai ter
+mudado o lag.
+Vamos ver.
+Um momento, vou baixar aqui um
+pouquinho.
+Agora ele conectou em todas as
+partições.
+Desculpa, não tinha mandado as
+expressões.
+Agora ele conectou em todas.
+Quando ele conectou em todas, esse
+tópico aqui deve ter quase meio milhão
+de registros.
+Como ele conectou em todas, olha o lag.
+Como é que está o absurdo em comparação.
+Ele está lendo aqui.
+Ele está parando, não para.
+Então, enquanto não parar a aplicação,
+ele vai continuar
+lendo.
+E aqui, todo mundo, olha o meu Consumer
+ID.
+É o mesmo, porque é uma instância só.
+E meu client é o mesmo.
+Está vendo?
+Então, eu posso abrir isso.
+Instância aqui.
+Olha que interessante.
+Eu vou chegar aqui e vou fazer assim.
+Vamos pegar aqui para a gente poder ver
+isso na prática.
+E leva a rodar por um bom tempo.
+Eu vou pegar com o terminal.
+E vou fazer um Python.
+Stop.
+Olha que interessante.
+Está rodando lá.
+Como o meu ambiente é mais simples, eu
+ia ter um.
+Ele já fez o rebalance e já começou.
+Aqui é legal de mostrar também que ele
+ia fazer o rebalance.
+Dá para mostrar daqui a pouco.
+Reparem no Consumer ID.
+Vai ter dois agora.
+Esse aqui é um Consumer, final D e final
+E.
+Eu abri uma instância.
+Mais uma instância.
+Olha lá.
+Vamos abrir mais um.
+Vamos abrir mais um.
+Fechar essas aqui.
+Para a gente poder só ver na prática
+aqui do
+Python.
+Vamos ver aqui.
+Aqui, parou.
+Está vendo?
+Ele parou.
+Por quê?
+Porque agora entrou um Consumer Group.
+Então, ele parou.
+E aqui está rodando um erro também.
+No setStore.
+Também está rodando um outro erro aqui.
+Ele está incorporando um erro.
+Eu poderia pegar e validar isso.
+Ele vai abrir em outro lugar.
+Principalmente por quê?
+Olha.
+Está rodando lá.
+Os dois.
+Fora a minha aplicação daqui.
+E essa aplicação também tem um errozinho
+lá.
+Que eu criei de propósito.
+Beleza?
+Deixa eu ver se alguém tem uma dúvida.
+Porque eu não estou vendo.
+A diferença entre o primeiro offset e o
+último offset sempre vai ser a
+quantidade de mensagens da partição?
+Isso sem o Log Confection?
+Não.
+É o seguinte.
+Independente do Log Confection.
+Sempre que você fala que é um balance, o
+que ele vai fazer?
+Sempre que você vai fazer o append, ele
+vai inserir.
+Ele vai marcar aquele offset.
+Se você compactar, o offset não muda.
+Porque você está deletando.
+Você está desligatando.
+Então, se eu coloquei a chave 1 no
+offset 1 e a chave 1 voltou para o
+offset 100 e eu estou usando o Log
+Confection, o meu offset vai continuar
+sendo 100.
+Não vai mudar.
+O que está acontecendo aqui?
+Ele vai lá na partição assim.
+Qual foi o último offset gravado nessa
+partição?
+O offset é 31 ,999.
+Não.
+Desculpa.
+Esse aqui.
+Qual foi o último offset da partição?
+É o Log End Offset.
+4, 3, 3, 1.
+Qual que você está?
+3, 1, 9, 7.
+Qual que é a diferença entre esses?
+53, 193.
+132.
+Então, a diferença é que você está lendo
+ainda.
+Está no offset.
+Porque ele está marcando o seu offset.
+Está lendo.
+Você está lendo com o offset que você
+está com o atual.
+Então, a gente...
+Está vendo como já mudou bastante?
+Eu estava no 5 ,000.
+Agora estou no 31.
+Porque também eu abri mais threads.
+Então, daqui a pouco ele vai só...
+Se eu for abrir várias threads, ele vai
+carregar para...
+Se eu abrisse 15 threads aqui, por
+exemplo, cada thread ia pegar a
+quantidade de...
+Ia dividir as partições.
+Ia ser muito mais rápida a leitura.
+Por isso que é a velocidade.
+Lembra da escalabilidade?
+É aqui que funciona.
+Está vendo?
+Vou pegar aqui.
+Vamos abrir mais umas aqui para ser mais
+rápido.
+E a gente...
+Deixa eu ver se...
+Deixa eu ver qual que é a pergunta.
+Se o offset é conceito de on -bound,
+como identifica qual é o consumer
+offset?
+Ele usa alguma aproximação?
+Não.
+É o seguinte.
+Eu não sei quando vai acontecer.
+Mas eu tenho dentro do meu o consumer
+offset.
+Então, eu tenho informação da minha
+partição em qual o último offset
+gravado.
+Entendeu?
+Eu sei assim.
+O último offset que eu recebi foi o 100.
+Está alocado o evento dentro dele.
+Mas eu não sei dali para frente o que é
+que tem.
+Entendeu?
+De onde você importou a classe que usou?
+Como assim?
+Como assim, Gabriel?
+Não entendi.
+Você está falando aqui do código?
+Vamos lá de novo para ver o código.
+É só colocar para rodar mais um aqui.
+Porque a gente já deixa rodando.
+E no final você vai ver que eu quero ver
+que é zero.
+Vamos ver aqui.
+Você está falando aqui?
+Está falando aqui, Gabriel?
+Quando eu mando rodar agora?
+Nesse pipe que eu estou rodando aqui?
+Se for aqui.
+Eu estou importando desse meu front aqui
+que é o consumer JSON.
+Aí o meu código está mais para a própria
+edição.
+Então, desse consumer JSON eu tenho o
+component Kafka.
+Mas eu também tenho uma base onde eu
+tenho minhas configurações base de todos
+os meus consumers.
+Então, eu tenho aqui um consumer.
+Então, aqui eu tenho informação, por
+exemplo, de session.
+O meu commit offset está fora.
+Aqui eu coloquei como falso.
+Aqui eu coloquei como falso.
+Porque aqui eu estou deixando.
+Se der erro, eu quero que pede dado.
+Aqui eu coloquei desse jeito.
+Entendeu?
+Tá.
+Legal, legal, legal.
+Vamos ver como é que está aqui.
+Deixa eu ver se tem outra pergunta.
+Como é determinada a quantidade de
+mensagens na partição?
+Perfeito, João.
+É feito um algoritmo da seguinte forma.
+Primeiro, ele faz aquele stick partition
+que eu comentei.
+Você pode configurar o stick partition e
+para ele falar assim, olha, tenta alocar
+o máximo possível nas partições, nas
+partições mesmo, nas mensagens
+diferentes, para você ler mais rápido.
+Então, ele tem um algoritmo que ele vai
+alocando o dado para chegar chegando.
+Ele tenta balancear o máximo que ele
+pode.
+Então, se eu tenho 15 aqui, eu vou
+tentar balancear o máximo que ele está.
+Está mais ou menos balanceado.
+Ele tem 4, ele tem 5.
+Ele tenta fazer esse balanceamento
+sozinho.
+Então, você manda para ele, mas também
+quer de novo.
+Vai a questão também de como você vai
+abrir quantidade de crédito, como é que
+vai ser o seu X.
+Tudo isso aí também conta para a
+melhoria da performance desse algoritmo
+dele.
+Mas, normalmente, ele faz isso
+automaticamente.
+Não precisa se preocupar tanto, não.
+Mas, pode existir off -balance
+partitions, que eu vou explicar amanhã,
+nas melhores práticas.
+E aí, tem um outro carinha que te ajuda
+a fazer isso.
+Meio que balancear os dados na partição.
+Mas, não é tanto, mas balanceia.
+Aqui, já zerou um já.
+Já zeramos um.
+Já zeramos aqui.
+Olha, zerando aqui.
+Lagging, zero.
+Não entendi a resposta da penúltima
+pergunta do João.
+Poderia repetir?
+Pergunta do João.
+Você está falando na diferença?
+É isso, Eduardo?
+Na diferença do primeiro offset para o
+último, sempre que vai ser...
+Espera aí.
+A diferença entre o primeiro offset e o
+último seno vai ser a quantidade de
+partições.
+A primeira diferença entre o offset e o
+último offset sempre vai ser a
+quantidade de mensagens na partição.
+E isso sem...
+Pensa que sim.
+Pensa o seguinte, Eduardo.
+Eu tenho o primeiro e o último offset,
+beleza?
+Cada offset vai ser como se fosse uma
+caixa que minha mensagem chegou e vai
+ser alocada dentro dele.
+A mensagem que chegou aqui está sendo
+lida.
+O offset é um coordenador.
+É o offset seno.
+Então, o Kafka tem um tópico chamado
+Consumer Offset.
+Eu vou mostrar para vocês aqui.
+Que ele tem essas informações todas do
+offset usado.
+E quem...
+Vamos supor, meu consumer é assessor.
+O que ele faz?
+Consumer Offset.
+Qual foi a última vez que eu vim aqui
+para pegar essa informação?
+Eu como consumer group.
+Olha.
+Você está...
+Nesse cara aqui.
+E eu estou no meu offset nesse cara
+aqui.
+Então, você tem zero lag.
+Mas isso aqui na Dash é uma busca que
+ele faz dentro do Consumer Offset.
+Então, isso aí é feito dentro dele
+mesmo.
+E aí, o lagging que é o mais importante.
+Não pode ter lagging ou o lagging tem
+que ser muito pequeno.
+Por que tem que ser pequeno, Matheus?
+Não pode acontecer de ter lagging?
+Pode.
+Eu posso receber um dado muito grande
+que eu demoro mais para ler.
+Connect é comum ter lagging.
+Eu vou ler aqui.
+Conect é o quê?
+Eu vou ler no banco.
+Vou trazer um banco para outro lugar.
+E eu vou inserir.
+Então, pode ser que quem está lendo...
+Ou eu posso ter um log load maior.
+Pelo fato de demorou para ler e...
+Carregou mais dados de uma vez só.
+Então, Connect é um caso simples.
+Eduardo, entendeu minha resposta?
+Se não, eu desenho aqui, tá?
+Se vocês não entenderam.
+Eu faço essa parte de offset aqui de
+novo.
+A gente volta no fundamentos.
+Acho que ficou claro, né?
+Eu tinha entendido como?
+Eu poderia fazer a sua pergunta?
+Tenho vontade, a gente pode perguntar.
+Usem esse tempo.
+Isso aqui é muito importante você saber.
+Eu tinha entendido de medo lá.
+Eu tinha sendo o primeiro offset e o
+último.
+Então, primeiro e último.
+Sempre vai ser a quantidade de mensagens
+da partição.
+Isso em live competition.
+Isso mesmo.
+Quantidade de offsets sempre é igual à
+quantidade de mensagens.
+Que mensagens que foram enviadas, sim.
+Sim, é isso mesmo.
+Mas pense o seguinte.
+Tome cuidado com as mensagens enviadas.
+É porque a quantidade que foi colocada
+naquela partição.
+Cada offset equivale a 1.
+Então, se eu mandei 10 mil mensagens,
+ele vai ser quebrado em partições
+diferentes.
+Então, necessariamente, ele não vai ter
+uma partição única.
+Só se for partição igual a 0.
+Ou partição igual a 1, desculpa.
+Mas sim, desculpa, é isso mesmo.
+É isso mesmo.
+Se você fazer a soma de partição, a soma
+de quantidades, a quantidade de offsets,
+vai dar a quantidade de registros que
+tem lá dentro.
+Antigamente, tinha um comando que não
+está funcionando mais, que você
+conseguia contar dentro do gráfico,
+usando ele, justamente lendo as offsets.
+Desculpa, eu dei a veja aqui agora.
+Zeramos.
+Zeramos e, ó.
+Esse aqui não tem nada, né?
+Zeradinho, zeradinho, zeradinho.
+Então, aqui a gente chegou no final do
+nosso gráfico.
+Aqui, ó, o offset.
+Se o lag está zerado, olha, a minha
+quantidade do final e o atual tem que
+ser igual, né?
+Não posso ter diferença, né?
+Vou ter lag aqui.
+E aqui, ó.
+Pegamos aqui o consumer ID, a instância,
+eu vou ter um ID único aqui, ó.
+Eu abro o ID único.
+Nome do grupo.
+E aqui eu vou parar tudo.
+Olha que interessante.
+Eu vou parar você aqui.
+E aí, eu vou pegar aqui um carinha para
+a gente poder
+ver.
+Vou pegar o Avro para a gente poder ver
+o Avro.
+Que é uma aplicação que não está
+rodando, né?
+O que acontece com uma aplicação que não
+está rodando?
+Vou pegar o Avro Consumer Group.
+Que é um Consumer Group que eu testei
+mais cedo.
+E justamente mostrar ele parado.
+O que vai acontecer?
+Legal.
+Consumer Group Avro has no active
+members.
+Então, ele sabe que ninguém está ativo,
+olha.
+Eu li tudo, só que não está ativo.
+Vamos gerar um lag?
+Para ele poder ver e falar assim, opa,
+tem um lag aqui.
+Eu vou fazer uma inserção lá.
+Qual topo que é aquele?
+De transação.
+Deixa eu ver se eu consigo fazer aqui.
+Para a gente poder ver.
+Isso, claro.
+DataSet, database,
+transactions.
+Vou fazer 100.
+Vou fazer mais rapidinho.
+Vou deixar rodando aqui.
+Para a gente ver outras coisas enquanto
+isso.
+Então, beleza.
+Eu trouxe aqui também um Consumer já
+mais preparado para a gente ver a
+questão do commit offset.
+Então, eu criei essa classe aqui.
+Vocês podem estar testando, brincando.
+Além de ele ter o enableConsumer igual a
+false, ele também tem aqui algumas
+validações dentro e interno para ele
+fazer aquela questão de async e sync.
+Então, aqui.
+Eu vou ler do primeiro.
+Ele vai parar o meu consumo.
+Ele vai parar o meu consumo.
+Ele vai executar novamente.
+Tem algumas coisas para a gente poder
+ver.
+Conta 10 mensagens e faz um timeout para
+mim, para simular uma mensagem que está
+entrando na fila.
+Como que o cargo que eu trago nos casos
+em que o offset cai no tempo de retenção
+no momento do consumo do dado?
+Como assim?
+Por exemplo, eu estou retendo um dado
+por, sei lá, duas horas.
+E aí eu vou ler o dado e o dado vai
+estar apagado?
+É isso?
+Ele vai flegar aquele dado para apagar.
+Daí é quem flegar o primeiro.
+Se o arquivo for flegado no Garp
+Collection, na rotina de CLEANUP, antes
+da leitura, ele vai parar e vai esperar
+a leitura acabar.
+Liberar o arquivo.
+Mas ninguém acessa esse arquivo enquanto
+não terminar.
+É quem começar primeiro.
+Como ele já...
+O que ele faz?
+Ele não lock e trava o arquivo e fica
+direto não.
+Ele executa, ele segue.
+Naquele seguir...
+E lembra da questão do commit offset?
+Você comitou, executou e você voltou
+para ler de novo, fez o replay no
+evento.
+O evento não existe mais?
+Não existe mais.
+O replay também vale se o arquivo
+existe, se o segmento existe.
+Beleza?
+Muitas dúvidas?
+Estou gostando de dúvidas.
+Gente, alguma dúvida?
+Esse cara aqui, pegaram.
+Esse cara que eu falo, esse que é o
+principal.
+Ah, deixa eu mostrar agora.
+Estou pulando aqui no vídeo.
+O Avro.
+Lembra que eu comentei que é ideal a
+gente trabalhar com o Avro, com esquema
+registry, porque te salva tempo.
+Olha só.
+Commit offset quando todos os consumer
+groups já passaram para o offset, o
+Kafka dropa a mensagem ou somente o
+tempo de retenção.
+E não dropa a mensagem no commit offset,
+não.
+Ele cometa dentro do commit offset, do
+consumer offset, que a sua aplicação já
+leu.
+Por quê?
+A sua aplicação, quando for ler de novo,
+ela vai ler dali para frente.
+Mas ela impede outras aplicações de lá
+acessarem.
+Então, até mesmo que as aplicações vão
+acessar em tempos diferentes.
+Eu comentei esses dois consumer groups,
+eu posso ler os consumer groups
+diferentes.
+Eles iguais, diferentes, mas na mesma
+aplicação.
+Só que eles vão ler tempos diferentes
+até o mesmo tempo, porque para o Kafka
+são aplicações novas.
+É consumer group novo.
+Então, toma cuidado só, porque essa
+possibilidade existe, mas você, como
+aplicação, você tem que ter o domínio de
+que se você ler duplicado, vai ter
+certas atativas lá dentro.
+Mas dá para ler muito rápido.
+Então, tá.
+Comentei do esquema, né?
+Para a gente ler o esquema do nosso
+amigo Esquema REST, porque eu estou
+trabalhando em Java.
+Então, aqui eu tenho uma função, do
+GetLegSchema, que ela acessa, ela monta
+para mim já o caminho que eu vou ler
+TopicName.
+Lembra do Value?
+Olha como essa começa a encaixar.
+Eu vou usar o Client para pegar a última
+versão do Subject.
+O Subject, na verdade, é o TopicName
+-Value.
+Então, quando eu rodar esse Client na
+minha aplicação, eu vou lá no Esquema
+REST, eu vou lá e falo assim, Esquema
+REST, esse cara aqui.
+Ele vai trazer para mim, vai montar para
+mim um esquema, e aí eu só
+consumo.
+Fácil demais.
+Se você tivesse que ter, se você deve
+passar por isso com o protobuf, vou dar
+o mesmo exemplo.
+Se você tem um protobuf ou um Avro, você
+tem que ter o esquema dele para você
+poder deserializar o dado.
+Aqui eu estou deserializando.
+JSON eu consigo deserializar sem ter
+esquema.
+Exatamente a mensagem.
+Eu meio que deserializo ela dentro do
+próprio a aplicação, porque aí eu
+consigo trabalhar.
+Mas eu não preciso ter um esquema
+propriamente dito.
+Aqui eu tenho que ter.
+Só que aqui eu estou no Esquema
+Registry.
+Então eu faço Esquema Registry, abro,
+deserialize.
+Pode deserializar o meu dado.
+Olha só como é que fica.
+Eu não tenho que passar o caminho de
+esquema em nada.
+Eu preciso saber que esquema que é.
+O que vem falar para mim o esquema é o
+meu amigo Esquema Registry.
+Esquema Registry, vai lá para mim e pega
+esse esquema por favor.
+Então vamos lá.
+Vamos lá.
+Para a gente ver na prática.
+Então de novo, se eu tivesse que ter, se
+eu tivesse que não usar o esquema
+Registry por exemplo para ver um arquivo
+Avro ou para ler um protobuf, eu vou ter
+que ter o esquema dele.
+Vou ter que ter um lugar para me
+consultar e eu visceralizar aquela
+mensagem.
+Porque eu tenho que ter o
+deserializador.
+Olha só, de novo, isso é importante.
+Eu tenho que ter o deserializer.
+Seu meu deserializer aqui é o esquema
+Registry.
+Então aqui já li.
+Aqui eu já li.
+E olha, esquematizado, bonitinho, todo
+bonitinho, todo certinho.
+Cheguei lá em mim.
+Todo bonitinho.
+Então, de novo, olha o ganho que eu
+tenho.
+Existe muita diferença de performance
+realização de protobuf e Avro?
+Não, João.
+Honestamente, de novo, se você pegar em
+questão de performance, pode ser que o
+Avro ganhe um pouco.
+Porque o Kafka foi feito e pensado em
+Avro.
+Internamente, de novo, é igual Scala e
+Java.
+Ah, Matheus, se você rodar um aplicativo
+com Scala e Java, talvez em algum caso
+você vai ter um ganho um pouco maior.
+Mas não, você vai ter o mesmo ganho.
+O problema é a complexidade que você vai
+ter para exceção esquema, gerar esquema,
+fazer a gestão desse esquema.
+Aqui você tem já esquema REST fácil para
+você.
+Eu acho que por vantagens, eu acho
+melhor ter esse cara aqui.
+Beleza?
+Pegou, João?
+Então, performance, mesma coisa.
+Gente, alguém com mais alguma dúvida?
+Pergunta importante.
+Se vocês querem um recreio agora, porque
+agora a gente vai para a parte de Kafka
+Connect, a gente vai ver um macro do que
+a gente fez.
+Então, hoje também, mas essa parte é
+muito importante.
+Se vocês tiverem dúvidas, eu não posso
+passar sem vocês seguirem e entenderem
+essa parte.
+Posso parar?
+Posso parar aqui então?
+A gente para aqui e volta em volta 8h50,
+15 minutos?
+Pode ser?
+Gente, quem tiver dúvida, por favor, me
+avisa aqui.
+Eu vou parar a gravação então, porque aí
+a gente volta em 15 minutos.
+Então, e aí vocês, de novo, eu vou
+deixar até aberto algumas partes aqui
+para vocês pegarem tempo.
+Perfeito, eu vou parar de gravar não,
+então vou deixar você falar.
+Pode perguntar.
+Opa, Matheus.
+A dúvida é a seguinte.
+Você falou que o JSON não precisa do
+Schema Registry, certo?
+Isso.
+Se você não tiver usando o Schema
+Registry, se você está lendo dados em
+JSON, não precisa do Schema, não precisa
+do Schema, tá?
+E se eu quiser permitir para melhorar
+para que o consumer não precise inferir
+o...
+Você pode usar.
+Você pode subir, você pode mudar o dado
+no Schema Registry em JSON e recuperar o
+Schema em JSON.
+Pode, perfeitamente.
+Ele não é só o protocolo fiabro, não.
+Ah, beleza, valeu.
+Alguma dúvida, pessoal?
+Alguém perguntou alguma coisa?
+Não, eu vou fazer a pausa aqui.
+Vamos pausar aqui, vocês me perguntam na
+volta.
