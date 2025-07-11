@@ -16,6 +16,18 @@ A seguir, detalhamos cada etapa, explicando conceitos e mostrando exemplos prát
 
 ---
 
+## Pipeline de Dados com Apache Kafka
+
+```mermaid
+flowchart LR
+    A[Fontes de Dados] -->|Ingestão| B[Kafka]
+    B -->|Processamento| C[PySpark/Flink/Streams]
+    C -->|Disponibilização| D[Data Warehouse/OLAP/Aplicações]
+    D -->|Consumo| E[Usuários/Relatórios/API]
+```
+
+---
+
 ## 1. Fundamentos Internos
 
 Nesta etapa, vamos abordar os conceitos essenciais para entender o ecossistema de Big Data e mensageria:
@@ -32,11 +44,34 @@ Nesta etapa, vamos abordar os conceitos essenciais para entender o ecossistema d
 - **Log Compaction:** Mecanismo de retenção de mensagens.
 - **Liderança de Partição e Replicação:** Garantia de alta disponibilidade e tolerância a falhas.
 
+```mermaid
+flowchart TD
+    Producer -->|Publica| Topic
+    Topic -->|Particionado| Partition1
+    Topic --> Partition2
+    Partition1 -->|Offset| Event1
+    Partition1 --> Event2
+    Partition2 --> Event3
+    Partition2 --> Event4
+    Partition1 -->|Replicação| Broker2
+```
+
 ---
 
 ## 2. Ingestão de Dados
 
 Aqui, o foco é entender como trazer dados para dentro do Kafka, utilizando diferentes formatos e ferramentas.
+
+```mermaid
+flowchart LR
+    DB[(Banco de Dados)]
+    API[(API)]
+    File[(Arquivo)]
+    DB -->|Source Connector| Kafka
+    API -->|Source Connector| Kafka
+    File -->|Source Connector| Kafka
+    Kafka -->|Consumer| PySpark
+```
 
 ### Exemplos de Ingestão com PySpark
 
@@ -73,6 +108,14 @@ df.writeStream \
 
 Após a ingestão, é hora de processar os dados para gerar valor.
 
+```mermaid
+flowchart TD
+    Kafka --> PySpark
+    PySpark -->|Transformação| DadosProcessados
+    DadosProcessados -->|Agregação| Resultados
+    Resultados -->|Disponibilização| Console
+```
+
 ### Exemplos de Processamento com PySpark
 
 ```python
@@ -105,6 +148,16 @@ resultado.writeStream \
 
 Depois de processar, é necessário disponibilizar os dados para consumo por outros sistemas.
 
+```mermaid
+flowchart LR
+    Processamento -->|Exportação| DataWarehouse
+    Processamento -->|Exportação| OLAP
+    Processamento -->|Exportação| API
+    DataWarehouse -->|Consulta| Usuário
+    OLAP -->|Consulta| Usuário
+    API -->|Requisição| Aplicação
+```
+
 - **Kafka Consumer:** Leitura dos dados processados.
 - **Exportação de Dados:** Utilizando Kafka Connect para enviar dados para bancos de dados, data warehouses, etc.
 - **Sistemas OLAP e MDW:** Integração com sistemas analíticos.
@@ -131,6 +184,16 @@ df_consumo.selectExpr("CAST(value AS STRING)").writeStream \
 ## 5. Estratégias Avançadas e Melhores Práticas
 
 Por fim, abordaremos estratégias práticas e avançadas para otimizar o uso do Kafka:
+
+```mermaid
+flowchart TD
+    Kafka -->|Monitoramento| FerramentasObservabilidade
+    Kafka -->|Segurança| Autenticação
+    Kafka -->|Performance| Otimização
+    FerramentasObservabilidade -->|Alertas| EquipeDados
+    Autenticação -->|Controle| EquipeDados
+    Otimização -->|Ajustes| EquipeDados
+```
 
 - **Iluminação e Desenvolvimento:** Técnicas para facilitar o trabalho diário.
 - **Arquiteturas de Referência:** Exemplos de arquiteturas robustas e escaláveis.
