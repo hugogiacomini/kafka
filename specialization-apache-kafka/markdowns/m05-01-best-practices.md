@@ -10,6 +10,20 @@ Este documento apresenta um panorama aprofundado sobre melhores práticas no uso
 
 No Kafka, a ordenação de mensagens só é garantida dentro de uma mesma partição. Se você precisa de ordenação total, configure seu tópico com apenas **uma partição**. Caso contrário, ao usar múltiplas partições, a ordem entre mensagens pode ser perdida.
 
+```mermaid
+flowchart LR
+    A[Producer] -->|Envia mensagens| B[Partição 1]
+    A -->|Envia mensagens| C[Partição 2]
+    B --> D[Consumer 1]
+    C --> E[Consumer 2]
+    subgraph Garantia de Ordem
+        B
+    end
+    subgraph Ordem Não Garantida
+        C
+    end
+```
+
 ### Configurações Importantes
 
 - **`max.in.flight.requests.per.connection`**: Controla quantas mensagens podem ser enviadas simultaneamente sem confirmação. Para garantir ordenação, mantenha este valor em 1.
@@ -42,6 +56,12 @@ producer.flush()
 - **Stream**: Fluxo imutável de eventos (append-only).
 - **Table**: Estrutura mutável, representa o último estado de cada chave (semelhante a log-compaction).
 
+```mermaid
+flowchart TD
+    A[Stream de Eventos] -->|Agregação| B[Table]
+    B -->|Changelog| C[Novo Stream]
+```
+
 ### Conversão
 
 - Streams podem ser agregados para formar Tables (ex: contagem, soma).
@@ -63,7 +83,6 @@ df = (
     .load()
 )
 
-# Supondo que o valor seja um evento JSON com campo 'usuario'
 from pyspark.sql.functions import from_json, col
 from pyspark.sql.types import StructType, StringType
 
@@ -71,7 +90,6 @@ schema = StructType().add("usuario", StringType())
 
 eventos = df.select(from_json(col("value").cast("string"), schema).alias("data")).select("data.*")
 
-# Agregação: Contagem de eventos por usuário
 contagem = eventos.groupBy("usuario").count()
 
 query = (
@@ -89,6 +107,16 @@ query.awaitTermination()
 
 ### Tipos de Janela
 
+```mermaid
+graph TD
+    A[Tumbling Window]
+    B[Sliding Window]
+    C[Session Window]
+    A -->|Intervalos fixos| D[Processamento]
+    B -->|Intervalos sobrepostos| D
+    C -->|Baseada em inatividade| D
+```
+
 - **Session Window**: Baseada em inatividade (gap).
 - **Hopping/Sliding Window**: Janelas sobrepostas.
 - **Tumbling Window**: Janelas fixas, sem sobreposição.
@@ -100,14 +128,12 @@ query.awaitTermination()
 ```python
 from pyspark.sql.functions import window
 
-# Janela de 1 minuto
 janela = eventos.groupBy(window(col("timestamp"), "1 minute")).count()
 ```
 
 #### Sliding Window
 
 ```python
-# Janela de 1 minuto, slide de 30 segundos
 janela = eventos.groupBy(window(col("timestamp"), "1 minute", "30 seconds")).count()
 ```
 
@@ -123,6 +149,15 @@ PySpark não possui session window nativa, mas pode ser simulada com lógica adi
 
 Transações garantem que múltiplas operações de leitura/processamento/gravação sejam atômicas. Útil para pipelines críticos, mas adiciona complexidade e pode impactar performance (~3% de throughput).
 
+```mermaid
+sequenceDiagram
+    participant Producer
+    participant Kafka
+    Producer->>Kafka: Inicia transação
+    Producer->>Kafka: Envia mensagens
+    Producer->>Kafka: Commit ou Abort
+```
+
 ### Fluxo Básico
 
 1. Iniciar transação no producer.
@@ -137,6 +172,14 @@ PySpark não suporta transações Kafka nativamente, mas pode ser implementado v
 
 ## 5. Logs e Monitoramento
 
+```mermaid
+flowchart LR
+    A[Kafka Broker] -->|Gera logs| B[Filebeat]
+    B --> C[Elasticsearch]
+    C --> D[Kibana]
+    D -->|Visualização| E[Usuário]
+```
+
 - **INFO e WARNING**: Mensagens informativas do Kafka são valiosas para troubleshooting.
 - **Exportação de logs**: Use Filebeat + Elasticsearch + Kibana para centralizar e analisar logs.
 
@@ -150,14 +193,24 @@ PySpark não suporta transações Kafka nativamente, mas pode ser implementado v
 - **Memória**: Brokers exigem memória proporcional ao volume de dados e partições.
 - **CPU**: Importante, mas menos crítico que disco.
 
-### Exemplos de Sizing
-
-- **Dev**: 3 brokers, 32GB RAM cada.
-- **Prod**: 9 brokers, 64GB RAM cada, replication factor 3.
+```mermaid
+flowchart TD
+    A[Dev]
+    B[Prod]
+    A -->|3 brokers| C[32GB RAM cada]
+    B -->|9 brokers| D[64GB RAM cada]
+    B -->|Replication factor 3| D
+```
 
 ---
 
 ## 7. Segurança
+
+```mermaid
+flowchart TD
+    A[Producer/Consumer] -->|SSL/TLS| B[Kafka Broker]
+    B -->|ACLs| C[ZooKeeper/KRaft]
+```
 
 - **Autenticação**: SSL/TLS ou SASL.
 - **Autorização**: ACLs no ZooKeeper (ou no controller, se usar KRaft).
@@ -166,6 +219,13 @@ PySpark não suporta transações Kafka nativamente, mas pode ser implementado v
 ---
 
 ## 8. Otimização de Throughput e Latência
+
+```mermaid
+flowchart LR
+    A[Producer] -- batch.size, linger.ms --> B[Kafka Broker]
+    A -- compression.type --> B
+    B -- acks --> A
+```
 
 ### Throughput
 
@@ -188,6 +248,13 @@ PySpark não suporta transações Kafka nativamente, mas pode ser implementado v
 ---
 
 ## 9. Ferramentas de Observabilidade
+
+```mermaid
+flowchart TD
+    A[Lenses] -->|Observabilidade| B[Kafka Cluster]
+    C[Prometheus/Grafana] -->|Métricas| B
+    D[Cruise Control] -->|Rebalanceamento| B
+```
 
 - **Lenses**: Plataforma para desenvolvimento, troubleshooting e observabilidade de clusters Kafka.
 - **Prometheus/Grafana**: Para métricas.
@@ -227,6 +294,15 @@ query.awaitTermination()
 ---
 
 ## 11. Recomendações Finais
+
+```mermaid
+flowchart TD
+    A[Entenda o padrão de uso] --> B[Escolha configurações]
+    B --> C[Monitore constantemente]
+    C --> D[Automatize operações]
+    D --> E[Teste em ambiente controlado]
+    E --> F[Produção]
+```
 
 - **Entenda o padrão de uso**: Escolha configurações conforme o caso de uso (latência, throughput, durabilidade).
 - **Monitore constantemente**: Logs, métricas e uso de recursos.

@@ -4,6 +4,22 @@
 
 Antes de avançarmos, vamos relembrar rapidamente os principais pontos da aula anterior para garantir que todos estejam na mesma página:
 
+```mermaid
+flowchart TD
+    A[Arquitetura do Kafka] --> B[Broker]
+    B --> C[Armazena e gerencia dados]
+    A --> D[APIs]
+    D --> E[Producers]
+    D --> F[Consumers]
+    D --> G[Kafka Connect]
+    A --> H[Clusters]
+    H --> I[Zookeeper/Kraft]
+    A --> J[Particionamento e Offset]
+    J --> K[Partições]
+    J --> L[Offset]
+    A --> M[Log Compaction]
+```
+
 - **Arquitetura do Kafka**: O broker é o principal componente, responsável por armazenar e gerenciar os dados.
 - **APIs**: Kafka oferece APIs para producers, consumers e integrações via Kafka Connect.
 - **Clusters**: Utilização de Zookeeper (em versões antigas) ou Kraft (nas mais recentes) para coordenação dos brokers.
@@ -20,22 +36,64 @@ O broker é o servidor que executa o algoritmo do Kafka, armazenando e gerencian
 - Gerenciar partições e offsets.
 - Replicar dados entre brokers para garantir alta disponibilidade.
 
+```mermaid
+flowchart LR
+    Broker1[Broker 1] -- Replicação --> Broker2[Broker 2]
+    Broker1 -- Replicação --> Broker3[Broker 3]
+    Broker1 -- Gerencia --> Partições
+    Broker1 -- Gerencia --> Offsets
+```
+
 ### Partições e Offsets
 
 - **Partição**: Subdivisão lógica de um tópico, permitindo paralelismo e escalabilidade.
 - **Offset**: Posição sequencial de uma mensagem dentro de uma partição.
+
+```mermaid
+flowchart LR
+    Topic["Tópico"]
+    Topic --> P1["Partição 0"]
+    Topic --> P2["Partição 1"]
+    P1 --> O1["Offset 0"]
+    P1 --> O2["Offset 1"]
+    P2 --> O3["Offset 0"]
+    P2 --> O4["Offset 1"]
+```
 
 ### Replicação
 
 - **Leader**: Broker responsável por receber e servir as requisições de leitura e escrita.
 - **Followers**: Brokers que mantêm cópias das partições para garantir tolerância a falhas.
 
-**Exemplo de Replicação:**
+```mermaid
+flowchart LR
+    Leader["Leader"]
+    Follower1["Follower 1"]
+    Follower2["Follower 2"]
+    Leader -- Replicação --> Follower1
+    Leader -- Replicação --> Follower2
+```
+
+**Exemplo de Replicação:**  
 Se o fator de replicação é 3, teremos 1 leader e 2 followers para cada partição.
 
 ## Formatos de Dados para Ingestão
 
 ### Comparação de Formatos
+
+```mermaid
+graph TD
+    CSV["CSV"]
+    XML["XML"]
+    JSON["JSON"]
+    Avro["Avro"]
+    Protobuf["Protobuf"]
+    CSV -.->|Pouca estrutura| Streaming
+    XML -.->|Melhor que CSV| Streaming
+    JSON -->|Flexível| Streaming
+    Avro -->|Binário, esquemas| Streaming
+    Protobuf -->|Binário, eficiente| Streaming
+```
 
 - **CSV**: Não recomendado para streaming devido à falta de estrutura e dificuldade de evolução de esquema.
 - **XML**: Melhor que CSV, mas ainda pouco eficiente para streaming.
@@ -70,6 +128,14 @@ O Schema Registry é um componente que armazena e gerencia os esquemas dos dados
 - Validação de compatibilidade entre versões.
 - Centralização da governança dos dados.
 
+```mermaid
+flowchart TD
+    Producer -->|Envia dados| Kafka
+    Kafka -->|Consulta esquema| SchemaRegistry
+    Consumer -->|Recebe dados| Kafka
+    Consumer -->|Consulta esquema| SchemaRegistry
+```
+
 ### Modos de Compatibilidade
 
 - **Backwards**: Consumidores antigos continuam funcionando após adição de campos opcionais.
@@ -98,6 +164,16 @@ curl http://<schema-registry-url>/subjects/<subject>/versions/latest
 
 ### Estratégias de Envio
 
+```mermaid
+flowchart TD
+    FireAndForget["Fire-and-forget"]
+    Sincrono["Síncrono"]
+    Assincrono["Assíncrono com Callback"]
+    FireAndForget -->|Envia| Broker
+    Sincrono -->|Envia e espera| Broker
+    Assincrono -->|Envia e executa callback| Broker
+```
+
 - **Fire-and-forget**: Envia sem esperar confirmação.
 - **Síncrono**: Aguarda confirmação do broker.
 - **Assíncrono com Callback**: Envia e executa função de callback ao receber resposta.
@@ -120,6 +196,16 @@ producer.flush()
 
 ### Garantias de Entrega (`acks`)
 
+```mermaid
+flowchart LR
+    Acks0["acks=0"]
+    Acks1["acks=1"]
+    AcksAll["acks=all"]
+    Acks0 -- Alto throughput, risco de perda --> Broker
+    Acks1 -- Confirmação do leader --> Broker
+    AcksAll -- Confirmação de todas as réplicas --> Broker
+```
+
 - `acks=0`: Não espera confirmação (alto throughput, risco de perda).
 - `acks=1`: Espera confirmação do leader (padrão).
 - `acks=all`: Espera confirmação de todas as réplicas (alta durabilidade, menor throughput).
@@ -130,6 +216,13 @@ producer.flush()
 
 - **Batch**: Agrupa mensagens para envio eficiente.
 - **Linger**: Define o tempo máximo de espera para formar um batch.
+
+```mermaid
+flowchart LR
+    Producer -- Mensagens --> Batch
+    Batch -- Agrupamento --> Broker
+    Linger -- Tempo de espera --> Batch
+```
 
 #### Exemplo de Configuração
 
@@ -220,6 +313,15 @@ avro_bytes = serialize_avro(user, schema)
 
 ## Boas Práticas
 
+```mermaid
+flowchart TD
+    CSV["Evite CSV para streaming"] --> AvroJSON["Prefira Avro ou JSON"]
+    SchemaRegistry["Utilize Schema Registry"] --> Governanca["Governança e evolução dos dados"]
+    BatchLinger["Teste batch, linger e compressão"] --> Ajuste["Ajuste conforme workload"]
+    Callbacks["Implemente callbacks"] --> Monitoramento["Monitore falhas de entrega"]
+    Compatibilidade["Gerencie compatibilidade de esquemas"] --> Evolucao["Planeje evolução dos dados"]
+```
+
 - **Evite CSV para streaming**: Prefira formatos estruturados como Avro ou JSON.
 - **Utilize Schema Registry**: Garante governança e evolução dos dados.
 - **Teste configurações de batch, linger e compressão**: Ajuste conforme o workload.
@@ -232,5 +334,18 @@ avro_bytes = serialize_avro(user, schema)
 
 A ingestão eficiente de dados no Kafka depende de uma arquitetura bem planejada, escolha adequada de formatos, uso de esquemas e configuração otimizada dos producers. O uso de PySpark permite integrar pipelines de dados em tempo real, potencializando o processamento distribuído.
 
-Pratique os exemplos, ajuste as configurações conforme sua necessidade e explore o potencial do Kafka para ingestão de dados em larga escala!
+```mermaid
+flowchart TD
+    Planejamento["Arquitetura bem planejada"]
+    Formatos["Escolha de formatos"]
+    Esquemas["Uso de esquemas"]
+    Configuracao["Configuração otimizada"]
+    PySpark["Integração com PySpark"]
+    Planejamento --> Ingestao["Ingestão eficiente"]
+    Formatos --> Ingestao
+    Esquemas --> Ingestao
+    Configuracao --> Ingestao
+    PySpark --> Processamento["Processamento distribuído"]
+```
 
+Pratique os exemplos, ajuste as configurações conforme sua necessidade e explore o potencial do Kafka para ingestão de dados em larga escala!

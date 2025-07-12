@@ -30,6 +30,20 @@ Partição 2: [evento0]
 
 Cada evento possui um offset único dentro da partição, mas offsets podem se repetir entre partições diferentes.
 
+#### Diagrama: Estrutura de Tópico e Partições
+
+```mermaid
+flowchart LR
+    subgraph Tópico: vendas
+        P0[Partição 0] --> E00[evento0]
+        P0 --> E01[evento1]
+        P0 --> E02[evento2]
+        P1[Partição 1] --> E10[evento0]
+        P1 --> E11[evento1]
+        P2[Partição 2] --> E20[evento0]
+    end
+```
+
 ---
 
 ## Funcionamento do Offset
@@ -63,6 +77,17 @@ df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)", "offset") \
     .awaitTermination()
 ```
 
+#### Diagrama: Consumo de Mensagens e Controle de Offset
+
+```mermaid
+sequenceDiagram
+    participant Kafka
+    participant Consumidor
+    Consumidor->>Kafka: Solicita mensagens (offset X)
+    Kafka-->>Consumidor: Envia mensagem (offset X)
+    Consumidor->>Consumidor: Atualiza offset para X+1
+```
+
 ---
 
 ## Chave e Valor nas Mensagens
@@ -71,6 +96,20 @@ Cada mensagem pode conter uma chave (`key`) e um valor (`value`). A chave é opc
 
 - **Sem chave**: Distribuição balanceada entre partições.
 - **Com chave**: Garantia de ordenação por chave dentro da partição.
+
+#### Diagrama: Distribuição de Mensagens por Chave
+
+```mermaid
+flowchart LR
+    subgraph Tópico
+        K1[Chave: A] --> P0[Partição 0]
+        K2[Chave: B] --> P1[Partição 1]
+        K3[Chave: C] --> P2[Partição 2]
+        K4[Sem chave] --> P0
+        K4 --> P1
+        K4 --> P2
+    end
+```
 
 ---
 
@@ -109,6 +148,21 @@ df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)") \
     .awaitTermination()
 ```
 
+#### Diagrama: Log Compaction
+
+```mermaid
+flowchart LR
+    K1[Chave: A] --> V1[Valor 1]
+    K1 --> V2[Valor 2]
+    K2[Chave: B] --> V3[Valor 3]
+    K2 --> V4[Valor 4]
+    style V1 opacity:0.3
+    style V3 opacity:0.3
+    V2[Valor 2]:::latest
+    V4[Valor 4]:::latest
+    classDef latest fill:#f9f,stroke:#333,stroke-width:2px;
+```
+
 ---
 
 ## Replicação e Tolerância a Falhas
@@ -129,6 +183,23 @@ kafka-topics.sh --create \
   --topic vendas_replicado
 ```
 
+#### Diagrama: Replicação de Partições
+
+```mermaid
+flowchart LR
+    subgraph Broker 1
+        P0L[Partição 0 (Líder)]
+    end
+    subgraph Broker 2
+        P0F1[Partição 0 (Follower)]
+    end
+    subgraph Broker 3
+        P0F2[Partição 0 (Follower)]
+    end
+    P0L -- Replicação --> P0F1
+    P0L -- Replicação --> P0F2
+```
+
 ---
 
 ## Armazenamento Físico
@@ -137,6 +208,16 @@ Os dados do Kafka são armazenados em disco, organizados por tópicos e partiç�
 
 - **Alta performance**: Escrita sequencial em disco.
 - **Zero copy**: Kafka utiliza técnicas para otimizar leitura e escrita.
+
+#### Diagrama: Organização Física dos Dados
+
+```mermaid
+flowchart TB
+    Tópico1["Tópico: vendas"]
+    Tópico1 --> P0["Partição 0 (arquivo de log)"]
+    Tópico1 --> P1["Partição 1 (arquivo de log)"]
+    Tópico1 --> P2["Partição 2 (arquivo de log)"]
+```
 
 ---
 
@@ -174,6 +255,15 @@ df_agg.writeStream \
     .format("console") \
     .start() \
     .awaitTermination()
+```
+
+#### Diagrama: Pipeline de Integração PySpark + Kafka
+
+```mermaid
+flowchart LR
+    Kafka["Kafka (Tópico: vendas)"] --> PySpark["PySpark (Consumo)"]
+    PySpark --> Processamento["Processamento (Soma por chave)"]
+    Processamento --> Console["Saída no Console"]
 ```
 
 ---

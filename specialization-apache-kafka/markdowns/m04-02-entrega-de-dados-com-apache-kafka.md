@@ -6,6 +6,20 @@ Neste documento, vamos explorar em detalhes a entrega de dados utilizando o Apac
 
 ---
 
+## Visão Geral do Pipeline de Entrega de Dados
+
+```mermaid
+flowchart TD
+    A[Kafka Topic] -->|Source Connector| B[Kafka Connect]
+    B -->|Transformação (SMT)| C[Conversão de Dados]
+    C -->|Sink Connector| D{Destino}
+    D -->|JDBC| E[Banco Relacional]
+    D -->|S3| F[Bucket S3]
+    D -->|Pinot| G[Apache Pinot]
+```
+
+---
+
 ## Anatomia do Kafka Connect
 
 O **Kafka Connect** é um framework robusto para integrar sistemas externos ao Kafka, seja para ingestão (Source) ou entrega (Sink/Sync) de dados. A estrutura básica de um conector envolve:
@@ -15,6 +29,13 @@ O **Kafka Connect** é um framework robusto para integrar sistemas externos ao K
 - **Conversão**: Adapta o formato dos dados (JSON, Avro, Protobuf, String, etc).
 
 > **Dica:** Sempre consulte a documentação oficial do conector para entender suas capacidades e limitações.
+
+```mermaid
+flowchart LR
+    A[Source/Sink Connector] --> B[SMT]
+    B --> C[Converter]
+    C --> D[Kafka Topic ou Destino]
+```
 
 ---
 
@@ -123,6 +144,15 @@ df_to_kafka.write \
 
 O **Apache Pinot** é uma solução analítica colunar, otimizada para consultas em tempo real com alta concorrência e baixa latência. Ele consome dados diretamente do Kafka, sem necessidade de conectores intermediários.
 
+### Diagrama de Ingestão e Consulta com Pinot
+
+```mermaid
+flowchart LR
+    A[Kafka Topic] --> B[Apache Pinot]
+    B --> C[Consulta SQL]
+    C --> D[Dashboard/Aplicação]
+```
+
 ### Características do Pinot
 
 - **Ingestão em tempo real e offline**
@@ -206,6 +236,14 @@ LIMIT 10;
 
 ## Boas Práticas e Dicas
 
+```mermaid
+flowchart TD
+    A[Evite small files] --> B[Ajuste flush.size e rotate.interval.ms]
+    C[Particionamento inteligente] --> D[Facilita consultas e organização]
+    E[Monitoramento] --> F[Utilize logs e métricas]
+    G[Documentação] --> H[Consulte fontes oficiais]
+```
+
 - **Evite small files**: Ajuste `flush.size` e `rotate.interval.ms` nos conectores S3.
 - **Particionamento inteligente**: Use particionamento por tempo ou campo para facilitar consultas e organização.
 - **Monitoramento**: Utilize logs e métricas dos conectores e do Kafka Connect.
@@ -225,4 +263,3 @@ A entrega de dados com Apache Kafka, conectores Sink e ferramentas como PySpark 
 - [Confluent S3 Sink Connector](https://docs.confluent.io/kafka-connect-s3/current/index.html)
 - [Apache Pinot](https://docs.pinot.apache.org/)
 - [PySpark Documentation](https://spark.apache.org/docs/latest/api/python/)
-

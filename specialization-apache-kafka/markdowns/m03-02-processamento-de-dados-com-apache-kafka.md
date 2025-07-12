@@ -14,6 +14,20 @@ O processamento de dados em streaming permite analisar, transformar e agir sobre
 - **Apache Spark Structured Streaming:** Evolução do Spark Streaming, baseada em micro-batches, com APIs DataFrame e integração nativa com Kafka.
 - **ByteWax:** Biblioteca Python para processamento de streams, simples e eficiente, com suporte a operadores de janela, mapeamento e integração com Kafka.
 
+#### Diagrama de Fluxo: Ecossistema de Streaming
+
+```mermaid
+flowchart LR
+    subgraph Kafka
+        A[Produtores] --> B[Kafka Broker]
+        B --> C[Consumidores]
+    end
+    C --> D[Flink]
+    C --> E[Spark Structured Streaming]
+    C --> F[ByteWax]
+    D & E & F --> G[Processamento e Análise]
+```
+
 ---
 
 ## 2. Apache Flink: Arquitetura e Aplicação
@@ -27,6 +41,16 @@ O Flink é composto por três principais componentes:
 - **TaskManager (Worker):** Executa as tarefas distribuídas.
 
 O Flink permite distribuir o processamento em múltiplos slots, garantindo alta performance e escalabilidade.
+
+#### Diagrama de Arquitetura do Flink
+
+```mermaid
+flowchart TD
+    Client --> JobManager
+    JobManager --> TaskManager1
+    JobManager --> TaskManager2
+    TaskManager1 & TaskManager2 -->|Slots| Processing
+```
 
 ### 2.2. APIs do Flink
 
@@ -81,6 +105,18 @@ table_env.to_pandas(result).head()
 
 O Spark Structured Streaming trabalha com micro-batches, processando dados em pequenos lotes com baixa latência (tipicamente 100ms). Ele utiliza DataFrames e permite integração direta com Kafka.
 
+#### Diagrama de Micro-Batches no Spark
+
+```mermaid
+sequenceDiagram
+    participant Kafka
+    participant Spark
+    participant Output
+    Kafka->>Spark: Envia eventos
+    Spark->>Spark: Agrupa em micro-batches
+    Spark->>Output: Processa e envia resultados
+```
+
 ### 3.1. Exemplo de Uso: PySpark Structured Streaming
 
 ```python
@@ -131,6 +167,15 @@ query.awaitTermination()
 
 O ByteWax é uma biblioteca Python para processamento de streams, ideal para aplicações simples e prototipagem rápida.
 
+#### Diagrama de Fluxo ByteWax
+
+```mermaid
+flowchart LR
+    A[Kafka Topic] --> B[ByteWax Dataflow]
+    B --> C[Processamento]
+    C --> D[Kafka Topic Filtrado]
+```
+
 ### 4.1. Exemplo de Uso: ByteWax
 
 ```python
@@ -174,6 +219,16 @@ Joins entre streams e tabelas, comuns em casos de enriquecimento de dados.
 ### 5.5. Out-of-Sequence Handling
 
 Tratamento de eventos fora de ordem, utilizando janelas e tolerância a atrasos (late arrivals).
+
+#### Diagrama de Pipeline Multiphase
+
+```mermaid
+flowchart LR
+    A[Kafka Topic 1] --> B[Processamento Fase 1]
+    B --> C[Kafka Topic 2]
+    C --> D[Processamento Fase 2]
+    D --> E[Kafka Topic Final]
+```
 
 ---
 

@@ -15,6 +15,14 @@ O **Kafka Connect** é um framework de integração que permite conectar fontes 
 
 Os conectores são plugins que encapsulam toda a lógica de integração, tornando o processo declarativo e sem necessidade de programação customizada.
 
+### Diagrama de Fluxo dos Conectores
+
+```mermaid
+flowchart LR
+        A[Fonte de Dados Externa] -- Source Connector --> B[Kafka]
+        B -- Sink Connector --> C[Destino Externo]
+```
+
 ---
 
 ## Arquitetura do Kafka Connect
@@ -31,6 +39,24 @@ A arquitetura do Kafka Connect é composta por:
 - **Standalone**: Útil para desenvolvimento, roda em um único worker e armazena offsets/configurações localmente.
 - **Distributed**: Recomendado para produção, permite alta disponibilidade e distribuição de tarefas entre múltiplos workers, armazenando offsets/configurações em tópicos internos do Kafka.
 
+### Diagrama de Arquitetura
+
+```mermaid
+flowchart TD
+        subgraph Cluster de Connect
+                W1[Worker 1]
+                W2[Worker 2]
+                W3[Worker 3]
+        end
+        W1 -- Task A --> Kafka
+        W2 -- Task B --> Kafka
+        W3 -- Task C --> Kafka
+        Kafka[(Kafka)]
+        Kafka -- Configuração/Offsets --> W1
+        Kafka -- Configuração/Offsets --> W2
+        Kafka -- Configuração/Offsets --> W3
+```
+
 ---
 
 ## Anatomia de um Conector
@@ -46,20 +72,20 @@ Exemplo de configuração simplificada (JSON):
 
 ```json
 {
-    "name": "meu-jdbc-connector",
-    "config": {
-        "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
-        "connection.url": "jdbc:postgresql://localhost:5432/meubanco",
-        "connection.user": "usuario",
-        "connection.password": "senha",
-        "table.whitelist": "minha_tabela",
-        "mode": "incrementing",
-        "incrementing.column.name": "id",
-        "topic.prefix": "meu_topico_",
-        "key.converter": "org.apache.kafka.connect.storage.StringConverter",
-        "value.converter": "io.confluent.connect.avro.AvroConverter",
-        "value.converter.schema.registry.url": "http://localhost:8081"
-    }
+        "name": "meu-jdbc-connector",
+        "config": {
+                "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+                "connection.url": "jdbc:postgresql://localhost:5432/meubanco",
+                "connection.user": "usuario",
+                "connection.password": "senha",
+                "table.whitelist": "minha_tabela",
+                "mode": "incrementing",
+                "incrementing.column.name": "id",
+                "topic.prefix": "meu_topico_",
+                "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+                "value.converter": "io.confluent.connect.avro.AvroConverter",
+                "value.converter.schema.registry.url": "http://localhost:8081"
+        }
 }
 ```
 
@@ -82,9 +108,9 @@ Exemplo de configuração simplificada (JSON):
 Permite ingestão de dados de bancos relacionais (Postgres, MySQL, SQL Server, Oracle, etc.) via JDBC.
 
 - **Modos de Operação**:
-    - `incrementing`: Usa uma coluna incremental (ex: ID auto-incremento).
-    - `timestamp+incrementing`: Usa timestamp e coluna incremental para detectar novos registros.
-    - `bulk`: Lê toda a tabela a cada execução.
+        - `incrementing`: Usa uma coluna incremental (ex: ID auto-incremento).
+        - `timestamp+incrementing`: Usa timestamp e coluna incremental para detectar novos registros.
+        - `bulk`: Lê toda a tabela a cada execução.
 
 **Atenção**: Buracos em colunas incrementais podem causar perda de dados. Recomenda-se criar views ou colunas artificiais sequenciais se necessário.
 
@@ -109,9 +135,9 @@ Especializado em CDC para bancos como MySQL, Postgres, SQL Server, Oracle, etc.
 
 As SMTs permitem pequenas transformações nos dados, como:
 
-- **Criar chave a partir de campo**:
-- **Mascarar campos sensíveis**:
-- **Conversão de tipos**:
+- **Criar chave a partir de campo**
+- **Mascarar campos sensíveis**
+- **Conversão de tipos**
 
 Exemplo de configuração SMT para criar chave a partir do campo `id`:
 
@@ -119,6 +145,13 @@ Exemplo de configuração SMT para criar chave a partir do campo `id`:
 "transforms": "CreateKey",
 "transforms.CreateKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
 "transforms.CreateKey.fields": "id"
+```
+
+### Diagrama de Transformação SMT
+
+```mermaid
+flowchart LR
+        A[Dados Originais] -- SMT: Criação de Chave --> B[Dados Transformados]
 ```
 
 ---
@@ -136,37 +169,46 @@ from pyspark.sql.types import StructType, StringType, IntegerType
 
 # Cria sessão Spark
 spark = SparkSession.builder \
-        .appName("KafkaConnectIngestion") \
-        .getOrCreate()
+                .appName("KafkaConnectIngestion") \
+                .getOrCreate()
 
 # Define o schema dos dados (ajuste conforme seu caso)
 schema = StructType() \
-        .add("id", IntegerType()) \
-        .add("nome", StringType()) \
-        .add("email", StringType())
+                .add("id", IntegerType()) \
+                .add("nome", StringType()) \
+                .add("email", StringType())
 
 # Lê dados do Kafka
 df = spark.readStream \
-        .format("kafka") \
-        .option("kafka.bootstrap.servers", "localhost:9092") \
-        .option("subscribe", "meu_topico_minhatabela") \
-        .load()
+                .format("kafka") \
+                .option("kafka.bootstrap.servers", "localhost:9092") \
+                .option("subscribe", "meu_topico_minhatabela") \
+                .load()
 
 # Converte o valor de binário para string e aplica o schema
 json_df = df.selectExpr("CAST(value AS STRING) as json") \
-        .select(from_json(col("json"), schema).alias("data")) \
-        .select("data.*")
+                .select(from_json(col("json"), schema).alias("data")) \
+                .select("data.*")
 
 # Exemplo de transformação: filtrar registros
 filtered_df = json_df.filter(col("email").endswith("@empresa.com"))
 
 # Escreve o resultado em console (ou outro sink)
 query = filtered_df.writeStream \
-        .outputMode("append") \
-        .format("console") \
-        .start()
+                .outputMode("append") \
+                .format("console") \
+                .start()
 
 query.awaitTermination()
+```
+
+### Fluxo de Consumo com PySpark
+
+```mermaid
+flowchart LR
+        Kafka[(Kafka)] --> Spark[PySpark]
+        Spark --> Transformacao[Transformação/Filtragem]
+        Transformacao --> Sink[Console/Outro Destino]
 ```
 
 ---

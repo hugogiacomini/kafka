@@ -29,9 +29,28 @@ Um **event stream** é uma sequência ordenada de eventos ao longo do tempo, cad
 - **Bounded Dataset**: Tem início e fim definidos (ex: processamento batch).
 - **Unbounded Dataset**: Fluxo contínuo de dados, sem fim definido (ex: streaming).
 
+```mermaid
+flowchart TD
+    A[Bounded Dataset] -->|Início| B[Processamento]
+    B -->|Fim| C[Resultado]
+    D[Unbounded Dataset] -->|Início| E[Processamento]
+    E -->|Sem Fim| F[Fluxo Contínuo]
+```
+
 ### Imutabilidade dos Eventos
 
 No streaming, eventos são **imutáveis**. Atualizações ou deleções geram novos eventos, que são apenas adicionados ao fluxo. Não há update/delete direto em eventos já processados.
+
+```mermaid
+sequenceDiagram
+    participant Producer
+    participant Kafka
+    participant Consumer
+    Producer->>Kafka: Envia Evento 1
+    Producer->>Kafka: Envia Evento 2 (Atualização)
+    Kafka->>Consumer: Evento 1
+    Kafka->>Consumer: Evento 2
+```
 
 ### Replay de Eventos
 
@@ -45,6 +64,13 @@ O Kafka permite o replay de eventos, ou seja, é possível reler eventos antigos
 - **Stream Processing**: Processamento contínuo de eventos, com possibilidade de joins, agregações e transformações em tempo real.
 - **Batch Processing**: Processamento de grandes volumes de dados em intervalos definidos.
 
+```mermaid
+flowchart LR
+    A[Request-Response] --> B[Resposta]
+    C[Batch Processing] --> D[Processamento em Intervalos]
+    E[Stream Processing] --> F[Processamento Contínuo]
+```
+
 Nosso foco será o **stream processing**, buscando sempre baixa latência e transformação dos dados em tempo real.
 
 ---
@@ -52,6 +78,18 @@ Nosso foco será o **stream processing**, buscando sempre baixa latência e tran
 ## Micro-Batching vs. Streaming Real-Time
 
 Ferramentas como Spark Streaming utilizam o conceito de **micro-batch** (ex: processar eventos a cada 100ms). Apesar de não ser "real-time" absoluto, é considerado tempo real para a maioria dos casos de uso.
+
+```mermaid
+gantt
+    title Micro-Batching vs Streaming
+    dateFormat  X
+    section Micro-Batch
+    Batch 1 :a1, 0, 100
+    Batch 2 :a2, 100, 100
+    Batch 3 :a3, 200, 100
+    section Streaming
+    Evento Contínuo :active, 0, 300
+```
 
 ### Exemplo prático com PySpark
 
@@ -100,11 +138,27 @@ query.awaitTermination()
 
 Ao processar streams, muitas operações exigem **manutenção de estado** (ex: agregações, joins). O estado pode ser armazenado localmente (ex: RocksDB) ou externamente (ex: Cassandra), mas a recomendação é sempre priorizar o armazenamento local para garantir baixa latência.
 
+```mermaid
+flowchart LR
+    A[Evento Chega] --> B[Processamento]
+    B --> C{Estado Local}
+    C --> D[Agregação]
+    C --> E[Join]
+    D --> F[Resultado]
+    E --> F
+```
+
 ---
 
 ## Dualidade Stream-Table
 
 No processamento de streams, existe a dualidade entre **stream** (sequência de eventos) e **table** (snapshot do último valor por chave). Ferramentas como Kafka Streams e Flink permitem converter entre esses dois conceitos.
+
+```mermaid
+flowchart LR
+    A[Stream: Eventos] -- Atualização --> B[Table: Último Valor por Chave]
+    B -- Mudança --> A
+```
 
 ---
 
@@ -114,9 +168,12 @@ O **Kafka Streams** é uma biblioteca Java/Scala para processamento de dados em 
 
 ### Anatomia de um processamento com Kafka Streams
 
-1. **Source**: Consome dados de um tópico Kafka.
-2. **Processamento**: Aplica transformações, agregações, joins, etc.
-3. **Sink**: Escreve o resultado em outro tópico Kafka.
+```mermaid
+flowchart LR
+    A[Source: Tópico Kafka] --> B[Transformação]
+    B --> C[Agregação/Join]
+    C --> D[Sink: Tópico Kafka]
+```
 
 ### Exemplo de pipeline em PySpark (simulando lógica similar)
 
@@ -142,6 +199,12 @@ filtered_df.selectExpr("to_json(struct(*)) AS value") \
 ## KSQLDB
 
 O **ksqldb** permite processar streams do Kafka usando SQL, facilitando para times de dados que preferem abstrações declarativas. Apesar de ser fácil de usar, tem limitações de flexibilidade e está sendo gradualmente substituído por outras soluções no ecossistema.
+
+```mermaid
+flowchart TD
+    A[Kafka Topic] --> B[KSQLDB Query]
+    B --> C[Resultado em Novo Topic]
+```
 
 ---
 

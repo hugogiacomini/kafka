@@ -29,6 +29,20 @@ df.show()
 
 No processamento em lote, os dados são processados em intervalos definidos (minutos, horas). Já no streaming, o objetivo é processar os dados assim que chegam, com latência de milissegundos.
 
+#### Diagrama: Lote vs Streaming
+
+```mermaid
+flowchart LR
+    subgraph Lote
+        A[Lote de Dados] --> B[Processamento]
+        B --> C[Resultado]
+    end
+    subgraph Streaming
+        D[Evento] --> E[Processamento Imediato]
+        E --> F[Resultado em Tempo Real]
+    end
+```
+
 ---
 
 ## 2. A Importância da Velocidade
@@ -64,6 +78,15 @@ query = stream_df.writeStream \
 query.awaitTermination()
 ```
 
+#### Diagrama: Pipeline de Streaming
+
+```mermaid
+flowchart LR
+    Fonte[Fontes de Dados] --> Kafka[Kafka]
+    Kafka --> Spark[PySpark Streaming]
+    Spark --> Destino[Destino/Análise]
+```
+
 ---
 
 ## 3. Mensageria: De Filas a Tópicos
@@ -92,6 +115,18 @@ for i in range(10):
     with open(f"caminho/para/diretorio/streaming/mensagem_{i}.json", "w") as f:
         json.dump({"id": i, "mensagem": f"Mensagem {i}"}, f)
     time.sleep(1)
+```
+
+#### Diagrama: Produtor, Broker e Consumidor
+
+```mermaid
+sequenceDiagram
+    participant Produtor
+    participant Broker
+    participant Consumidor
+    Produtor->>Broker: Envia mensagem
+    Broker->>Consumidor: Entrega mensagem
+    Consumidor->>Broker: Confirma recebimento
 ```
 
 ---
@@ -126,6 +161,17 @@ query = df_valores.writeStream \
 query.awaitTermination()
 ```
 
+#### Diagrama: Arquitetura Kafka
+
+```mermaid
+flowchart LR
+    Producer[Produtor] --> Broker[Broker Kafka]
+    Broker -->|Partição 1| Topic1[(Tópico)]
+    Broker -->|Partição 2| Topic1
+    Consumer[Consumidor] --> Broker
+    Zookeeper[Zookeeper] -.-> Broker
+```
+
 ---
 
 ## 5. Casos de Uso: Detecção de Fraude em Tempo Real
@@ -146,6 +192,15 @@ fraudes.writeStream \
     .start()
 ```
 
+#### Diagrama: Detecção de Fraude
+
+```mermaid
+flowchart LR
+    Evento[Evento de Transação] --> Kafka
+    Kafka --> Spark
+    Spark -->|Regra de Fraude| Alerta[Alerta de Fraude]
+```
+
 ---
 
 ## 6. Implementações e Distribuições do Kafka
@@ -163,6 +218,16 @@ fraudes.writeStream \
 - **Separação de componentes**: Brokers, Zookeeper e Connect devem rodar em servidores separados para evitar problemas de performance e disponibilidade.
 - **Persistência**: Escolha adequada de discos (SSD para workloads intensos).
 - **Gerenciamento**: Soluções gerenciadas reduzem a necessidade de administração, mas podem ter custos maiores.
+
+#### Diagrama: Separação de Componentes
+
+```mermaid
+flowchart LR
+    Broker1[Broker 1] ---|Rede| Zookeeper
+    Broker2[Broker 2] ---|Rede| Zookeeper
+    Connect[Kafka Connect] ---|Rede| Broker1
+    Connect ---|Rede| Broker2
+```
 
 ---
 
@@ -213,6 +278,15 @@ query = df_filtrado.writeStream \
 query.awaitTermination()
 ```
 
+#### Diagrama: Pipeline Completo
+
+```mermaid
+flowchart LR
+    ProdutorKafka[Produtor Kafka] -->|Envia| BrokerKafka[Broker Kafka]
+    BrokerKafka -->|Stream| PySpark[PySpark Streaming]
+    PySpark -->|Processa| Console[Saída/Análise]
+```
+
 ---
 
 ## 9. Conclusão
@@ -235,4 +309,3 @@ O Apache Kafka revolucionou o processamento de dados em tempo real, permitindo a
 ---
 
 *Este documento é parte do módulo de Fundamentos de Apache Kafka do curso de Engenharia de Dados.*
-
