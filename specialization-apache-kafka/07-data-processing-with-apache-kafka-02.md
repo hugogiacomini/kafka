@@ -17,6 +17,11 @@ Streaming data processing has been enabled to analyze, transform, and act on dat
 #### Flow Diagram: Streaming Ecosystem
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     subgraph Kafka
         A[Producers] --> B[Kafka Broker]
@@ -45,6 +50,11 @@ Processing has been distributed across multiple slots, ensuring high performance
 #### Flink Architecture Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     Client --> JobManager
     JobManager --> TaskManager1
@@ -110,6 +120,11 @@ Spark Structured Streaming has operated with micro-batches, processing data in s
 #### Micro-Batch Diagram in Spark
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 sequenceDiagram
     participant Kafka
     participant Spark
@@ -174,6 +189,11 @@ ByteWax has been used as a Python library for stream processing, ideal for simpl
 #### ByteWax Flow Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Kafka Topic] --> B[ByteWax Dataflow]
     B --> C[Processing]
@@ -229,6 +249,11 @@ Out-of-order event handling has been performed, using windows and tolerance for 
 #### Multiphase Pipeline Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Kafka Topic 1] --> B[Phase 1 Processing]
     B --> C[Kafka Topic 2]

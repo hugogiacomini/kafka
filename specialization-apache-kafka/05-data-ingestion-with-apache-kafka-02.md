@@ -19,6 +19,11 @@ Connectors are plugins that encapsulate all integration logic, making the proces
 ### Connector Flow Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
         A[External Data Source] -- Source Connector --> B[Kafka]
         B -- Sink Connector --> C[External Destination]
@@ -43,6 +48,11 @@ The architecture of Kafka Connect is composed of:
 ### Architecture Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
         subgraph Connect Cluster
                 W1[Worker 1]
@@ -151,6 +161,11 @@ Example of SMT configuration to create a key from the `id` field:
 ### SMT Transformation Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
         A[Original Data] -- SMT: Key Creation --> B[Transformed Data]
 ```
@@ -206,6 +221,11 @@ query.awaitTermination()
 ### PySpark Consumption Flow
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
         Kafka[(Kafka)] --> Spark[PySpark]
         Spark --> Transformation[Transformation/Filtering]

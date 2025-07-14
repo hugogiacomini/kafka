@@ -11,6 +11,11 @@ This document has been created by Amanda and is part of a personal repository co
 In Kafka, message ordering is guaranteed only within a single partition. If total ordering is required, the topic should be configured with **one partition**. Otherwise, when multiple partitions are used, message order may be lost.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Producer] -->|Sends messages| B[Partition 1]
     A -->|Sends messages| C[Partition 2]
@@ -59,6 +64,11 @@ Further reading: [Kafka Documentation - Message Ordering](https://kafka.apache.o
 - **Table**: A mutable structure representing the latest state of each key (similar to log-compaction).
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Event Stream] -->|Aggregation| B[Table]
     B -->|Changelog| C[New Stream]
@@ -112,6 +122,11 @@ Reference: [Kafka Streams Concepts](https://kafka.apache.org/documentation/strea
 ### Window Types
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 graph TD
     A[Tumbling Window]
     B[Sliding Window]
@@ -156,6 +171,11 @@ Reference: [Kafka Streams - Windowing](https://kafka.apache.org/documentation/st
 Transactions ensure that multiple read/process/write operations are atomic. They are useful for critical pipelines, but add complexity and may impact performance (~3% throughput reduction).
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 sequenceDiagram
     participant Producer
     participant Kafka
@@ -181,6 +201,11 @@ Reference: [Kafka Transactions](https://kafka.apache.org/documentation/#transact
 ## 5. Logs and Monitoring
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Kafka Broker] -->|Generates logs| B[Filebeat]
     B --> C[Elasticsearch]
@@ -204,6 +229,11 @@ Reference: [Kafka Monitoring](https://kafka.apache.org/documentation/#monitoring
 - **CPU**: Important, but less critical than disk.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Dev]
     B[Prod]
@@ -219,6 +249,11 @@ Reference: [Kafka Hardware Recommendations](https://kafka.apache.org/documentati
 ## 7. Security
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Producer/Consumer] -->|SSL/TLS| B[Kafka Broker]
     B -->|ACLs| C[ZooKeeper/KRaft]
@@ -235,6 +270,11 @@ Reference: [Kafka Security](https://kafka.apache.org/documentation/#security)
 ## 8. Throughput and Latency Optimization
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Producer] -- batch.size, linger.ms --> B[Kafka Broker]
     A -- compression.type --> B
@@ -266,6 +306,11 @@ Reference: [Kafka Performance Tuning](https://kafka.apache.org/documentation/#pr
 ## 9. Observability Tools
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Lenses] -->|Observability| B[Kafka Cluster]
     C[Prometheus/Grafana] -->|Metrics| B
@@ -316,6 +361,11 @@ Reference: [PySpark Structured Streaming + Kafka](https://spark.apache.org/docs/
 ## 11. Final Recommendations
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Understand usage pattern] --> B[Choose configurations]
     B --> C[Monitor constantly]

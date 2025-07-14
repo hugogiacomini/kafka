@@ -9,6 +9,11 @@ In this document, a detailed exploration of data delivery using Apache Kafka is 
 ## Overview of the Data Delivery Pipeline
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Kafka Topic] -->|Source Connector| B[Kafka Connect]
     B -->|Transformation (SMT)| C[Data Conversion]
@@ -31,6 +36,11 @@ flowchart TD
 > **Tip:** Official connector documentation should always be consulted to understand capabilities and limitations.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Source/Sink Connector] --> B[SMT]
     B --> C[Converter]
@@ -147,6 +157,11 @@ df_to_kafka.write \
 ### Pinot Ingestion and Query Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Kafka Topic] --> B[Apache Pinot]
     B --> C[SQL Query]
@@ -237,6 +252,11 @@ LIMIT 10;
 ## Best Practices and Tips
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Avoid small files] --> B[Adjust flush.size and rotate.interval.ms]
     C[Intelligent partitioning] --> D[Facilitates queries and organization]

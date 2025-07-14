@@ -7,6 +7,11 @@
 Before proceeding, the main points from the previous lesson are briefly summarized to ensure alignment:
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Kafka Architecture] --> B[Broker]
     B --> C[Stores and manages data]
@@ -41,6 +46,11 @@ The broker is operated as the server running Kafka's algorithm, storing and mana
 - Replicating data among brokers to ensure high availability.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Broker1[Broker 1] -- Replication --> Broker2[Broker 2]
     Broker1 -- Replication --> Broker3[Broker 3]
@@ -54,6 +64,11 @@ flowchart LR
 - **Offset**: The sequential position of a message within a partition.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Topic["Topic"]
     Topic --> P1["Partition 0"]
@@ -70,6 +85,11 @@ flowchart LR
 - **Followers**: Brokers maintaining copies of partitions to ensure fault tolerance.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Leader["Leader"]
     Follower1["Follower 1"]
@@ -88,6 +108,11 @@ _Reference: [Kafka Replication](https://kafka.apache.org/documentation/#replicat
 ### Format Comparison
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 graph TD
     CSV["CSV"]
     XML["XML"]
@@ -139,6 +164,11 @@ The Schema Registry is operated as a component that stores and manages schemas f
 - Centralized data governance.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     Producer -->|Sends data| Kafka
     Kafka -->|Queries schema| SchemaRegistry
@@ -177,6 +207,11 @@ _Reference: [Confluent Schema Registry](https://docs.confluent.io/platform/curre
 ### Sending Strategies
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     FireAndForget["Fire-and-forget"]
     Synchronous["Synchronous"]
@@ -209,6 +244,11 @@ producer.flush()
 ### Delivery Guarantees (`acks`)
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Acks0["acks=0"]
     Acks1["acks=1"]
@@ -232,6 +272,11 @@ _Reference: [Kafka Producer Configs](https://kafka.apache.org/documentation/#pro
 - **Linger**: Maximum wait time to form a batch is defined.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Producer -- Messages --> Batch
     Batch -- Grouping --> Broker
@@ -330,6 +375,11 @@ _Reference: [PySpark Kafka Integration](https://spark.apache.org/docs/latest/str
 ## Best Practices
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     CSV["Avoid CSV for streaming"] --> AvroJSON["Prefer Avro or JSON"]
     SchemaRegistry["Use Schema Registry"] --> Governance["Governance and data evolution"]
@@ -353,6 +403,11 @@ _Reference: [Kafka Best Practices](https://developer.confluent.io/learn/kafka-be
 Efficient data ingestion in Kafka is achieved through well-planned architecture, appropriate format selection, schema usage, and optimized producer configuration. PySpark integration enables real-time data pipelines, enhancing distributed processing.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     Planning["Well-planned architecture"]
     Formats["Format selection"]

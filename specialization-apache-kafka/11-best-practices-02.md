@@ -11,6 +11,11 @@ The Kappa architecture was designed by Jay Kreps, creator of Apache Kafka, with 
 ### Kappa Flow Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Data Sources] -->|Ingestion| B(Kafka)
     B -->|Streaming Processing| C[PySpark]
@@ -58,6 +63,11 @@ The Data Mesh approach advocates decentralization of data responsibility, creati
 ### Data Mesh Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     subgraph Domain 1
         A1[Data Team 1] --> B1[Data Product 1]
@@ -97,6 +107,11 @@ Lakehouse architecture combines the advantages of Data Lakes (flexible and inexp
 ### Lakehouse Layer Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Bronze: Raw Data] --> B[Silver: Refined Data]
     B --> C[Gold: Aggregated Data]
@@ -131,6 +146,11 @@ Stream House leverages technologies such as Apache Flink and Apache Paimon to en
 ### Stream House Pipeline Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[ODS: Operational Data] --> B[DWD: Detailing]
     B --> C[DWS: Aggregation]
@@ -166,6 +186,11 @@ The General Data Protection Law (LGPD) requires proper handling of personal data
 ### Masking Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Original Data] -->|Processing| B[Masked Data]
     B --> C[Secure Storage]
@@ -192,6 +217,11 @@ Ensuring data quality is essential. Tools such as Great Expectations or Soda can
 ### Validation Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Raw Data] -->|Validation| B[Validated Data]
     B --> C[Processing]
@@ -213,6 +243,11 @@ Apache Kafka enables real-time data ingestion and processing. Tests are performe
 ### Kafka Integration Diagram
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Validated Data] -->|Producer| B[Kafka Topic]
     B -->|Consumer| C[Processing/Consumption]

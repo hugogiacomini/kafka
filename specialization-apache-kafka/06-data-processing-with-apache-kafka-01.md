@@ -32,6 +32,11 @@ An **event stream** is defined as an ordered sequence of events over time, each 
 - **Unbounded Dataset**: A continuous flow of data, with no defined end (e.g., streaming).
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Bounded Dataset] -->|Start| B[Processing]
     B -->|End| C[Result]
@@ -44,6 +49,11 @@ flowchart TD
 In streaming, events are considered **immutable**. Updates or deletions generate new events, which are only added to the flow. No direct update/delete is performed on already processed events.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 sequenceDiagram
     participant Producer
     participant Kafka
@@ -69,6 +79,11 @@ Reference: [Kafka Consumer - Reading Data](https://kafka.apache.org/documentatio
 - **Batch Processing**: Processing large volumes of data at defined intervals.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Request-Response] --> B[Response]
     C[Batch Processing] --> D[Interval Processing]
@@ -86,6 +101,11 @@ Reference: [Kafka Streams Overview](https://kafka.apache.org/documentation/strea
 Tools such as Spark Streaming utilize the concept of **micro-batch** (e.g., processing events every 100ms). Although not absolute "real-time," it is considered real-time for most use cases.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 gantt
     title Micro-Batching vs Streaming
     dateFormat  X
@@ -147,6 +167,11 @@ Reference: [Spark Structured Streaming + Kafka Integration](https://spark.apache
 When processing streams, many operations require **state maintenance** (e.g., aggregations, joins). State can be stored locally (e.g., RocksDB) or externally (e.g., Cassandra), but local storage is recommended to ensure low latency.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Event Arrives] --> B[Processing]
     B --> C{Local State}
@@ -165,6 +190,11 @@ Reference: [Kafka Streams - State Stores](https://kafka.apache.org/documentation
 In stream processing, a duality exists between **stream** (sequence of events) and **table** (snapshot of the latest value per key). Tools such as Kafka Streams and Flink allow conversion between these concepts.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Stream: Events] -- Update --> B[Table: Latest Value per Key]
     B -- Change --> A
@@ -181,6 +211,11 @@ Reference: [Kafka Streams - Stream-Table Duality](https://kafka.apache.org/docum
 ### Anatomy of Processing with Kafka Streams
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Source: Kafka Topic] --> B[Transformation]
     B --> C[Aggregation/Join]
@@ -215,6 +250,11 @@ Reference: [Kafka Streams Developer Guide](https://kafka.apache.org/documentatio
 **ksqldb** enables stream processing in Kafka using SQL, making it easier for data teams who prefer declarative abstractions. While easy to use, it has flexibility limitations and is gradually being replaced by other solutions in the ecosystem.
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Kafka Topic] --> B[KSQLDB Query]
     B --> C[Result in New Topic]

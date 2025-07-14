@@ -33,6 +33,11 @@ Cada evento possui um offset único dentro da partição, mas offsets podem se r
 #### Diagrama: Estrutura de Tópico e Partições
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     subgraph Tópico: vendas
         P0[Partição 0] --> E00[evento0]
@@ -80,6 +85,11 @@ df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)", "offset") \
 #### Diagrama: Consumo de Mensagens e Controle de Offset
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 sequenceDiagram
     participant Kafka
     participant Consumidor
@@ -100,6 +110,11 @@ Cada mensagem pode conter uma chave (`key`) e um valor (`value`). A chave é opc
 #### Diagrama: Distribuição de Mensagens por Chave
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     subgraph Tópico
         K1[Chave: A] --> P0[Partição 0]
@@ -151,6 +166,11 @@ df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)") \
 #### Diagrama: Log Compaction
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     K1[Chave: A] --> V1[Valor 1]
     K1 --> V2[Valor 2]
@@ -186,6 +206,11 @@ kafka-topics.sh --create \
 #### Diagrama: Replicação de Partições
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     subgraph Broker 1
         P0L[Partição 0 (Líder)]
@@ -212,6 +237,11 @@ Os dados do Kafka são armazenados em disco, organizados por tópicos e partiç�
 #### Diagrama: Organização Física dos Dados
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TB
     Tópico1["Tópico: vendas"]
     Tópico1 --> P0["Partição 0 (arquivo de log)"]
@@ -260,6 +290,11 @@ df_agg.writeStream \
 #### Diagrama: Pipeline de Integração PySpark + Kafka
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Kafka["Kafka (Tópico: vendas)"] --> PySpark["PySpark (Consumo)"]
     PySpark --> Processamento["Processamento (Soma por chave)"]

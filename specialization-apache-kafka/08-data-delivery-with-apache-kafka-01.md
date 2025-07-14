@@ -11,6 +11,11 @@ This document has been created by me as part of a personal repository containing
 ### 1.1. Basic Concepts
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     T[Topic] -->|Divided into| P[Partitions]
     P -->|Stored in| B[Broker]
@@ -25,6 +30,11 @@ flowchart LR
 ### 1.2. How Consumption Works
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 sequenceDiagram
     participant App as Application
     participant Kafka as Kafka Cluster
@@ -46,6 +56,11 @@ sequenceDiagram
 ### 2.1. Partition Distribution
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     P1[Partition 1] --> CG1[Instance 1]
     P2[Partition 2] --> CG2[Instance 2]
@@ -63,6 +78,11 @@ flowchart LR
 ### 2.2. Rebalancing
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 sequenceDiagram
     participant Kafka
     participant Inst1 as Instance 1
@@ -82,6 +102,11 @@ sequenceDiagram
 ## 3. Essential Consumer Configurations
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 graph TD
     A[bootstrap.servers] -->|Address| Kafka
     B[group.id] -->|Identifier| ConsumerGroup
@@ -103,6 +128,11 @@ graph TD
 ### 4.1. What is Offset?
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     M1[Message 1] -->|Offset 0| P[Partition]
     M2[Message 2] -->|Offset 1| P
@@ -150,6 +180,11 @@ query.awaitTermination()
 ## 5. Lag and Monitoring
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Last Available Offset] -->|Difference| B[Offset Read by Consumer]
     B -->|Lag| C[Monitoring]
@@ -169,6 +204,11 @@ kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group my
 ## 6. Serialization and Schema Registry
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     J[JSON] -->|Optional| SR[Schema Registry]
     A[Avro] -->|Recommended| SR
@@ -209,6 +249,11 @@ df.select("data.*").writeStream.format("console").start().awaitTermination()
 ## 7. Best Practices
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart TD
     A[Size partitions and instances]
     B[Define group.id and client.id]
@@ -229,6 +274,11 @@ flowchart TD
 ## 8. Visual Summary
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     A[Producer] -->|Sends message| B[Kafka Topic]
     B -->|Partitions| C[Consumer Group]

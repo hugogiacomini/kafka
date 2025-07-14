@@ -32,6 +32,11 @@ In batch processing, data is processed at defined intervals (minutes, hours). In
 #### Diagram: Batch vs Streaming
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     subgraph Batch
         A[Batch of Data] --> B[Processing]
@@ -81,6 +86,11 @@ query.awaitTermination()
 #### Diagram: Streaming Pipeline
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Source[Data Sources] --> Kafka[Kafka]
     Kafka --> Spark[PySpark Streaming]
@@ -120,6 +130,11 @@ for i in range(10):
 #### Diagram: Producer, Broker, and Consumer
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 sequenceDiagram
     participant Producer
     participant Broker
@@ -164,6 +179,11 @@ query.awaitTermination()
 #### Diagram: Kafka Architecture
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Producer[Producer] --> Broker[Kafka Broker]
     Broker -->|Partition 1| Topic1[(Topic)]
@@ -195,6 +215,11 @@ frauds.writeStream \
 #### Diagram: Fraud Detection
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Event[Transaction Event] --> Kafka
     Kafka --> Spark
@@ -222,6 +247,11 @@ flowchart LR
 #### Diagram: Component Separation
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     Broker1[Broker 1] ---|Network| Zookeeper
     Broker2[Broker 2] ---|Network| Zookeeper
@@ -281,6 +311,11 @@ query.awaitTermination()
 #### Diagram: Complete Pipeline
 
 ```mermaid
+---
+config:
+  theme: forest
+  look: handDrawn
+---
 flowchart LR
     KafkaProducer[Kafka Producer] -->|Send| KafkaBroker[Kafka Broker]
     KafkaBroker -->|Stream| PySpark[PySpark Streaming]
