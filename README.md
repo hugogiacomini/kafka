@@ -4,6 +4,8 @@ This repository contains resources, examples, and documentation related to Apach
 
 ## Index
 
+### Specialization with Apache Kafka
+
 Below is an index of the contents:
 
 ```mermaid
